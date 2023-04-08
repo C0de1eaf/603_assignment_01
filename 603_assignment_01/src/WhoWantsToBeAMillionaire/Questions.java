@@ -52,6 +52,13 @@ public class Questions {
     public void setCorrectAnswerIndex(int correctAnswerIndex) {
         this.correctAnswerIndex = correctAnswerIndex;
     }
+    
+      public boolean answerValidation(int userAnswer){
+        if(userAnswer == this.getCorrectAnswerIndex()){
+            return true;
+        }
+        return false;
+    }
 
     public void printQuestion() {
         System.out.println(question);
