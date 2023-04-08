@@ -6,11 +6,8 @@ public class Game {
 
     public ArrayList<ArrayList> questions;
 
-    private ArrayList<Questions> listOfQuestions;
     private int currentLevel;
     private final Random rand;
-
-    private static final int MAX_SIZE = 10;
 
     public Game() {
         // create question list
@@ -25,12 +22,6 @@ public class Game {
         int questionNumber = rand.nextInt(questions.get(currentLevel).size());
         Questions selectedQuestion = (Questions) questions.get(currentLevel).get(questionNumber);
         selectedQuestion.printQuestion();
-    }
-
-    public void addQuestions() {
-        for (int i = 0; i < MAX_SIZE; i++) {
-
-        }
     }
 
     public ArrayList questionsCreation() {
