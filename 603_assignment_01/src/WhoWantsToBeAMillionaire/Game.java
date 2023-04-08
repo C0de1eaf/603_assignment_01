@@ -49,7 +49,7 @@ public class Game {
         Questions hardQ1 = new Questions(5, "What is the chemical formula for benzene?", new String[]{"A. C5H5", "B. C6H5OH", "C. C6H6", "D. C6H12O6"}, 2);
         Questions hardQ2 = new Questions(5, "What is the only continent that has no active volcanoes?", new String[]{"A. North America", "B. Africa", "C. Europe", "D. Australia"}, 3);
         Questions hardQ3 = new Questions(5, "What is the name of the deepest point in the ocean?", new String[]{"A. Challenger Deep", "B. Mariana Trench", "C. Puerto Rico Trench", "D. Tonga Trench"}, 0);
-        Questions hardQ4 = new Questions(5, "What is the smallest country in the world by land area?", new String[]{"A. Monaco", "B. Liechtenstein", "C. Vatican City", "D. San Marino"}, 2);
+        Questions hardQ4 = new Questions(5, "What is the minimum number of queens that must be placed on a chessboard, such that no two queens attack each other?", new String[]{"A. 4", "B. 6", "C. 8", "D. 10"}, 2);
         Questions hardQ5 = new Questions(5, "What is the rarest blood type in humans?", new String[]{"A. AB-", "B. AB+", "C. O-", "D. A+"}, 0);
         Questions hardQ6 = new Questions(5, "What is the capital city of Turkmenistan?", new String[]{"A. Tashkent", "B. Dushanbe", "C. Ashgabat", "D. Bishkek"}, 2);
         Questions hardQ7 = new Questions(5, "What is the name of the highest mountain peak in Africa?", new String[]{"A. Mount Kilimanjaro", "B. Mount Everest", "C. Mount Aconcagua", "D. Mount McKinley"}, 0);
