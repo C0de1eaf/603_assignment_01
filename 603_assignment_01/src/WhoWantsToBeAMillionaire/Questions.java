@@ -54,10 +54,7 @@ public class Questions {
     }
     
       public boolean answerValidation(int userAnswer){
-        if(userAnswer == this.getCorrectAnswerIndex()){
-            return true;
-        }
-        return false;
+        return userAnswer == this.getCorrectAnswerIndex();
     }
 
     public void printQuestion() {
