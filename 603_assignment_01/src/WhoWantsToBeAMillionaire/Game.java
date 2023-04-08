@@ -1,18 +1,38 @@
 package WhoWantsToBeAMillionaire;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Game {
+
+    public ArrayList<ArrayList> questions;
+
     private ArrayList<Questions> listOfQuestions;
-    
+    private int currentLevel;
+    private final Random rand;
+
     private static final int MAX_SIZE = 10;
-    
+
+    public Game() {
+        // create question list
+        questions = questionsCreation();
+        currentLevel = 0;
+
+        rand = new Random();
+
+    }
+
+    public void askUserQuestion() {
+        int questionNumber = rand.nextInt(questions.get(currentLevel).size());
+        Questions selectedQuestion = (Questions) questions.get(currentLevel).get(questionNumber);
+        selectedQuestion.printQuestion();
+    }
+
     public void addQuestions() {
-        for(int i = 0; i < MAX_SIZE; i++){
-            
+        for (int i = 0; i < MAX_SIZE; i++) {
+
         }
     }
-    
+
     public ArrayList questionsCreation() {
         ArrayList<Questions> easy = new ArrayList();
         ArrayList<Questions> hard = new ArrayList();
@@ -45,7 +65,6 @@ public class Game {
         Questions hardQ8 = new Questions(5, "Which country has the most time zones?", new String[]{"A. Russia", "B. China", "C. Canada", "D. United States"}, 0);
         Questions hardQ9 = new Questions(5, "What is the name of the largest moon in our solar system?", new String[]{"A. Callisto", "B. Titan", "C. Ganymede", "D. Io"}, 2);
         Questions hardQ10 = new Questions(5, "What is the significance of the number 1729 in mathematics?", new String[]{"A. It is a Mersenne prime", "B. It is a Fermat prime", "C. It is a Carmichael number", "D. It is the Hardy-Ramanujan number"}, 3);
-        
 
         // Add easy questions to Easy list
         easy.add(easyQ1);
@@ -75,8 +94,7 @@ public class Game {
         hard.add(hardQ8);
         hard.add(hardQ9);
         hard.add(hardQ10);
-        
-        
+
         // add the easy and hard question lists to one list that is returned
         ArrayList questionList = new ArrayList<>();
         questionList.add(easy);
@@ -84,5 +102,19 @@ public class Game {
 
         return questionList;
 
+    }
+
+    /**
+     * @return the currentLevel
+     */
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    /**
+     * @param currentLevel the currentLevel to set
+     */
+    public void setCurrentLevel(int currentLevel) {
+        this.currentLevel = currentLevel;
     }
 }
