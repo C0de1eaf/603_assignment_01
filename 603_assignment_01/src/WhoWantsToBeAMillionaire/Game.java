@@ -18,10 +18,31 @@ public class Game {
 
     }
 
-    public void askUserQuestion() {
+    public void runGame() {
+        int totalQuestions = 10;
+        int currentQuestion = 1;
+        int prizeMoney = 0;
+        Scanner scan = new Scanner(System.in);
+
+        for (int i = 0; i < totalQuestions; i++) {
+            Questions current = getRandomQuestion();
+            current.printQuestion();
+            int levelAnswer = current.getCorrectAnswerIndex();
+            int userAnswer = scan.nextInt();
+            
+            if(userAnswer == levelAnswer){
+                System.out.println("Correct!");
+            }
+            else{
+                System.out.println("Wrong!");
+            }
+        }
+    }
+
+    public Questions getRandomQuestion() {
         int questionNumber = rand.nextInt(questions.get(currentLevel).size());
         Questions selectedQuestion = (Questions) questions.get(currentLevel).get(questionNumber);
-        selectedQuestion.printQuestion();
+        return selectedQuestion;
     }
 
     public ArrayList questionsCreation() {
