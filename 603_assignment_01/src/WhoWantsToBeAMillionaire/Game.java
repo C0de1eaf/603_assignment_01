@@ -28,13 +28,24 @@ public class Game {
             Questions current = getRandomQuestion();
             current.printQuestion();
             int levelAnswer = current.getCorrectAnswerIndex();
-            int userAnswer = scan.nextInt();
-            
-            if(userAnswer == levelAnswer){
-                System.out.println("Correct!");
-            }
-            else{
-                System.out.println("Wrong!");
+
+            int userAnswer = 0;
+            boolean validity = false;
+
+            while (!validity) {
+                try {
+                    userAnswer = scan.nextInt();
+                    validity = true;
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input. Please input an integer representing your answer.");
+                    scan.next();
+                }
+
+                if (userAnswer == levelAnswer) {
+                    System.out.println("Correct!");
+                } else {
+                    System.out.println("Wrong!");
+                }
             }
         }
     }
