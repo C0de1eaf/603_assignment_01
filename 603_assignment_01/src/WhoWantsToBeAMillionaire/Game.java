@@ -79,14 +79,14 @@ public class Game {
     }
 
     public Questions getRandomQuestion() {
-        int questionNumber = rand.nextInt(questions.get(1).size());
         System.out.println("Current Level: " + currentLevel);
-        System.out.println(questionNumber);
         if (currentLevel > 8) {
-            Questions selectedQuestion = (Questions) questions.get(1).get(questionNumber);
+            int questionEasyNumber = rand.nextInt(questions.get(1).size());
+            Questions selectedQuestion = (Questions) questions.get(1).get(questionEasyNumber);
             return selectedQuestion;
         } else {
-            Questions selectedQuestion = (Questions) questions.get(1).get(questionNumber);
+            int questionHardNumber = rand.nextInt(questions.get(1).size());
+            Questions selectedQuestion = (Questions) questions.get(1).get(questionHardNumber);
             return selectedQuestion;
         }
     }
