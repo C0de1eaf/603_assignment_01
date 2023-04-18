@@ -15,7 +15,6 @@ public class Game {
         currentLevel = 0;
 
         rand = new Random();
-
     }
 
     public void runGame() {
@@ -33,20 +32,27 @@ public class Game {
             boolean validity = false;
 
             while (!validity) {
-                try {
-                    userAnswer = scan.nextInt();
-                    validity = true;
-                } catch (InputMismatchException e) {
-                    System.out.println("Invalid input. Please input an integer representing your answer.");
-                    scan.next();
-                }
+                System.out.print("Please enter a number between 1 and 4: ");
+                String input = scan.next();
 
-                if (userAnswer == levelAnswer) {
-                    System.out.println("Correct!");
-                } else {
-                    System.out.println("Wrong!");
+                try {
+                    userAnswer = Integer.parseInt(input);
+                    if (userAnswer < 1 || userAnswer > 4) {
+                        System.out.println("Invalid input. Please try again.");
+                        continue;
+                    }
+                    validity = true;
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Please try again.");
                 }
             }
+
+            if (userAnswer == levelAnswer) {
+                System.out.println("Correct!");
+            } else {
+                System.out.println("Wrong!");
+            }
+
         }
     }
 
