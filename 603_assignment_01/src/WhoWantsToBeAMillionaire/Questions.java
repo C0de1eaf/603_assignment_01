@@ -9,24 +9,14 @@ public class Questions {
     String Array of Multichoice questions
     Correct index of the question
      */
-    private int difficulty;
     private String question;
     private String[] answers;
     private int correctAnswerIndex;
 
-    public Questions(int difficulty, String question, String[] answers, int correctAnswerIndex) {
-        this.difficulty = difficulty;
+    public Questions(String question, String[] answers, int correctAnswerIndex) {
         this.question = question;
         this.answers = answers;
         this.correctAnswerIndex = correctAnswerIndex;
-    }
-
-    public int getDifficulty() {
-        return difficulty;
-    }
-
-    public void setDifficulty(int difficulty) {
-        this.difficulty = difficulty;
     }
 
     public String getQuestion() {
