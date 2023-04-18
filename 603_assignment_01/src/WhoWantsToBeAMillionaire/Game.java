@@ -1,5 +1,6 @@
 package WhoWantsToBeAMillionaire;
 
+import java.io.IOException;
 import java.util.*;
 
 public class Game {
@@ -18,7 +19,7 @@ public class Game {
         rand = new Random();
     }
 
-    public void runGame() {
+    public void runGame() throws IOException {
         int totalQuestions = 10;
         int currentQuestion = 1;
         String name = "";
@@ -32,11 +33,18 @@ public class Game {
         while (!nameValidity) {
             name = scan.nextLine();
             if (name.matches("[a-zA-Z ]+")) {
-                System.out.println("Welcome " + name + "!");
                 nameValidity = true;
             } else {
                 System.out.println("Please only enter a name!");
             }
+        }
+
+        User newUser = new User(name);
+        if (newUser.userExists()) {
+            System.out.println("You have previously participated!");
+            System.out.println("We will update your prize money after this game.");
+        } else {
+            System.out.println("Welcome " + name + "!");
         }
 
         for (int i = 0; i < totalQuestions; i++) {
@@ -74,8 +82,8 @@ public class Game {
             currentLevel++;
         }
 
-        User newUser = new User(name, prizeMoney);
         //TODO: save to file
+        newUser.update(prizeMoney);
     }
 
     public Questions getRandomQuestion() {
