@@ -52,7 +52,7 @@ public class Game {
                 System.out.println("Correct!");
             } else {
                 System.out.println("Sorry but you are wrong and it is game over!\n"
-                        + "You lose your cash prize of ["  + "]");
+                        + "You lose your cash prize of [" + prizeMoney + "]");
                 break;
             }
             currentQuestion++;
@@ -150,8 +150,8 @@ public class Game {
     public void setCurrentLevel(int currentLevel) {
         this.currentLevel = currentLevel;
     }
-    
-    public int getPrizeMoney(){
+
+    public int getPrizeMoney() {
         return this.prizeMoney;
     }
 }
