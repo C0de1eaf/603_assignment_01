@@ -8,7 +8,7 @@ public class Game {
 
     private int currentLevel;
     private final Random rand;
-    public int cash = 0;
+    private int prizeMoney;
 
     public Game() {
         // create question list
@@ -21,7 +21,7 @@ public class Game {
     public void runGame() {
         int totalQuestions = 10;
         int currentQuestion = 1;
-        int prizeMoney = 0;
+        prizeMoney = 0;
         Scanner scan = new Scanner(System.in);
 
         for (int i = 0; i < totalQuestions; i++) {
@@ -52,10 +52,10 @@ public class Game {
                 System.out.println("Correct!");
             } else {
                 System.out.println("Sorry but you are wrong and it is game over!\n"
-                        + "You lose your cash prize of [" + cash + "]");
+                        + "You lose your cash prize of ["  + "]");
                 break;
             }
-
+            currentQuestion++;
         }
     }
 
@@ -149,5 +149,9 @@ public class Game {
      */
     public void setCurrentLevel(int currentLevel) {
         this.currentLevel = currentLevel;
+    }
+    
+    public int getPrizeMoney(){
+        return this.prizeMoney;
     }
 }
