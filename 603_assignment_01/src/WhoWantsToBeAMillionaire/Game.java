@@ -88,12 +88,14 @@ public class Game {
 
     public Questions getRandomQuestion() {
         System.out.println("Current Level: " + currentLevel);
-        if (currentLevel > 8) {
-            int questionEasyNumber = rand.nextInt(questions.get(1).size());
-            Questions selectedQuestion = (Questions) questions.get(1).get(questionEasyNumber);
+        if (currentLevel < 7) {
+            int questionEasyNumber = rand.nextInt(questions.get(0).size());
+            System.out.println(questions.get(0).size() + " " + questionEasyNumber);
+            Questions selectedQuestion = (Questions) questions.get(0).get(questionEasyNumber);
             return selectedQuestion;
         } else {
             int questionHardNumber = rand.nextInt(questions.get(1).size());
+            System.out.println(questions.get(1).size() + " " + questionHardNumber);
             Questions selectedQuestion = (Questions) questions.get(1).get(questionHardNumber);
             return selectedQuestion;
         }
@@ -104,38 +106,38 @@ public class Game {
         ArrayList<Questions> hard = new ArrayList();
 
         // Create easy questions
-        Questions easyQ1 = new Questions(1, "What is the largest organ in the human body?", new String[]{" Brain", " Skin", " Liver", " Heart"}, 1);
-        Questions easyQ2 = new Questions(1, "What is the tallest mountain in the world?", new String[]{" Mount Everest", " Mount Kilimanjaro", " Mount McKinley", " Mount Rainier"}, 0);
-        Questions easyQ3 = new Questions(1, "What is the smallest planet in our solar system?", new String[]{" Venus", " Mars", " Mercury", " Jupiter"}, 2);
-        Questions easyQ4 = new Questions(1, "What is the chemical symbol for gold?", new String[]{" Ag", " Cu", " Au", " Fe"}, 2);
-        Questions easyQ5 = new Questions(1, "What is the capital city of Australia?", new String[]{" Sydney", " Melbourne", " Canberra", " Perth"}, 2);
-        Questions easyQ6 = new Questions(1, "What is the smallest country in the world?", new String[]{" Monaco", " Vatican City", " San Marino", " Liechtenstein"}, 1);
-        Questions easyQ7 = new Questions(1, "What is the most common gas found in the Earth's atmosphere?", new String[]{" Oxygen", " Nitrogen", " Carbon Dioxide", " Helium"}, 1);
-        Questions easyQ8 = new Questions(1, "What is the atomic number of the element Oxygen?", new String[]{" 6", " 8", " 10", " 12"}, 1);
-        Questions easyQ9 = new Questions(1, "What is the highest waterfall in the world?", new String[]{" Angel Falls", " Victoria Falls", " Niagara Falls", " Iguazu Falls"}, 0);
-        Questions easyQ10 = new Questions(1, "What is the name of the longest river in Africa?", new String[]{" Congo River", " Nile River", " Zambezi River", " Niger River"}, 1);
-        Questions easyQ11 = new Questions(1, "What is the name of the largest ocean in the world?", new String[]{" Atlantic Ocean", " Indian Ocean", " Arctic Ocean", " Pacific Ocean"}, 3);
-        Questions easyQ12 = new Questions(1, "What is the study of plants called?", new String[]{" Zoology", " Botany", " Geology", " Anthropology"}, 1);
-        Questions easyQ13 = new Questions(1, "Which element is represented by the symbol 'He'?", new String[]{" Helium", " Hydrogen", " Carbon", " Oxygen"}, 0);
-        Questions easyQ14 = new Questions(1, "Which country is home to the tallest mountain in the world?", new String[]{" United States", " Nepal", " China", " Russia"}, 1);
-        Questions easyQ15 = new Questions(1, "Which U.S. state is known as the \"Aloha State\"?", new String[]{"California", "Texas", "Hawaii", "Florida"}, 2);
+        Questions easyQ1 = new Questions("What is the largest organ in the human body?", new String[]{" Brain", " Skin", " Liver", " Heart"}, 1);
+        Questions easyQ2 = new Questions("What is the tallest mountain in the world?", new String[]{" Mount Everest", " Mount Kilimanjaro", " Mount McKinley", " Mount Rainier"}, 0);
+        Questions easyQ3 = new Questions("What is the smallest planet in our solar system?", new String[]{" Venus", " Mars", " Mercury", " Jupiter"}, 2);
+        Questions easyQ4 = new Questions("What is the chemical symbol for gold?", new String[]{" Ag", " Cu", " Au", " Fe"}, 2);
+        Questions easyQ5 = new Questions("What is the capital city of Australia?", new String[]{" Sydney", " Melbourne", " Canberra", " Perth"}, 2);
+        Questions easyQ6 = new Questions("What is the smallest country in the world?", new String[]{" Monaco", " Vatican City", " San Marino", " Liechtenstein"}, 1);
+        Questions easyQ7 = new Questions("What is the most common gas found in the Earth's atmosphere?", new String[]{" Oxygen", " Nitrogen", " Carbon Dioxide", " Helium"}, 1);
+        Questions easyQ8 = new Questions("What is the atomic number of the element Oxygen?", new String[]{" 6", " 8", " 10", " 12"}, 1);
+        Questions easyQ9 = new Questions("What is the highest waterfall in the world?", new String[]{" Angel Falls", " Victoria Falls", " Niagara Falls", " Iguazu Falls"}, 0);
+        Questions easyQ10 = new Questions("What is the name of the longest river in Africa?", new String[]{" Congo River", " Nile River", " Zambezi River", " Niger River"}, 1);
+        Questions easyQ11 = new Questions("What is the name of the largest ocean in the world?", new String[]{" Atlantic Ocean", " Indian Ocean", " Arctic Ocean", " Pacific Ocean"}, 3);
+        Questions easyQ12 = new Questions("What is the study of plants called?", new String[]{" Zoology", " Botany", " Geology", " Anthropology"}, 1);
+        Questions easyQ13 = new Questions("Which element is represented by the symbol 'He'?", new String[]{" Helium", " Hydrogen", " Carbon", " Oxygen"}, 0);
+        Questions easyQ14 = new Questions("Which country is home to the tallest mountain in the world?", new String[]{" United States", " Nepal", " China", " Russia"}, 1);
+        Questions easyQ15 = new Questions("Which U.S. state is known as the \"Aloha State\"?", new String[]{"California", "Texas", "Hawaii", "Florida"}, 2);
 
         // Create hard questions
-        Questions hardQ1 = new Questions(2, "What is the chemical formula for benzene?", new String[]{" C5H5", " C6H5OH", " C6H6", " C6H12O6"}, 2);
-        Questions hardQ2 = new Questions(2, "What is the only continent that has no active volcanoes?", new String[]{" North America", " Africa", " Europe", " Australia"}, 3);
-        Questions hardQ3 = new Questions(2, "What is the name of the deepest point in the ocean?", new String[]{" Challenger Deep", " Mariana Trench", " Puerto Rico Trench", " Tonga Trench"}, 0);
-        Questions hardQ4 = new Questions(2, "What is the minimum number of queens that must be placed on a chessboard, such that no two queens attack each other?", new String[]{" 4", " 6", " 8", " 10"}, 2);
-        Questions hardQ5 = new Questions(2, "What is the rarest blood type in humans?", new String[]{" AB-", " AB+", " O-", " A+"}, 0);
-        Questions hardQ6 = new Questions(2, "What is the capital city of Turkmenistan?", new String[]{" Tashkent", " Dushanbe", " Ashgabat", " Bishkek"}, 2);
-        Questions hardQ7 = new Questions(2, "What is the name of the highest mountain peak in Africa?", new String[]{" Mount Kilimanjaro", " Mount Everest", " Mount Aconcagua", " Mount McKinley"}, 0);
-        Questions hardQ8 = new Questions(2, "Which country has the most time zones?", new String[]{" Russia", " China", " Canada", " United States"}, 0);
-        Questions hardQ9 = new Questions(2, "What is the name of the largest moon in our solar system?", new String[]{" Callisto", " Titan", " Ganymede", " Io"}, 2);
-        Questions hardQ10 = new Questions(2, "What is the significance of the number 1729 in mathematics?", new String[]{" It is a Mersenne prime", " It is a Fermat prime", " It is a Carmichael number", " It is the Hardy-Ramanujan number"}, 3);
-        Questions hardQ11 = new Questions(2, "What is the smallest country in the world by land area?", new String[]{" Monaco", " San Marino", " Vatican City", " Liechtenstein"}, 2);
-        Questions hardQ12 = new Questions(2, "What is the largest organ in the human body?", new String[]{" Liver", " Heart", " Skin", " Lungs"}, 2);
-        Questions hardQ13 = new Questions(2, "What is the name of the currency used in Thailand?", new String[]{" Baht", " Rupee", " Yen", " Won"}, 0);
-        Questions hardQ14 = new Questions(2, "What is the largest desert in the world?", new String[]{" Gobi Desert", " Sahara Desert", " Arabian Desert", " Kalahari Desert"}, 1);
-        Questions hardQ15 = new Questions(2, "What is the name of the phenomenon where the moon appears larger and brighter than usual?", new String[]{" Supermoon", " Blue Moon", " Blood Moon", " Harvest Moon"}, 0);
+        Questions hardQ1 = new Questions("What is the chemical formula for benzene?", new String[]{" C5H5", " C6H5OH", " C6H6", " C6H12O6"}, 2);
+        Questions hardQ2 = new Questions("What is the only continent that has no active volcanoes?", new String[]{" North America", " Africa", " Europe", " Australia"}, 3);
+        Questions hardQ3 = new Questions("What is the name of the deepest point in the ocean?", new String[]{" Challenger Deep", " Mariana Trench", " Puerto Rico Trench", " Tonga Trench"}, 0);
+        Questions hardQ4 = new Questions("What is the minimum number of queens that must be placed on a chessboard, such that no two queens attack each other?", new String[]{" 4", " 6", " 8", " 10"}, 2);
+        Questions hardQ5 = new Questions("What is the rarest blood type in humans?", new String[]{" AB-", " AB+", " O-", " A+"}, 0);
+        Questions hardQ6 = new Questions("What is the capital city of Turkmenistan?", new String[]{" Tashkent", " Dushanbe", " Ashgabat", " Bishkek"}, 2);
+        Questions hardQ7 = new Questions("What is the name of the highest mountain peak in Africa?", new String[]{" Mount Kilimanjaro", " Mount Everest", " Mount Aconcagua", " Mount McKinley"}, 0);
+        Questions hardQ8 = new Questions("Which country has the most time zones?", new String[]{" Russia", " China", " Canada", " United States"}, 0);
+        Questions hardQ9 = new Questions("What is the name of the largest moon in our solar system?", new String[]{" Callisto", " Titan", " Ganymede", " Io"}, 2);
+        Questions hardQ10 = new Questions("What is the significance of the number 1729 in mathematics?", new String[]{" It is a Mersenne prime", " It is a Fermat prime", " It is a Carmichael number", " It is the Hardy-Ramanujan number"}, 3);
+        Questions hardQ11 = new Questions("What is the smallest country in the world by land area?", new String[]{" Monaco", " San Marino", " Vatican City", " Liechtenstein"}, 2);
+        Questions hardQ12 = new Questions("What is the largest organ in the human body?", new String[]{" Liver", " Heart", " Skin", " Lungs"}, 2);
+        Questions hardQ13 = new Questions("What is the name of the currency used in Thailand?", new String[]{" Baht", " Rupee", " Yen", " Won"}, 0);
+        Questions hardQ14 = new Questions("What is the largest desert in the world?", new String[]{" Gobi Desert", " Sahara Desert", " Arabian Desert", " Kalahari Desert"}, 1);
+        Questions hardQ15 = new Questions("What is the name of the phenomenon where the moon appears larger and brighter than usual?", new String[]{" Supermoon", " Blue Moon", " Blood Moon", " Harvest Moon"}, 0);
 
         // Add easy questions to Easy list
         easy.add(easyQ1);
