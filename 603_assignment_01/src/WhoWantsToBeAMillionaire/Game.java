@@ -56,14 +56,21 @@ public class Game {
                 break;
             }
             currentQuestion++;
+            currentLevel++;
         }
     }
 
     public Questions getRandomQuestion() {
-        int questionNumber = rand.nextInt(questions.get(currentLevel).size());
-        Questions selectedQuestion = (Questions) questions.get(currentLevel).get(questionNumber);
-        questions.remove(selectedQuestion);
-        return selectedQuestion;
+        int questionNumber = rand.nextInt(questions.get(1).size());
+        System.out.println("Current Level: " + currentLevel);
+        System.out.println(questionNumber);
+        if (currentLevel > 8) {
+            Questions selectedQuestion = (Questions) questions.get(1).get(questionNumber);
+            return selectedQuestion;
+        } else {
+            Questions selectedQuestion = (Questions) questions.get(1).get(questionNumber);
+            return selectedQuestion;
+        }
     }
 
     public ArrayList questionsCreation() {
@@ -98,6 +105,11 @@ public class Game {
         Questions hardQ8 = new Questions(2, "Which country has the most time zones?", new String[]{" Russia", " China", " Canada", " United States"}, 0);
         Questions hardQ9 = new Questions(2, "What is the name of the largest moon in our solar system?", new String[]{" Callisto", " Titan", " Ganymede", " Io"}, 2);
         Questions hardQ10 = new Questions(2, "What is the significance of the number 1729 in mathematics?", new String[]{" It is a Mersenne prime", " It is a Fermat prime", " It is a Carmichael number", " It is the Hardy-Ramanujan number"}, 3);
+        Questions hardQ11 = new Questions(2, "What is the smallest country in the world by land area?", new String[]{" Monaco", " San Marino", " Vatican City", " Liechtenstein"}, 2);
+        Questions hardQ12 = new Questions(2, "What is the largest organ in the human body?", new String[]{" Liver", " Heart", " Skin", " Lungs"}, 2);
+        Questions hardQ13 = new Questions(2, "What is the name of the currency used in Thailand?", new String[]{" Baht", " Rupee", " Yen", " Won"}, 0);
+        Questions hardQ14 = new Questions(2, "What is the largest desert in the world?", new String[]{" Gobi Desert", " Sahara Desert", " Arabian Desert", " Kalahari Desert"}, 1);
+        Questions hardQ15 = new Questions(2, "What is the name of the phenomenon where the moon appears larger and brighter than usual?", new String[]{" Supermoon", " Blue Moon", " Blood Moon", " Harvest Moon"}, 0);
 
         // Add easy questions to Easy list
         easy.add(easyQ1);
@@ -127,6 +139,11 @@ public class Game {
         hard.add(hardQ8);
         hard.add(hardQ9);
         hard.add(hardQ10);
+        hard.add(hardQ11);
+        hard.add(hardQ12);
+        hard.add(hardQ13);
+        hard.add(hardQ14);
+        hard.add(hardQ15);
 
         // add the easy and hard question lists to one list that is returned
         ArrayList questionList = new ArrayList<>();
