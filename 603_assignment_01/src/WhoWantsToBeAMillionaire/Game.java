@@ -21,8 +21,23 @@ public class Game {
     public void runGame() {
         int totalQuestions = 10;
         int currentQuestion = 1;
+        String name = "";
         prizeMoney = 0;
         Scanner scan = new Scanner(System.in);
+        boolean nameValidity = false;
+
+        System.out.println("Welcome to the Who Wants To Be A Millionaire game.");
+        System.out.println("Please enter your name:");
+
+        while (!nameValidity) {
+            name = scan.nextLine();
+            if (name.matches("[a-zA-Z ]+")) {
+                System.out.println("Welcome " + name + "!");
+                nameValidity = true;
+            } else {
+                System.out.println("Please only enter a name!");
+            }
+        }
 
         for (int i = 0; i < totalQuestions; i++) {
             Questions current = getRandomQuestion();
@@ -58,6 +73,9 @@ public class Game {
             currentQuestion++;
             currentLevel++;
         }
+
+        User newUser = new User(name, prizeMoney);
+        //TODO: save to file
     }
 
     public Questions getRandomQuestion() {
