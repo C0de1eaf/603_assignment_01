@@ -8,6 +8,7 @@ public class Game {
 
     private int currentLevel;
     private final Random rand;
+    private int prizeMoney;
 
     public Game() {
         // create question list
@@ -20,7 +21,7 @@ public class Game {
     public void runGame() {
         int totalQuestions = 10;
         int currentQuestion = 1;
-        int prizeMoney = 0;
+        prizeMoney = 0;
         Scanner scan = new Scanner(System.in);
 
         for (int i = 0; i < totalQuestions; i++) {
@@ -52,7 +53,7 @@ public class Game {
             } else {
                 System.out.println("Wrong!");
             }
-
+            currentQuestion++;
         }
     }
 
@@ -145,5 +146,9 @@ public class Game {
      */
     public void setCurrentLevel(int currentLevel) {
         this.currentLevel = currentLevel;
+    }
+    
+    public int getPrizeMoney(){
+        return this.prizeMoney;
     }
 }
