@@ -3,14 +3,12 @@ package WhoWantsToBeAMillionaire;
 import java.util.ArrayList;
 
 public class User {
-    private String firstName;
-    private String lastName;
-    private int prizeWon;
+    private String name;
+    private int prizeMoney;
     private ArrayList<String> listOfParticipants;
     
-    public User(String firstName, String lastName){
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.prizeWon = 0;
+    public User(String name, int prizeMoney){
+        this.name = name;
+        this.prizeMoney = prizeMoney;
     }
 }
