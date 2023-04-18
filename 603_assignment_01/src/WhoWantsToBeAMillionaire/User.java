@@ -37,7 +37,7 @@ public class User {
         }
 
         for (String e : this.listOfParticipants) {
-            if (e.toLowerCase().equals(this.name.toLowerCase())) {
+            if (e.toLowerCase().contains(this.name.toLowerCase())) {
                 userExists = true;
                 break;
             }
@@ -50,7 +50,7 @@ public class User {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("./resources/userlist.txt"))) {
             if (userExists()) {
                 for (String e : this.listOfParticipants) {
-                    if (e.toLowerCase().equals(this.name.toLowerCase())) {
+                    if (e.toLowerCase().contains(this.name.toLowerCase())) {
                         this.listOfParticipants.set(this.listOfParticipants.indexOf(e), this.name + " " + this.prizeMoney);
                     }
                 }
