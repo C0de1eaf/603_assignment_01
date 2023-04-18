@@ -6,7 +6,7 @@ import java.util.*;
 public class Game {
 
     public ArrayList<ArrayList> questions;
-
+    private Scanner scan = new Scanner(System.in);
     private int currentLevel;
     private final Random rand;
     private int prizeMoney;
@@ -23,8 +23,8 @@ public class Game {
         currentLevel = 1;
         String name = "";
         prizeMoney = 0;
-        Scanner scan = new Scanner(System.in);
         boolean nameValidity = false;
+        boolean continuePlaying = true;
 
         System.out.println("Welcome to the Who Wants To Be A Millionaire game.");
         System.out.println("Please enter your name:");
@@ -47,37 +47,41 @@ public class Game {
         }
 
         for (int i = 0; i < totalQuestions; i++) {
-            Questions current = getRandomQuestion();
-            current.printQuestion();
-            int levelAnswer = current.getCorrectAnswerIndex();
+            while (continuePlaying) {
 
-            int userAnswer = 0;
-            boolean validity = false;
+                Questions current = getRandomQuestion();
+                current.printQuestion();
+                int levelAnswer = current.getCorrectAnswerIndex();
 
-            while (!validity) {
-                System.out.print("> ");
-                String input = scan.next();
+                int userAnswer = 0;
+                boolean validity = false;
 
-                try {
-                    userAnswer = Integer.parseInt(input);
-                    if (userAnswer < 1 || userAnswer > 4) {
+                while (!validity) {
+                    System.out.print("> ");
+                    String input = scan.next();
+
+                    try {
+                        userAnswer = Integer.parseInt(input);
+                        if (userAnswer < 1 || userAnswer > 4) {
+                            System.out.println("Invalid input. Please try again.");
+                            continue;
+                        }
+                        validity = true;
+                    } catch (NumberFormatException e) {
                         System.out.println("Invalid input. Please try again.");
-                        continue;
                     }
-                    validity = true;
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid input. Please try again.");
                 }
-            }
 
-            if (userAnswer == levelAnswer + 1) {
-                System.out.println("Correct!");
-            } else {
-                System.out.println("Sorry but you are wrong and it is game over!\n"
-                        + "You lose your cash prize of [" + prizeMoney + "]");
-                break;
+                if (userAnswer == levelAnswer + 1) {
+                    System.out.println("Correct!");
+                } else {
+                    System.out.println("Sorry but you are wrong and it is game over!\n"
+                            + "You lose your cash prize of [" + prizeMoney + "]");
+                    break;
+                }
+                continuePlaying = continuePlaying();
+                currentLevel++;
             }
-            currentLevel++;
         }
 
         //TODO: save to file
@@ -85,19 +89,31 @@ public class Game {
     }
 
     public Questions getRandomQuestion() {
-        System.out.println("\n--Current Level: " + currentLevel + "--\n");
-        int questionIndex = rand.nextInt(questions.get(currentLevel < 7 ? 0 : 1).size());
-        ArrayList<Questions> questionList = questions.get(currentLevel < 7 ? 0 : 1);
+        System.out.println("\n--Current Level: " + currentLevel + "--\n"); // prints out current level
+        int questionIndex = rand.nextInt(questions.get(currentLevel < 7 ? 0 : 1).size()); // get random question randomly based on the size of the array
+        ArrayList<Questions> questionList = questions.get(currentLevel < 7 ? 0 : 1); // create a new ArrayList variable based on the level difficulty
         Questions selectedQuestion = questionList.get(questionIndex);
 
-        // remove the chosen question from the ArrayList
-        questionList.remove(questionIndex);
+        questionList.remove(questionIndex); // remove the chosen question from the ArrayList
 
         // Testing purposes [size of selected list + selected question within the list
 //        System.out.println("Size of updated array " + questionList.size() + "\nchosen question inside the array " + (questionIndex + 1));
         return selectedQuestion;
     }
 
+    // ask user if they want to opt out of the game
+    public boolean continuePlaying() {
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Do you want to continue playing? (Y/N)\n> ");
+        String input = scan.nextLine();
+        while (!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N")) {
+            System.out.print("Error: Invalid input. Please enter [Y] or [N].\n> ");
+            input = scan.nextLine();
+        }
+        return input.equalsIgnoreCase("Y");
+    }
+
+    // Create an ArrayList both with Easy and hard Questions
     public ArrayList questionsCreation() {
         ArrayList<Questions> easy = new ArrayList();
         ArrayList<Questions> hard = new ArrayList();
