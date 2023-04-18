@@ -13,14 +13,13 @@ public class Game {
     public Game() {
         // create question list
         questions = questionsCreation();
-        currentLevel = 1;
 
         rand = new Random();
     }
 
     public void runGame() {
         int totalQuestions = 10;
-        int currentQuestion = 1;
+        currentLevel = 1;
         String name = "";
         prizeMoney = 0;
         Scanner scan = new Scanner(System.in);
@@ -48,7 +47,7 @@ public class Game {
             boolean validity = false;
 
             while (!validity) {
-                System.out.print("Please enter a number between 1 and 4: ");
+                System.out.print("> ");
                 String input = scan.next();
 
                 try {
@@ -70,7 +69,6 @@ public class Game {
                         + "You lose your cash prize of [" + prizeMoney + "]");
                 break;
             }
-            currentQuestion++;
             currentLevel++;
         }
 
@@ -79,18 +77,17 @@ public class Game {
     }
 
     public Questions getRandomQuestion() {
-        System.out.println("Current Level: " + currentLevel);
-        if (currentLevel < 7) {
-            int questionEasyNumber = rand.nextInt(questions.get(0).size());
-            System.out.println(questions.get(0).size() + " " + questionEasyNumber);
-            Questions selectedQuestion = (Questions) questions.get(0).get(questionEasyNumber);
-            return selectedQuestion;
-        } else {
-            int questionHardNumber = rand.nextInt(questions.get(1).size());
-            System.out.println(questions.get(1).size() + " " + questionHardNumber);
-            Questions selectedQuestion = (Questions) questions.get(1).get(questionHardNumber);
-            return selectedQuestion;
-        }
+        System.out.println("\n--Current Level: " + currentLevel + "--\n");
+        int questionIndex = rand.nextInt(questions.get(currentLevel < 7 ? 0 : 1).size());
+        ArrayList<Questions> questionList = questions.get(currentLevel < 7 ? 0 : 1);
+        Questions selectedQuestion = questionList.get(questionIndex);
+
+        // remove the chosen question from the ArrayList
+        questionList.remove(questionIndex);
+
+        // Testing purposes [size of selected list + selected question within the list
+//        System.out.println("Size of updated array " + questionList.size() + "\nchosen question inside the array " + (questionIndex + 1));
+        return selectedQuestion;
     }
 
     public ArrayList questionsCreation() {
@@ -126,7 +123,7 @@ public class Game {
         Questions hardQ9 = new Questions("What is the name of the largest moon in our solar system?", new String[]{" Callisto", " Titan", " Ganymede", " Io"}, 2);
         Questions hardQ10 = new Questions("What is the significance of the number 1729 in mathematics?", new String[]{" It is a Mersenne prime", " It is a Fermat prime", " It is a Carmichael number", " It is the Hardy-Ramanujan number"}, 3);
         Questions hardQ11 = new Questions("What is the smallest country in the world by land area?", new String[]{" Monaco", " San Marino", " Vatican City", " Liechtenstein"}, 2);
-        Questions hardQ12 = new Questions("What is the largest organ in the human body?", new String[]{" Liver", " Heart", " Skin", " Lungs"}, 2);
+        Questions hardQ12 = new Questions("What is the smallest organ in the human body?", new String[]{" Pineal Gland", " Parathyroid Glands", " Pituitary Gland", " Thumus Gland"}, 0);
         Questions hardQ13 = new Questions("What is the name of the currency used in Thailand?", new String[]{" Baht", " Rupee", " Yen", " Won"}, 0);
         Questions hardQ14 = new Questions("What is the largest desert in the world?", new String[]{" Gobi Desert", " Sahara Desert", " Arabian Desert", " Kalahari Desert"}, 1);
         Questions hardQ15 = new Questions("What is the name of the phenomenon where the moon appears larger and brighter than usual?", new String[]{" Supermoon", " Blue Moon", " Blood Moon", " Harvest Moon"}, 0);
