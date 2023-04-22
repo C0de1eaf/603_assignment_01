@@ -6,6 +6,7 @@ import java.util.*;
 public class Game {
 
     public ArrayList<ArrayList> questions;
+    int[] cashPrize = {100, 200, 300, 500, 1000, 5000, 10000, 50000, 100000, 250000};
     private Scanner scan = new Scanner(System.in);
     private int currentLevel;
     private final Random rand;
@@ -76,7 +77,7 @@ public class Game {
                     System.out.println("Correct!");
                 } else {
                     System.out.println("Sorry but you are wrong and it is game over!\n"
-                            + "You lose your cash prize of [" + prizeMoney + "]");
+                            + "You lose your cash prize of [" + getPrize() + "]");
                     break;
                 }
                 continuePlaying = continuePlaying();
@@ -86,6 +87,12 @@ public class Game {
 
         //TODO: save to file
         newUser.update(prizeMoney);
+    }
+    
+    public int getPrize(){
+        int prize;
+        prize = cashPrize[currentLevel];
+        return prize;
     }
 
     public Questions getRandomQuestion() {
