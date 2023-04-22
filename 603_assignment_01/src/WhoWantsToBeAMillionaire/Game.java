@@ -26,64 +26,74 @@ public class Game {
         boolean continuePlaying = true;
         int currentCash = 0;
 
-        System.out.println("Welcome to the Who Wants To Be A Millionaire game.");
-        System.out.println("Please enter your name:");
+        do {
+            System.out.println("Welcome to the Who Wants To Be A Millionaire game.");
+            System.out.println("Please enter your name:");
 
-        while (!nameValidity) {
-            name = scan.nextLine();
-            if (name.matches("[a-zA-Z ]+")) {
-                nameValidity = true;
-            } else {
-                System.out.println("Please only enter a name!");
-            }
-        }
-
-        User newUser = new User(name);
-        if (newUser.userExists()) {
-            System.out.println("You have previously participated!");
-            System.out.println("We will update your prize money after this game.");
-        } else {
-            System.out.println("Welcome " + name + "!");
-        }
-
-        for (int i = 0; i < totalQuestions && continuePlaying; i++) {
-            Questions current = getRandomQuestion();
-            current.printQuestion();
-            int levelAnswer = current.getCorrectAnswerIndex();
-
-            int userAnswer = 0;
-            boolean validity = false;
-
-            while (!validity) {
-                System.out.print("> ");
-                String input = scan.next();
-
-                try {
-                    userAnswer = Integer.parseInt(input);
-                    if (userAnswer < 1 || userAnswer > 4) {
-                        System.out.println("Invalid input. Please try again.");
-                    } else {
-                        validity = true;
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid input. Please try again.");
+            while (!nameValidity) {
+                name = scan.nextLine();
+                if (name.matches("[a-zA-Z ]+")) {
+                    nameValidity = true;
+                } else {
+                    System.out.println("Please only enter a name!");
                 }
             }
 
-            if (userAnswer == levelAnswer + 1) {
-                System.out.println("Correct!");
-                currentCash = getPrize();
-                newUser.update(currentCash);
+            User newUser = new User(name);
+            if (newUser.userExists()) {
+                System.out.println("You have previously participated!");
+                System.out.println("We will update your prize money after this game.");
             } else {
-                System.out.println("Sorry but you are wrong and it is game over!\n"
-                        + "You lose your cash prize of [" + currentCash + "]");
-                currentCash = 0;
-                newUser.update(currentCash);
-                break;
+                System.out.println("Welcome " + name + "!");
             }
-            continuePlaying = continuePlaying();
-            currentLevel++;
-        }
+
+            for (int i = 0; i < totalQuestions && continuePlaying; i++) {
+                Questions current = getRandomQuestion();
+                current.printQuestion();
+                int levelAnswer = current.getCorrectAnswerIndex();
+
+                int userAnswer = 0;
+                boolean validity = false;
+
+                while (!validity) {
+                    System.out.print("> ");
+                    String input = scan.next();
+
+                    try {
+                        userAnswer = Integer.parseInt(input);
+                        if (userAnswer < 1 || userAnswer > 4) {
+                            System.out.println("Invalid input. Please try again.");
+                        } else {
+                            validity = true;
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid input. Please try again.");
+                    }
+                }
+
+                if (userAnswer == levelAnswer + 1) {
+                    System.out.println("Correct!");
+                    currentCash = getPrize();
+                    newUser.update(currentCash);
+                } else {
+                    System.out.println("Sorry but you are wrong and it is game over!\n"
+                            + "You lose your cash prize of [" + currentCash + "]");
+                    currentCash = 0;
+                    newUser.update(currentCash);
+                    break;
+                }
+                continuePlaying = continuePlaying();
+                currentLevel++;
+            }
+
+            System.out.println("Do you want to play again? (yes or no)");
+            String playAgain = scan.next().toUpperCase();
+            continuePlaying = playAgain.equals("Y");
+            scan.nextLine();
+            nameValidity = false;
+            currentLevel = 1;
+            currentCash = 0;
+        } while (continuePlaying);
 
         System.out.println("Goodbye!");
     }
