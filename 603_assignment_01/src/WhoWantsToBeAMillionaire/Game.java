@@ -231,4 +231,22 @@ public class Game {
     public void setCurrentLevel(int currentLevel) {
         this.currentLevel = currentLevel;
     }
+
+    public Questions fiftyfifty(Questions question) {
+        String[] currentQuestions = question.getAnswers();
+        int answerIndex = question.getCorrectAnswerIndex();
+        int randomIndex = 0;
+
+        String[] fiftyfifty = new String[2];
+        fiftyfifty[0] = currentQuestions[answerIndex];
+        
+        do{
+            randomIndex = rand.nextInt(4);
+        }while(randomIndex == answerIndex);
+        fiftyfifty[1] = currentQuestions[randomIndex];
+        
+        Questions newQuestion = new Questions(question.getQuestion(), fiftyfifty, 0);
+
+        return newQuestion;
+    }
 }
