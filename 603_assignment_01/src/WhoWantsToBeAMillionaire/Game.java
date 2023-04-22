@@ -24,6 +24,7 @@ public class Game {
         String name = "";
         boolean nameValidity = false;
         boolean continuePlaying = true;
+        int currentCash = 0;
 
         System.out.println("Welcome to the Who Wants To Be A Millionaire game.");
         System.out.println("Please enter your name:");
@@ -75,18 +76,20 @@ public class Game {
                     System.out.println("Correct!");
                 } else {
                     System.out.println("Sorry but you are wrong and it is game over!\n"
-                            + "You lose your cash prize of [" + getPrize() + "]");
+                            + "You lose your cash prize of [" + currentCash + "]");
                     i = totalQuestions;
+                    currentCash = 0;
                     break;
                 }
+                currentCash = getPrize();
                 continuePlaying = continuePlaying();
-                newUser.update(getPrize());
+                newUser.update(currentCash);
                 currentLevel++;
             }
         }
         System.out.println("Goodbye!");
-    }    
-    
+    }
+
     public int getPrize() {
         int prize;
         prize = cashPrize[currentLevel - 1];
