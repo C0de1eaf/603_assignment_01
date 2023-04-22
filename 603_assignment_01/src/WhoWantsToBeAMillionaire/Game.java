@@ -76,8 +76,10 @@ public class Game {
                 } else {
                     System.out.println("Sorry but you are wrong and it is game over!\n"
                             + "You lose your cash prize of [" + getPrize() + "]");
-                   continuePlaying = continuePlaying();
+                    i = totalQuestions;
+                    break;
                 }
+                continuePlaying = continuePlaying();
                 currentLevel++;
             }
         }
