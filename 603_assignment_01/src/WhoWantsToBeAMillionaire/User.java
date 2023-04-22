@@ -51,11 +51,11 @@ public class User {
             if (userExists()) {
                 for (String e : this.listOfParticipants) {
                     if (e.toLowerCase().contains(this.name.toLowerCase())) {
-                        this.listOfParticipants.set(this.listOfParticipants.indexOf(e), this.name + " " + this.prizeMoney);
+                        this.listOfParticipants.set(this.listOfParticipants.indexOf(e), this.name + " " + prizeMoney);
                     }
                 }
             } else {
-                this.listOfParticipants.add(this.name + " " + this.prizeMoney);
+                this.listOfParticipants.add(this.name + " " + prizeMoney);
             }
             for (String data : this.listOfParticipants) {
                 bw.write(data);
