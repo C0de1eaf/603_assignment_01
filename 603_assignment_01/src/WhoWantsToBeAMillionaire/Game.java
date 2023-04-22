@@ -10,8 +10,6 @@ public class Game {
     private Scanner scan = new Scanner(System.in);
     private int currentLevel;
     private final Random rand;
-    private int prizeMoney;
-    int[] prizes = {100, 200, 300, 500, 1000, 5000, 10000, 50000, 100000, 250000};
 
     public Game() {
         // create question list
@@ -24,7 +22,6 @@ public class Game {
         int totalQuestions = 10;
         currentLevel = 1;
         String name = "";
-        prizeMoney = 0;
         boolean nameValidity = false;
         boolean continuePlaying = true;
 
@@ -86,13 +83,12 @@ public class Game {
             }
         }
 
-        //TODO: save to file
-        newUser.update(prizeMoney);
+        newUser.update(getPrize());
     }
     
     public int getPrize(){
         int prize;
-        prize = cashPrize[currentLevel];
+        prize = cashPrize[currentLevel-1];
         return prize;
     }
 
@@ -213,9 +209,5 @@ public class Game {
      */
     public void setCurrentLevel(int currentLevel) {
         this.currentLevel = currentLevel;
-    }
-
-    public int getPrizeMoney() {
-        return this.prizeMoney;
     }
 }
