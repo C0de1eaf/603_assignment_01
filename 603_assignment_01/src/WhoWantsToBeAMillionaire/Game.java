@@ -108,6 +108,7 @@ public class Game {
 
     // ask user if they want to opt out of the game
     public boolean continuePlaying() {
+        scan.nextLine();
         System.out.print("Do you want to continue playing? (Y/N)\n> ");
         String input = scan.nextLine();
         while (!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N")) {
