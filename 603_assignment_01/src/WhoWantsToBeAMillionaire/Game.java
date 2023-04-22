@@ -76,16 +76,15 @@ public class Game {
                 } else {
                     System.out.println("Sorry but you are wrong and it is game over!\n"
                             + "You lose your cash prize of [" + getPrize() + "]");
-                    break;
+                   continuePlaying = continuePlaying();
                 }
-                continuePlaying = continuePlaying();
                 currentLevel++;
             }
         }
-
+        System.out.println("Goodbye!");
         newUser.update(getPrize());
-    }
-
+    }    
+    
     public int getPrize() {
         int prize;
         prize = cashPrize[currentLevel - 1];
