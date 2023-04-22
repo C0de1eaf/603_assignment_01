@@ -88,7 +88,7 @@ public class Game {
 
             if (!continuePlaying) {
                 System.out.println("you quit");
-                break;
+                break; // delete if needed
             } else {
                 System.out.println("Do you want to play again? (Y/N)");
                 String playAgain = scan.next().toUpperCase();
