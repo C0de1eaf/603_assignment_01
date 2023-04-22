@@ -27,7 +27,7 @@ public class Game {
         int currentCash = 0;
 
         do {
-            System.out.println("Welcome to the Who Wants To Be A Millionaire game.");
+            System.out.println("\nWelcome to the Who Wants To Be A Millionaire game.");
             System.out.println("Please enter your name:");
 
             while (!nameValidity) {
@@ -86,16 +86,21 @@ public class Game {
                 currentLevel++;
             }
 
-            System.out.println("Do you want to play again? (yes or no)");
-            String playAgain = scan.next().toUpperCase();
-            continuePlaying = playAgain.equals("Y");
-            scan.nextLine();
-            nameValidity = false;
-            currentLevel = 1;
-            currentCash = 0;
+            if (!continuePlaying) {
+                System.out.println("you quit");
+            } else {
+                System.out.println("Do you want to play again? (Y/N)");
+                String playAgain = scan.next().toUpperCase();
+                continuePlaying = playAgain.equals("Y");
+                scan.nextLine();
+                nameValidity = false;
+                currentLevel = 1;
+                currentCash = 0;
+            }
+
         } while (continuePlaying);
 
-        System.out.println("Goodbye!");
+        System.out.println("You decided to resign, you won a total of $" + currentCash + " dollars!");
     }
 
     public int getPrize() {
