@@ -77,7 +77,7 @@ public class Game {
                     newUser.update(currentCash);
                 } else {
                     System.out.println("Sorry but you are wrong and it is game over!\n"
-                            + "You lose your cash prize of [" + currentCash + "]");
+                            + "You lose your cash prize of [$" + currentCash + "]");
                     currentCash = 0;
                     newUser.update(currentCash);
                     break;
@@ -88,6 +88,7 @@ public class Game {
 
             if (!continuePlaying) {
                 System.out.println("you quit");
+                break;
             } else {
                 System.out.println("Do you want to play again? (Y/N)");
                 String playAgain = scan.next().toUpperCase();
