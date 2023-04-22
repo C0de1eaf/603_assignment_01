@@ -74,16 +74,17 @@ public class Game {
 
                 if (userAnswer == levelAnswer + 1) {
                     System.out.println("Correct!");
+                    currentCash = getPrize();
+                    newUser.update(currentCash);
                 } else {
                     System.out.println("Sorry but you are wrong and it is game over!\n"
                             + "You lose your cash prize of [" + currentCash + "]");
                     i = totalQuestions;
                     currentCash = 0;
+                    newUser.update(currentCash);
                     break;
                 }
                 continuePlaying = continuePlaying();
-                newUser.update(currentCash);
-                currentCash = getPrize();
                 currentLevel++;
             }
         }
