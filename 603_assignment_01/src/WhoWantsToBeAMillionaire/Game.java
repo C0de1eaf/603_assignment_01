@@ -11,6 +11,7 @@ public class Game {
     private int currentLevel;
     private final Random rand;
     private int prizeMoney;
+    int[] prizes = {100, 200, 300, 500, 1000, 5000, 10000, 50000, 100000, 250000};
 
     public Game() {
         // create question list
@@ -110,10 +111,9 @@ public class Game {
 
     // ask user if they want to opt out of the game
     public boolean continuePlaying() {
-        Scanner scan = new Scanner(System.in);
         System.out.print("Do you want to continue playing? (Y/N)\n> ");
         String input = scan.nextLine();
-        while (!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N")) {
+        while (!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("\n") && !input.equalsIgnoreCase("N")) {
             System.out.print("Error: Invalid input. Please enter [Y] or [N].\n> ");
             input = scan.nextLine();
         }
@@ -199,7 +199,6 @@ public class Game {
         questionList.add(hard);
 
         return questionList;
-
     }
 
     /**
