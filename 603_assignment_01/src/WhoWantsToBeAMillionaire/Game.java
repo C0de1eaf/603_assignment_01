@@ -80,11 +80,11 @@ public class Game {
                     break;
                 }
                 continuePlaying = continuePlaying();
+                newUser.update(getPrize());
                 currentLevel++;
             }
         }
         System.out.println("Goodbye!");
-        newUser.update(getPrize());
     }    
     
     public int getPrize() {
