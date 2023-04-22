@@ -11,12 +11,10 @@ import java.util.Scanner;
 public class User {
 
     private String name;
-    private int prizeMoney;
     private ArrayList<String> listOfParticipants;
 
     public User(String name) {
         this.name = name;
-        this.prizeMoney = 0;
         listOfParticipants = new ArrayList<>();
     }
 
