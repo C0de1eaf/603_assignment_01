@@ -81,9 +81,9 @@ public class Game {
                     currentCash = 0;
                     break;
                 }
-                currentCash = getPrize();
                 continuePlaying = continuePlaying();
                 newUser.update(currentCash);
+                currentCash = getPrize();
                 currentLevel++;
             }
         }
