@@ -11,7 +11,6 @@ public class Game {
     private int currentLevel;
     private final Random rand;
 
-
     public Game() {
         // create question list
         questions = questionsCreation();
@@ -89,7 +88,7 @@ public class Game {
 
     public int getPrize() {
         int prize;
-        prize = cashPrize[currentLevel-1];
+        prize = cashPrize[currentLevel - 1];
         return prize;
     }
 
