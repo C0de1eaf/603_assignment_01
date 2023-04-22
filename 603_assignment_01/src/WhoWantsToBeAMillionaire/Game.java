@@ -11,6 +11,7 @@ public class Game {
     private int currentLevel;
     private final Random rand;
 
+
     public Game() {
         // create question list
         questions = questionsCreation();
@@ -85,7 +86,7 @@ public class Game {
         newUser.update(getPrize());
     }    
     
-    public int getPrize(){
+    public int getPrize() {
         int prize;
         prize = cashPrize[currentLevel-1];
         return prize;
@@ -108,7 +109,7 @@ public class Game {
     public boolean continuePlaying() {
         System.out.print("Do you want to continue playing? (Y/N)\n> ");
         String input = scan.nextLine();
-        while (!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("\n") && !input.equalsIgnoreCase("N")) {
+        while (!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N")) {
             System.out.print("Error: Invalid input. Please enter [Y] or [N].\n> ");
             input = scan.nextLine();
         }
