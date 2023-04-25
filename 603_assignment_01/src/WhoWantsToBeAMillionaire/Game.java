@@ -67,6 +67,7 @@ public class Game {
                         } else if (userAnswer == 7) {
                             if (useFiftyFifty.isUsed()) {
                                 System.out.println("Sorry, 50:50 is already used!");
+                                current.printQuestion();
                             } else {
                                 // fiftyFifty
                                 current = useFiftyFifty.fiftyFifty(current);
