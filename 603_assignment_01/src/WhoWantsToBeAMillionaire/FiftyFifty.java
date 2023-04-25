@@ -14,7 +14,7 @@ public class FiftyFifty extends LifeLines {
     public Question fiftyFifty(Question question) {
         rand = new Random();
 
-        String[] currentQuestions = question.getAnswers(); // Get the current answer options
+        String[] currentQuestions = question.getAnswers(); // Get the current answers
         int answerIndex = question.getCorrectAnswerIndex(); // Get the index of the correct answer
 
         String[] fiftyFifty = new String[4];
