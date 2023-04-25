@@ -11,6 +11,7 @@ public class Game {
     private int currentLevel;
     private final Random rand;
     public FiftyFifty useFiftyFifty = new FiftyFifty();
+    public AskTheAudience askTheAudience = new AskTheAudience();
 
     public Game() {
         // create question list
@@ -75,6 +76,7 @@ public class Game {
                             }
                         } else if (userAnswer == 8) {
                             // ask the audience
+                            int percentage = askTheAudience.askTheAudience(current);
 
                         } else if (userAnswer == 9) {
                             // phone a friend
