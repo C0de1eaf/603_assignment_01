@@ -61,7 +61,7 @@ public class Game {
 
                     try {
                         userAnswer = Integer.parseInt(input);
-                        if (userAnswer < 1 || userAnswer > 4) {
+                        if ((userAnswer < 1 || userAnswer > 4) && (userAnswer < 7 || userAnswer > 9)) {
                             System.out.println("Invalid input. Please try again.");
                         } else {
                             validity = true;
