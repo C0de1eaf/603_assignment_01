@@ -10,8 +10,9 @@ public class AskTheAudience extends LifeLines {
 
     public Question AskTheAudience(Question question) {
         rand = new Random();
-
+        int randomNum = rand.nextInt(21) + 40; // between 40 and 60
         
+        String[] replaceValues = new String[4];
         
         return question;
     }
