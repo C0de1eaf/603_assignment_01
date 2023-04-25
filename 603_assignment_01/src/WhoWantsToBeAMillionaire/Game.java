@@ -10,7 +10,7 @@ public class Game {
     private Scanner scan = new Scanner(System.in);
     private int currentLevel;
     private final Random rand;
-    public LifeLines FiftyFifty = new FiftyFifty();
+    public FiftyFifty useFiftyFifty = new FiftyFifty();
 
     public Game() {
         // create question list
@@ -66,7 +66,7 @@ public class Game {
                             System.out.println("Invalid input. Please try again.");
                         } else if (userAnswer == 7) {
                             // fiftyFifty
-                            current = FiftyFifty(current);
+                            current = useFiftyFifty.fiftyfifty(current);
                             current.printQuestion();
                         } else if (userAnswer == 8) {
                             // ask the audience
