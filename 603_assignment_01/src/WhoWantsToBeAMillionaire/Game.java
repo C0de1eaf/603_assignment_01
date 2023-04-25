@@ -66,7 +66,7 @@ public class Game {
                             System.out.println("Invalid input. Please try again.");
                         } else if (userAnswer == 7) {
                             // fiftyFifty
-                            current = useFiftyFifty.fiftyfifty(current);
+                            current = useFiftyFifty.fiftyFifty(current);
                             current.printQuestion();
                         } else if (userAnswer == 8) {
                             // ask the audience

@@ -11,24 +11,34 @@ public class FiftyFifty extends LifeLines {
     private Random rand;
 
     //Uses FiftyFifty
-    public Question fiftyfifty(Question question) {
+    public Question fiftyFifty(Question question) {
         rand = new Random();
 
-        String[] currentQuestions = question.getAnswers(); //Create a new String array with the input parameter question's answer
-        int answerIndex = question.getCorrectAnswerIndex(); //Get the index of the answer int he parameter question
-        int randomIndex = 0;
+        String[] currentQuestions = question.getAnswers(); // Get the current answer options
+        int answerIndex = question.getCorrectAnswerIndex(); // Get the index of the correct answer
 
-        String[] fiftyfifty = new String[2];
-        fiftyfifty[0] = currentQuestions[answerIndex];
+        String[] fiftyFifty = new String[4];
+        fiftyFifty[answerIndex] = currentQuestions[answerIndex]; // Keep the correct answer
 
-        do {
-            randomIndex = rand.nextInt(4);//Randomise a random index that is not the answer index
-        } while (randomIndex == answerIndex);
-        fiftyfifty[1] = currentQuestions[randomIndex];
+        int count = 0;
+        while (count < 2) {
+            int randomIndex = rand.nextInt(4);
+            if (randomIndex != answerIndex && fiftyFifty[randomIndex] == null) {
+                fiftyFifty[randomIndex] = " "; // Replace an incorrect answer with a blank
+                count++;
+            }
+        }
 
-        Question newQuestion = new Question(question.getQuestion(), fiftyfifty, 0); //Create a new question object to return, this will represen the question after fiftyfifty was used.
-        super.lifeLineUsed();
+        for (int i = 0; i < currentQuestions.length; i++) {
+            if (fiftyFifty[i] == null) {
+                fiftyFifty[i] = currentQuestions[i]; // Keep the remaining answer options
+            }
+        }
+
+        Question newQuestion = new Question(question.getQuestion(), fiftyFifty, answerIndex); // Create a new Question object with the modified answer options
+        super.lifeLineUsed(); // Mark the lifeline as used
 
         return newQuestion;
     }
+
 }
