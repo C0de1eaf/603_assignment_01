@@ -65,9 +65,17 @@ public class Game {
                         if ((userAnswer < 1 || userAnswer > 4) && (userAnswer < 7 || userAnswer > 9)) {
                             System.out.println("Invalid input. Please try again.");
                         } else if (userAnswer == 7) {
+
                             // fiftyFifty
                             current = useFiftyFifty.fiftyFifty(current);
                             current.printQuestion();
+                            if (useFiftyFifty.isUsed()) {
+                                System.out.println("Sorry, 50:50 is already used!");
+                            } else {
+                                // fiftyFifty
+                                current = useFiftyFifty.fiftyFifty(current);
+                                current.printQuestion();
+                            }
                         } else if (userAnswer == 8) {
                             // ask the audience
 
