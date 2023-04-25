@@ -1,6 +1,6 @@
 package WhoWantsToBeAMillionaire;
 
-public class Questions {
+public class Question {
 
     /*
     Structure of the questions class:
@@ -13,7 +13,7 @@ public class Questions {
     private String[] answers;
     private int correctAnswerIndex;
 
-    public Questions(String question, String[] answers, int correctAnswerIndex) {
+    public Question(String question, String[] answers, int correctAnswerIndex) {
         this.question = question;
         this.answers = answers;
         this.correctAnswerIndex = correctAnswerIndex;
