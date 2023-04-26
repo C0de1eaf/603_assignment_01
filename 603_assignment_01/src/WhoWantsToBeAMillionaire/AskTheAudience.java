@@ -44,7 +44,7 @@ public class AskTheAudience extends LifeLines {
 
         printPercentages(arr);
 
-        super.isUsed();
+        super.lifeLineUsed();
     }
 
     public void printPercentages(int[] array) {

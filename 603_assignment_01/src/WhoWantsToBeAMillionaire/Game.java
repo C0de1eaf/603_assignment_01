@@ -79,7 +79,12 @@ public class Game {
                             }
                         } else if (userAnswer == 8) {
                             // ask the audience
-                            askTheAudience.askTheAudience(current);
+                            if(askTheAudience.isUsed()) {
+                                System.out.println("You have already asked the audience");
+                                current.printQuestion();
+                            } else {
+                                askTheAudience.askTheAudience(current);
+                            }
 
                         } else if (userAnswer == 9) {
                             // phone a friend
