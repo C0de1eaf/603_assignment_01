@@ -1,9 +1,5 @@
 package WhoWantsToBeAMillionaire;
 
-/**
- *
- * @author yutas
- */
 public abstract class LifeLines {
 
     private boolean used = false;

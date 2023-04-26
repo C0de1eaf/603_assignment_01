@@ -2,10 +2,6 @@ package WhoWantsToBeAMillionaire;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author yutas
- */
 public class QuestionList {
 
     private final ArrayList<Question> easy;
