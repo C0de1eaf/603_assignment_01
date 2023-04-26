@@ -19,7 +19,7 @@ public class PhoneAFriend extends LifeLines {
     public void phoneAFriend(Question question) {
         int answerIndex = question.getCorrectAnswerIndex(); //Get the correct answer
         String friendToCall = friends.get(rand.nextInt(friends.size())); //Get a random friend from the list of friends
-        
+
         System.out.println("Hmm, who should I call.");
         System.out.println("I'll call " + friendToCall);
         System.out.println("Ringing....");
@@ -34,20 +34,20 @@ public class PhoneAFriend extends LifeLines {
                 weights[i] = 1;
             }
         }
-        
+
         int totalWeight = Arrays.stream(weights).sum(); //Sum all the weights of the friends weights using stream and .sum()
         int randomWeight = rand.nextInt(totalWeight);  //Select a random number 
 
         //Iterate and choose a random number
-        int cumulativeWeight = 0; 
+        int cumulativeWeight = 0;
         for (int i = 0; i < 4; i++) {
             cumulativeWeight += weights[i]; //Run the loop until the cumulative weight > the random number
             if (randomWeight < cumulativeWeight) {
-                System.out.println(friendToCall + ": I think it's option " + (i + 1)+"\n"); //Friends answer
+                System.out.println(friendToCall + ": I think it's option " + (i + 1) + "\n"); //Friends answer
                 break;
             }
         }
-        
+
         super.lifeLineUsed();
     }
 }
