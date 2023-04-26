@@ -10,8 +10,8 @@ import java.util.Scanner;
 
 public class User {
 
-    private String name;
-    private ArrayList<String> listOfParticipants;
+    private final String name;
+    private final ArrayList<String> listOfParticipants;
 
     public User(String name) {
         this.name = name;
