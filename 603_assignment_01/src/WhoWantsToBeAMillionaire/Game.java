@@ -79,7 +79,7 @@ public class Game {
                             }
                         } else if (userAnswer == 8) {
                             // ask the audience
-                            if(askTheAudience.isUsed()) {
+                            if (askTheAudience.isUsed()) {
                                 System.out.println("You have already asked the audience");
                                 current.printQuestion();
                             } else {
