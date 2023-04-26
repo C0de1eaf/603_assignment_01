@@ -42,10 +42,6 @@ public class Question {
     public void setCorrectAnswerIndex(int correctAnswerIndex) {
         this.correctAnswerIndex = correctAnswerIndex;
     }
-    
-      public boolean answerValidation(int userAnswer){
-        return userAnswer == this.getCorrectAnswerIndex();
-    }
 
     public void printQuestion() {
         System.out.println(question);

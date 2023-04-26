@@ -12,11 +12,13 @@ public class Game {
     private final Random rand;
     public FiftyFifty useFiftyFifty;
     public AskTheAudience askTheAudience;
+    public PhoneAFriend phoneAFriend;
     public QuestionList questionList;
 
     public Game() {
         this.useFiftyFifty = new FiftyFifty();
         this.askTheAudience = new AskTheAudience();
+        this.phoneAFriend = new PhoneAFriend();
         this.rand = new Random();
         this.scan = new Scanner(System.in);
         this.questionList = new QuestionList();
@@ -88,6 +90,13 @@ public class Game {
 
                         } else if (userAnswer == 9) {
                             // phone a friend
+                            if (this.phoneAFriend.isUsed()) {
+                                System.out.println("You have already phoned a friend.");
+                                current.printQuestion();
+                            } else {
+                                phoneAFriend.phoneAFriend(current);
+                                current.printQuestion();
+                            }
 
                         } else {
                             validity = true;
