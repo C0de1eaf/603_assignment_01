@@ -76,7 +76,7 @@ public class Game {
                             }
                         } else if (userAnswer == 8) {
                             // ask the audience
-                            int percentage = askTheAudience.askTheAudience(current);
+                            askTheAudience.askTheAudience(current);
 
                         } else if (userAnswer == 9) {
                             // phone a friend
