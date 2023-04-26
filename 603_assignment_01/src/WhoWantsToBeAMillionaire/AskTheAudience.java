@@ -5,9 +5,9 @@ import java.util.Random;
 
 public class AskTheAudience extends LifeLines {
 
-    private Random rand;
-
     public void askTheAudience(Question question) {
+        Random rand = new Random();
+
         // Create an array with 4 elements
         int[] arr = new int[4];
 
@@ -15,9 +15,9 @@ public class AskTheAudience extends LifeLines {
         int highestValueIndex = question.getCorrectAnswerIndex();
 
         // Generate 3 random integers between 1 and 25
-        int rand1 = (int) (Math.random() * 25) + 1;
-        int rand2 = (int) (Math.random() * 25) + 1;
-        int rand3 = (int) (Math.random() * 25) + 1;
+        int rand1 = rand.nextInt(26) + 10;
+        int rand2 = rand.nextInt(26) + 10;
+        int rand3 = rand.nextInt(21) + 15;
 
         // Calculate the value of the fourth element to ensure the sum is 100
         int sum = rand1 + rand2 + rand3;
@@ -42,6 +42,28 @@ public class AskTheAudience extends LifeLines {
             arr[maxIndex] = temp;
         }
 
+        printPercentages(arr);
+
         super.isUsed();
+    }
+
+    public void printPercentages(int[] array) {
+        // Calculate the total sum of the array elements
+        int sum = 0;
+        for (int i = 0; i < array.length; i++) {
+            sum += array[i];
+        }
+
+        // Calculate the percentage of each element and print a percentage bar
+        System.out.println("Audience poll:");
+        for (int i = 0; i < array.length; i++) {
+            int percent = (int) Math.round((double) array[i] / sum * 100);
+            System.out.print((i + 1) + ") ");
+            for (int j = 0; j < percent; j++) {
+                System.out.print("=");
+            }
+
+            System.out.println(" " + percent + "%");
+        }
     }
 }
