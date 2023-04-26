@@ -2,10 +2,6 @@ package WhoWantsToBeAMillionaire;
 
 import java.util.Random;
 
-/**
- *
- * @author yutas
- */
 public class FiftyFifty extends LifeLines {
 
     private Random rand;

@@ -3,3 +3,5 @@ Yuta Yamagai 0
 
 yv 100
 Yuta Yanmagai 100
+Yuta Yamagai 500
+yv 0
