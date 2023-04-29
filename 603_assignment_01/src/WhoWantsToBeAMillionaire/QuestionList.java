@@ -12,7 +12,7 @@ public class QuestionList {
         this.easy = new ArrayList();
     }
 
-    public ArrayList questionsCreation() {
+    public ArrayList createQuestionList() {
 
         // Create easy questions
         Question easyQ1 = new Question("What is the largest organ in the human body?", new String[]{" Brain", " Skin", " Liver", " Heart"}, 1);

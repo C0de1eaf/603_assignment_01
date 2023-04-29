@@ -22,7 +22,7 @@ public class Game {
         this.rand = new Random();
         this.scan = new Scanner(System.in);
         this.questionList = new QuestionList();
-        this.questions = this.questionList.questionsCreation();
+        this.questions = this.questionList.createQuestionList();
     }
 
     public void runGame() throws IOException {
@@ -152,8 +152,6 @@ public class Game {
 
         questionList.remove(questionIndex); // remove the chosen question from the ArrayList
 
-        // Testing purposes [size of selected list + selected question within the list
-//        System.out.println("Size of updated array " + questionList.size() + "\nchosen question inside the array " + (questionIndex + 1));
         return selectedQuestion;
     }
 
