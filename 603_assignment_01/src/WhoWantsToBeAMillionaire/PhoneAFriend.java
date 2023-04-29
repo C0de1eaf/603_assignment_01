@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class PhoneAFriend extends LifeLines {
 
-    private ArrayList<String> friends;
+    private final ArrayList<String> friends;
     private final FriendList friendList;
     private final Random rand;
 
