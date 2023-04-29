@@ -22,7 +22,7 @@ public class User {
         boolean userExists = false;
 
         try {
-            FileReader fr = new FileReader("./resources/userlist.txt");
+            FileReader fr = new FileReader("./resources/participants.txt");
             Scanner fileScanner = new Scanner(fr);
 
             while (fileScanner.hasNextLine()) {
@@ -45,7 +45,7 @@ public class User {
     }
 
     public void update(int prizeMoney) throws IOException {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("./resources/userlist.txt"))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("./resources/participants.txt"))) {
             if (userExists()) {
                 for (String e : this.listOfParticipants) {
                     if (e.toLowerCase().contains(this.name.toLowerCase())) {
