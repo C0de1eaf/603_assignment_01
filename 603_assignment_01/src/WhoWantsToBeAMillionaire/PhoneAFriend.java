@@ -48,6 +48,6 @@ public class PhoneAFriend extends LifeLines {
             }
         }
 
-        super.lifeLineUsed();
+        super.lifeLineUsed(); //Reduce the number of available lifelines
     }
 }

@@ -5,7 +5,8 @@ import java.util.*;
 
 public class Game {
 
-    public List<ArrayList<Question>> questions;
+    // create variables that are used throughout this class
+    private final List<ArrayList<Question>> questions;
     int[] cashPrize = {100, 200, 300, 500, 1000, 5000, 10000, 50000, 100000, 250000};
     private final Scanner scan;
     private int currentLevel;
@@ -16,6 +17,7 @@ public class Game {
     public QuestionList questionList;
     public Leaderboard leaderboard;
 
+    // sets the initial values of variables
     public Game() {
         this.fiftyFifty = new FiftyFifty();
         this.askTheAudience = new AskTheAudience();
@@ -27,7 +29,13 @@ public class Game {
         this.leaderboard = new Leaderboard();
     }
 
+    /* 
+    This is the method which is ran in the Main method in WWTBAM class
+    It is responsible for delivering the game experience and connecting all the methods together
+    More comments inside...
+     */
     public void runGame() throws IOException {
+        // create initial variables and give them default variables.
         int totalQuestions = 10;
         currentLevel = 1;
         String name = "";
@@ -35,6 +43,10 @@ public class Game {
         boolean continuePlaying = true;
         int currentCash = 0;
 
+        /* 
+        Loops the entire program until it is stopped
+        It is stopped by setting
+        */
         do {
             System.out.println("\nWelcome to the Who Wants To Be A Millionaire game.");
             System.out.println("You will be asked a total of 10 questions with varying difficulty");
