@@ -10,13 +10,13 @@ public class Game {
     private final Scanner scan;
     private int currentLevel;
     private final Random rand;
-    public FiftyFifty useFiftyFifty;
+    public FiftyFifty fiftyFifty;
     public AskTheAudience askTheAudience;
     public PhoneAFriend phoneAFriend;
     public QuestionList questionList;
 
     public Game() {
-        this.useFiftyFifty = new FiftyFifty();
+        this.fiftyFifty = new FiftyFifty();
         this.askTheAudience = new AskTheAudience();
         this.phoneAFriend = new PhoneAFriend();
         this.rand = new Random();
@@ -49,10 +49,16 @@ public class Game {
             User newUser = new User(name);
             if (newUser.userExists()) {
                 System.out.println("You have previously participated!");
-                System.out.println("We will update your prize money after this game.");
+                System.out.println("We will update your prize money after this game.\n");
             } else {
-                System.out.println("Welcome " + name + "!");
+                System.out.println("Welcome " + name + "!\n");
             }
+
+            System.out.println("Anytime during this game, you will be able to use each of the 3 LifeLines once.");
+            System.out.println("To use each LifeLine, type: ");
+            System.out.println("7 - To use 50:50");
+            System.out.println("8 - To use Ask An Audience");
+            System.out.println("9 - To use Phone A Friend");
 
             for (int i = 0; i < totalQuestions && continuePlaying; i++) {
                 Question current = getRandomQuestion();
@@ -71,12 +77,12 @@ public class Game {
                         if ((userAnswer < 1 || userAnswer > 4) && (userAnswer < 7 || userAnswer > 9)) {
                             System.out.println("Invalid input. Please try again.");
                         } else if (userAnswer == 7) {
-                            if (useFiftyFifty.isUsed()) {
+                            if (fiftyFifty.isUsed()) {
                                 System.out.println("Sorry, 50:50 is already used!");
                                 current.printQuestion();
                             } else {
                                 // fiftyFifty
-                                current = useFiftyFifty.fiftyFifty(current);
+                                current = fiftyFifty.fiftyFifty(current);
                                 current.printQuestion();
                             }
                         } else if (userAnswer == 8) {
@@ -116,12 +122,20 @@ public class Game {
                     newUser.update(currentCash);
                     break;
                 }
+
+                if (currentLevel == 10) {
+                    System.out.println("Congradulations! You have won the Who Wants To Be A Millionaire Game.");
+                    System.out.println("You have won " + currentCash + "!");
+                    System.out.println("Thank you for participating!");
+                    break;
+                }
+
                 continuePlaying = continuePlaying();
                 currentLevel++;
             }
 
             if (!continuePlaying) {
-                System.out.println("you quit");
+                System.out.println("You decided to resign, you won a total of $" + currentCash + " dollars!");
                 break; // delete if needed
             } else {
                 System.out.println("Do you want to play again? (Y/N)");
@@ -131,11 +145,13 @@ public class Game {
                 nameValidity = false;
                 currentLevel = 1;
                 currentCash = 0;
+
+                //Reset lifelines for next game
+                fiftyFifty.resetLifeLine();
+                askTheAudience.resetLifeLine();
+                phoneAFriend.resetLifeLine();
             }
-
         } while (continuePlaying);
-
-        System.out.println("You decided to resign, you won a total of $" + currentCash + " dollars!");
     }
 
     public int getPrize() {
