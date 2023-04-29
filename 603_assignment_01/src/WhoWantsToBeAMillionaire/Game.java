@@ -5,7 +5,7 @@ import java.util.*;
 
 public class Game {
 
-    public ArrayList<ArrayList> questions;
+    public List<ArrayList<Question>> questions;
     int[] cashPrize = {100, 200, 300, 500, 1000, 5000, 10000, 50000, 100000, 250000};
     private final Scanner scan;
     private int currentLevel;
