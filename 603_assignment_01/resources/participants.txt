@@ -1,6 +1,4 @@
-yara volodin 100
-Yuta Yamagai 500
+Yuta Yamagai 100
 Yara Volodin 100
-Jerome A 200
-Lucifer J 200
-
+Jacob Curter 1000
+Sam Holmes 100
