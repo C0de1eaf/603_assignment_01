@@ -31,8 +31,6 @@ public class Game {
         int totalQuestions = 10;
         currentLevel = 1;
         String name = "";
-        String firstName = "";
-        String lastName = "";
         boolean nameValidity = false;
         boolean continuePlaying = true;
         int currentCash = 0;
