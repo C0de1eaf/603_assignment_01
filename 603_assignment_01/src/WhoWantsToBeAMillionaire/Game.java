@@ -37,7 +37,10 @@ public class Game {
 
         do {
             System.out.println("\nWelcome to the Who Wants To Be A Millionaire game.");
-            System.out.println("Please enter your full name");
+            System.out.println("You will be asked a total of 10 questions with varying difficulty");
+            System.out.println("as the questions go on. Please answer them by typing 1 - 4 in the");
+            System.out.println("console, for the game to process your answer.\n");
+            System.out.println("Please enter your full name:");
 
             while (!nameValidity) {
                 name = scan.nextLine();
