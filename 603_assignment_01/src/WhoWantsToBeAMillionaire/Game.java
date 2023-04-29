@@ -14,6 +14,7 @@ public class Game {
     public AskTheAudience askTheAudience;
     public PhoneAFriend phoneAFriend;
     public QuestionList questionList;
+    public Leaderboard leaderboard;
 
     public Game() {
         this.fiftyFifty = new FiftyFifty();
@@ -23,26 +24,29 @@ public class Game {
         this.scan = new Scanner(System.in);
         this.questionList = new QuestionList();
         this.questions = this.questionList.createQuestionList();
+        this.leaderboard = new Leaderboard();
     }
 
     public void runGame() throws IOException {
         int totalQuestions = 10;
         currentLevel = 1;
         String name = "";
+        String firstName = "";
+        String lastName = "";
         boolean nameValidity = false;
         boolean continuePlaying = true;
         int currentCash = 0;
 
         do {
             System.out.println("\nWelcome to the Who Wants To Be A Millionaire game.");
-            System.out.println("Please enter your name:");
+            System.out.println("Please enter your full name");
 
             while (!nameValidity) {
                 name = scan.nextLine();
-                if (name.matches("[a-zA-Z ]+")) {
+                if (name.matches("[a-zA-Z ]+ [a-zA-Z ]+")) {
                     nameValidity = true;
                 } else {
-                    System.out.println("Please only enter a name!");
+                    System.out.println("Please only enter a valid name!");
                 }
             }
 
@@ -115,11 +119,13 @@ public class Game {
                     System.out.println("Correct!");
                     currentCash = getPrize();
                     newUser.update(currentCash);
+                    leaderboard.updateLeaderboard(newUser, currentCash);
                 } else {
                     System.out.println("Sorry but you are wrong and it is game over!\n"
                             + "You lose your cash prize of [$" + currentCash + "]");
                     currentCash = 0;
                     newUser.update(currentCash);
+                    leaderboard.updateLeaderboard(newUser, currentCash);
                     break;
                 }
 
@@ -127,6 +133,7 @@ public class Game {
                     System.out.println("Congradulations! You have won the Who Wants To Be A Millionaire Game.");
                     System.out.println("You have won " + currentCash + "!");
                     System.out.println("Thank you for participating!");
+                    leaderboard.updateLeaderboard(newUser, currentCash);
                     break;
                 }
 
