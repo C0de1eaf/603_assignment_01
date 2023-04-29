@@ -13,4 +13,8 @@ public abstract class LifeLines {
     public void lifeLineUsed() {
         this.used = true;
     }
+    
+    public void resetLifeLine(){
+        this.used = false;
+    }
 }
