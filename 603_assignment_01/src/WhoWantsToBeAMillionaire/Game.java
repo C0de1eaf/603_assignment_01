@@ -155,6 +155,7 @@ public class Game {
                         }
                     } catch (NumberFormatException e) {
                         System.out.println("Invalid input. Please try again.");
+                        scan.nextLine();
                     }
                 }
 
