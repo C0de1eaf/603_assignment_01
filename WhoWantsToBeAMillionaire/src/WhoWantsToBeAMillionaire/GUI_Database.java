@@ -11,7 +11,9 @@ package WhoWantsToBeAMillionaire;
  */
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class GUI_Database {
 
@@ -20,10 +22,12 @@ public class GUI_Database {
     private static final String URL = "jdbc:derby:WWTBAM_EmbDB;create=true";
     private Connection conn;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         //Test
         GUI_Database db = new GUI_Database();
         db.createConnection();
+        //db.createTables();
+        //db.checkTables();
     }
 
     public GUI_Database() {
@@ -39,5 +43,42 @@ public class GUI_Database {
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    public void createTables() throws SQLException {
+        Statement statement = null;
+        try {
+            statement = conn.createStatement();
+            String sql = "CREATE TABLE Participants (id INT PRIMARY KEY, NAME VARCHAR(50), PRIZEMONEY INT)";
+            statement.executeUpdate(sql);
+            System.out.println("Table created.");
+            
+        } catch (SQLException e) {
+            System.out.println("Error creating table: " + e.getMessage());
+        }
+        statement.close();
+    }
+
+    public void checkTables() throws SQLException {
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = conn.createStatement();
+            String sql = "SELECT * FROM Participants";
+            resultSet = statement.executeQuery(sql);
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("NAME");
+                int prizeMoney = resultSet.getInt("PRIZEMONEY");
+
+                System.out.println("ID: " + id + ", Name: " + name + ", Prize Money: " + prizeMoney);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving data: " + e.getMessage());
+        }
+        statement.close();
+        resultSet.close();
     }
 }
