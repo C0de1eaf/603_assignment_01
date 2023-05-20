@@ -10,10 +10,13 @@ package WhoWantsToBeAMillionaire;
  * @author yutas
  */
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class GUI_Database {
 
@@ -26,14 +29,15 @@ public class GUI_Database {
         //Test
         GUI_Database db = new GUI_Database();
         db.createConnection();
-        //db.createTables();
-        //db.checkTables();
+        db.getTables();
+        db.checkTables();
     }
 
     public GUI_Database() {
         this.createConnection();
     }
 
+    //Create a connection
     public void createConnection() {
         if (this.conn == null) {
             try {
@@ -45,40 +49,55 @@ public class GUI_Database {
         }
     }
 
-    public void createTables() throws SQLException {
-        Statement statement = null;
-        try {
-            statement = conn.createStatement();
-            String sql = "CREATE TABLE Participants (id INT PRIMARY KEY, NAME VARCHAR(50), PRIZEMONEY INT)";
-            statement.executeUpdate(sql);
-            System.out.println("Table created.");
-            
-        } catch (SQLException e) {
-            System.out.println("Error creating table: " + e.getMessage());
+    //Get all tables from the database
+    public void getTables() throws SQLException {
+        DatabaseMetaData metaData = conn.getMetaData();
+        String[] tableTypes = {"TABLE"};
+        ResultSet rs = metaData.getTables(null, null, "%", tableTypes);
+
+        while (rs.next()) {
+            String tableName = rs.getString("TABLE_NAME");
+            System.out.println("Table: " + tableName);
         }
-        statement.close();
+        rs.close();
     }
 
+//Check the tables
     public void checkTables() throws SQLException {
-        Statement statement = null;
-        ResultSet resultSet = null;
-
         try {
-            statement = conn.createStatement();
-            String sql = "SELECT * FROM Participants";
-            resultSet = statement.executeQuery(sql);
+            this.conn = DriverManager.getConnection(URL);
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM Questions");
 
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String name = resultSet.getString("NAME");
-                int prizeMoney = resultSet.getInt("PRIZEMONEY");
+                String name = resultSet.getString("question");
+                String options = resultSet.getString("options");
+                int correctAnswer = resultSet.getInt("correctAnswer");
 
-                System.out.println("ID: " + id + ", Name: " + name + ", Prize Money: " + prizeMoney);
+                System.out.println("Question: " + name + ", Options: " + options + ", Correct Answer Index: " + correctAnswer);
             }
         } catch (SQLException e) {
             System.out.println("Error retrieving data: " + e.getMessage());
         }
-        statement.close();
-        resultSet.close();
+    }
+    
+    //Inserting all Questions into the Database
+    public void insert() {
+        QuestionList questionLists = new QuestionList();
+        try (PreparedStatement statement = conn.prepareStatement(
+                "INSERT INTO Questions (question, options, correctAnswer) VALUES (?, ?, ?)")) {
+
+            for (ArrayList<Question> questionList : questionLists.createQuestionList()) {
+                for (Question question : questionList) {
+                    statement.setString(1, question.getQuestion());
+                    statement.setString(2, String.join(",", question.getAnswers()));
+                    statement.setInt(3, question.getCorrectAnswerIndex());
+                    statement.executeUpdate();
+                }
+            }
+            System.out.println("Done!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
