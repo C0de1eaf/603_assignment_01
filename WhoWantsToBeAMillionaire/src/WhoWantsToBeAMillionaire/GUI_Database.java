@@ -21,6 +21,7 @@ public class GUI_Database {
     private Connection conn;
 
     public static void main(String[] args) {
+        //Test
         GUI_Database db = new GUI_Database();
         db.createConnection();
     }
