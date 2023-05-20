@@ -1,7 +1,7 @@
-Sat May 20 09:11:20 NZST 2023 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
+Sat May 20 17:27:22 NZST 2023 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Sat May 20 09:11:20 NZST 2023:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0188-35da-5154-000063779c8f 
+Sat May 20 17:27:25 NZST 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0188-37a0-75dc-000063779c8f 
 on database directory C:\Users\yutas\Downloads\Year 2 Sem 1\COMP603\603_assignment_01\WhoWantsToBeAMillionaire\WhoWantsToBeAMillionaire_DB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
 Loaded from file:/C:/Users/yutas/Downloads/Year%202%20Sem%201/COMP603/db-derby-10.14.2.0-bin/db-derby-10.14.2.0-bin/lib/derby.jar
 java.vendor=Oracle Corporation
@@ -13,25 +13,8 @@ os.version=10.0
 derby.system.home=C:\Users\yutas\Downloads\Year 2 Sem 1\COMP603\603_assignment_01\WhoWantsToBeAMillionaire
 Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
-Sat May 20 09:11:21 NZST 2023:
-Shutting down instance a816c00e-0188-35da-5154-000063779c8f on database directory C:\Users\yutas\Downloads\Year 2 Sem 1\COMP603\603_assignment_01\WhoWantsToBeAMillionaire\WhoWantsToBeAMillionaire_DB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
-Sat May 20 09:11:21 NZST 2023 Thread[DRDAConnThread_2,5,main] (DATABASE = WhoWantsToBeAMillionaire_DB), (DRDAID = {2}), Database 'WhoWantsToBeAMillionaire_DB' shutdown.
+Sat May 20 17:31:30 NZST 2023: Shutting down Derby engine
 ----------------------------------------------------------------
-Sat May 20 09:11:30 NZST 2023:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance 6ede40af-0188-35da-5154-000063779c8f 
-on database directory C:\Users\yutas\Downloads\Year 2 Sem 1\COMP603\603_assignment_01\WhoWantsToBeAMillionaire\WhoWantsToBeAMillionaire_DB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
-Loaded from file:/C:/Users/yutas/Downloads/Year%202%20Sem%201/COMP603/db-derby-10.14.2.0-bin/db-derby-10.14.2.0-bin/lib/derby.jar
-java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_361-b09
-user.dir=C:\Users\yutas\Downloads\Year 2 Sem 1\COMP603\db-derby-10.14.2.0-bin\db-derby-10.14.2.0-bin
-os.name=Windows 11
-os.arch=amd64
-os.version=10.0
-derby.system.home=C:\Users\yutas\Downloads\Year 2 Sem 1\COMP603\603_assignment_01\WhoWantsToBeAMillionaire
-Database Class Loader started - derby.database.classpath=''
-----------------------------------------------------------------
-Sat May 20 09:11:41 NZST 2023: Shutting down Derby engine
-----------------------------------------------------------------
-Sat May 20 09:11:41 NZST 2023:
-Shutting down instance 6ede40af-0188-35da-5154-000063779c8f on database directory C:\Users\yutas\Downloads\Year 2 Sem 1\COMP603\603_assignment_01\WhoWantsToBeAMillionaire\WhoWantsToBeAMillionaire_DB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+Sat May 20 17:31:30 NZST 2023:
+Shutting down instance a816c00e-0188-37a0-75dc-000063779c8f on database directory C:\Users\yutas\Downloads\Year 2 Sem 1\COMP603\603_assignment_01\WhoWantsToBeAMillionaire\WhoWantsToBeAMillionaire_DB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
 ----------------------------------------------------------------
