@@ -68,4 +68,12 @@ public class QuestionList {
         // Returns the List of ArraysLists
         return Arrays.asList(easy, hard);
     }
+    
+    public List<ArrayList<Question>> getEasyQuestions(){
+        return Arrays.asList(easy);
+    }
+    
+    public List<ArrayList<Question>> getHardQuestions(){
+         return Arrays.asList(hard);
+    } 
 }
