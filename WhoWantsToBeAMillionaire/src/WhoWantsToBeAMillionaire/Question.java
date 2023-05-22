@@ -1,5 +1,7 @@
 package WhoWantsToBeAMillionaire;
 
+import java.util.Arrays;
+
 public class Question {
 
     /*
@@ -58,5 +60,10 @@ public class Question {
         for (String answer : answers) { // loop through the array of answers
             System.out.println((counter += 1) + ") " + answer); // print the answer with its index
         }
+    }
+    
+    @Override
+    public String toString(){
+        return this.question+" "+Arrays.toString(this.answers)+" "+this.correctAnswerIndex+"\n";
     }
 }

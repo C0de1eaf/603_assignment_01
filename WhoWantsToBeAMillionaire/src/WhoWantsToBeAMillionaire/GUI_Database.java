@@ -24,16 +24,49 @@ public class GUI_Database {
     private static final String PASSWORD = "pdc";
     private static final String URL = "jdbc:derby:WWTBAM_EmbDB;create=true";
     private Connection conn;
-
-    public static void main(String[] args) throws SQLException {
-        //Test
-        GUI_Database db = new GUI_Database();
-        db.createConnection();
-        db.getTables();
+    
+    public static void main(String[] args) {
+        //Test here
     }
 
     public GUI_Database() {
         this.createConnection();
+    }
+    
+    public ArrayList<Question> getEasyQuestions() {
+        ArrayList<Question> easyQuestions = new ArrayList<>();
+        try (Statement statement = conn.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM EasyQuestions");
+
+            while (resultSet.next()) {
+                String question = resultSet.getString("question");
+                String[] options = resultSet.getString("options").split(",");
+                int correctAnswer = resultSet.getInt("correctAnswer");
+                Question q = new Question(question, options, correctAnswer);
+                easyQuestions.add(q);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving data: " + e.getMessage());
+        }
+        return easyQuestions;
+    }
+    
+     public ArrayList<Question> getHardQuestions() {
+        ArrayList<Question> hardQuestions = new ArrayList<>();
+        try (Statement statement = conn.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM HardQuestions");
+
+            while (resultSet.next()) {
+                String question = resultSet.getString("question");
+                String[] options = resultSet.getString("options").split(",");
+                int correctAnswer = resultSet.getInt("correctAnswer");
+                Question q = new Question(question, options, correctAnswer);
+                hardQuestions.add(q);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving data: " + e.getMessage());
+        }
+        return hardQuestions;
     }
 
     //Create a connection
@@ -72,24 +105,7 @@ public class GUI_Database {
             e.printStackTrace();
         }
     }
-
-    //Check the tables contents 
-    public void checkTables() {
-        try (Statement statement = conn.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM HardQuestions");
-
-            while (resultSet.next()) {
-                String name = resultSet.getString("question");
-                String options = resultSet.getString("options");
-                int correctAnswer = resultSet.getInt("correctAnswer");
-
-                System.out.println("Question: " + name + ", Options: " + options + ", Correct Answer Index: " + correctAnswer);
-            }
-        } catch (SQLException e) {
-            System.out.println("Error retrieving data: " + e.getMessage());
-        }
-    }
-
+    
     //Create a table for questions
     public void createTable() {
         try (Statement statement = conn.createStatement()) {
