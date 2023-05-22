@@ -30,7 +30,6 @@ public class GUI_Database {
         GUI_Database db = new GUI_Database();
         db.createConnection();
         db.getTables();
-        db.checkTables();
     }
 
     public GUI_Database() {
@@ -61,13 +60,23 @@ public class GUI_Database {
         }
         rs.close();
     }
+    
+    //Drop a table
+    public void dropTable() {
+        try (Statement statement = conn.createStatement()) {
+            // Execute the SQL command to delete the "Questions" table
+            String query = "DROP TABLE HardQuestions";
+            statement.executeUpdate(query);
+            System.out.println("Deleted table");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
-//Check the tables
-    public void checkTables() throws SQLException {
-        try {
-            this.conn = DriverManager.getConnection(URL);
-            Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM Questions");
+    //Check the tables contents 
+    public void checkTables() {
+        try (Statement statement = conn.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM HardQuestions");
 
             while (resultSet.next()) {
                 String name = resultSet.getString("question");
@@ -80,14 +89,30 @@ public class GUI_Database {
             System.out.println("Error retrieving data: " + e.getMessage());
         }
     }
-    
-    //Inserting all Questions into the Database
+
+    //Create a table for questions
+    public void createTable() {
+        try (Statement statement = conn.createStatement()) {
+            // Execute the SQL command to create the "EasyQuestions" table
+            String query = "CREATE TABLE HardQuestions ("
+                    + "question VARCHAR(255),"
+                    + "options VARCHAR(255),"
+                    + "correctAnswer INT)";
+            statement.executeUpdate(query);
+
+            System.out.println("Table has been created.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Use this to insert Questions into DataBase
     public void insert() {
         QuestionList questionLists = new QuestionList();
+        questionLists.createQuestionList();
         try (PreparedStatement statement = conn.prepareStatement(
-                "INSERT INTO Questions (question, options, correctAnswer) VALUES (?, ?, ?)")) {
-
-            for (ArrayList<Question> questionList : questionLists.createQuestionList()) {
+                "INSERT INTO HardQuestions (question, options, correctAnswer) VALUES (?, ?, ?)")) {
+            for (ArrayList<Question> questionList : questionLists.getHardQuestions()) {
                 for (Question question : questionList) {
                     statement.setString(1, question.getQuestion());
                     statement.setString(2, String.join(",", question.getAnswers()));
