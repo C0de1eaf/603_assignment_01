@@ -14,8 +14,8 @@ public class Game {
     public FiftyFifty fiftyFifty;
     public AskTheAudience askTheAudience;
     public PhoneAFriend phoneAFriend;
-    public QuestionList questionList;
     public Leaderboard leaderboard;
+    private GUI_Database db;
 
     // sets the initial values of variables
     public Game() {
@@ -24,9 +24,12 @@ public class Game {
         this.phoneAFriend = new PhoneAFriend();
         this.rand = new Random();
         this.scan = new Scanner(System.in);
-        this.questionList = new QuestionList();
-        this.questions = this.questionList.createQuestionList();
         this.leaderboard = new Leaderboard();
+        this.db = new GUI_Database();
+        
+        ArrayList<Question> easy = db.getEasyQuestions();
+        ArrayList<Question> hard = db.getHardQuestions();
+        this.questions = Arrays.asList(easy, hard);
     }
 
     /* 
