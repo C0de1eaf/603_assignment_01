@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -28,10 +29,9 @@ public class GUI_Database {
         this.createConnection();
     }
     
-    public static void main(String[] args) {
-        GUI_Database gui = new GUI_Database();
-        gui.selectFromTable();
-    }
+//    public static void main(String[] args) throws SQLException {
+//        GUI_Database gui = new GUI_Database();
+//    }
     
     public ArrayList<Question> getEasyQuestions() {
         ArrayList<Question> easyQuestions = new ArrayList<>();
@@ -78,31 +78,6 @@ public class GUI_Database {
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
-        }
-    }
-    
-    public void selectFromTable(){
-        String tableName = "PARTICIPANTS"; // Replace with your table name
-        
-        try (Connection connection = DriverManager.getConnection(URL);
-             Statement statement = connection.createStatement()) {
-            
-            String selectQuery = "SELECT * FROM " + tableName;
-            ResultSet resultSet = statement.executeQuery(selectQuery);
-            
-            while (resultSet.next()) {
-                // Retrieve data from the current row
-                int id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                // ... Retrieve other columns as needed
-                
-                // Do something with the retrieved data
-                System.out.println("ID: " + id + ", Name: " + name);
-            }
-            
-            resultSet.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 

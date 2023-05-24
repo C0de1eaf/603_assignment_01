@@ -1,21 +1,18 @@
 package WhoWantsToBeAMillionaire;
 
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class User {
 
     private final String name;
-    private final ArrayList<String> listOfParticipants;
+    private GUI_Database db;
 
     public User(String name) {
         this.name = name;
-        listOfParticipants = new ArrayList<>();
+        this.db = new GUI_Database();
     }
 
     // Check if user exists in the list of participants
@@ -23,47 +20,40 @@ public class User {
         boolean userExists = false;
 
         try {
-            FileReader fr = new FileReader("./resources/participants.txt");
-            Scanner fileScanner = new Scanner(fr);
-
-            // Read through the file and add each participant to the list
-            while (fileScanner.hasNextLine()) {
-                String fileContent = fileScanner.nextLine();
-                this.listOfParticipants.add(fileContent);
+            try (Statement statement = db.conn.createStatement(); ResultSet resultSet = statement.executeQuery("SELECT * FROM participants")) {
+                while (resultSet.next()) {
+                    String participantName = resultSet.getString("name");
+                    if (participantName.equalsIgnoreCase(this.name)) {
+                        userExists = true;
+                        break;
+                    }
+                }
             }
-
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found!");
-        }
-
-        // Check if the user's name exists in the list of participants
-        for (String e : this.listOfParticipants) {
-            if (e.toLowerCase().contains(this.name.toLowerCase())) {
-                userExists = true;
-                break;
-            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return userExists;
+
     }
 
     // Update the list of participants with the user's new prize money
     public void update(int prizeMoney) throws IOException {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("./resources/participants.txt"))) {
-            if (userExists()) { // If the user exists, update their prize money in the list
-                for (String e : this.listOfParticipants) {
-                    if (e.toLowerCase().contains(this.name.toLowerCase())) {
-                        this.listOfParticipants.set(this.listOfParticipants.indexOf(e), this.name + " " + prizeMoney);
-                    }
+        try {
+            try (
+                    Statement statement = db.conn.createStatement()) {
+                boolean userExists = userExists();
+                if (userExists) {
+                    String updateQuery = "UPDATE participants SET prizemoney = " + prizeMoney + " WHERE name = '" + this.name + "'";
+                    statement.executeUpdate(updateQuery);
+                } else {
+
+                    String insertQuery = "INSERT INTO participants (name, prizemoney) VALUES ('" + this.name + "', " + prizeMoney + ")";
+                    statement.executeUpdate(insertQuery);
                 }
-            } else { // If the user doesn't exist, add them to the list
-                this.listOfParticipants.add(this.name + " " + prizeMoney);
             }
-            // Write the updated list of participants to the file
-            for (String data : this.listOfParticipants) {
-                bw.write(data);
-                bw.newLine();
-            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
