@@ -40,8 +40,7 @@ public class User {
     // Update the list of participants with the user's new prize money
     public void update(int prizeMoney) throws IOException {
         try {
-            try (
-                    Statement statement = db.conn.createStatement()) {
+            try (Statement statement = db.conn.createStatement()) {
                 boolean userExists = userExists();
                 if (userExists) {
                     String updateQuery = "UPDATE participants SET prizemoney = " + prizeMoney + " WHERE name = '" + this.name + "'";

@@ -29,10 +29,10 @@ public class GUI_Database {
         this.createConnection();
     }
 
-    public static void main(String[] args) throws SQLException {
-        GUI_Database gui = new GUI_Database();
-        gui.fetchData();
-    }
+//    public static void main(String[] args) throws SQLException {
+//        GUI_Database gui = new GUI_Database();
+//        gui.fetchData();
+//    }
 
     public ArrayList<Question> getEasyQuestions() {
         ArrayList<Question> easyQuestions = new ArrayList<>();
