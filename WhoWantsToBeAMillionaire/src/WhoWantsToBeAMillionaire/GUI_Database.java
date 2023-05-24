@@ -28,11 +28,12 @@ public class GUI_Database {
     public GUI_Database() {
         this.createConnection();
     }
-    
-//    public static void main(String[] args) throws SQLException {
-//        GUI_Database gui = new GUI_Database();
-//    }
-    
+
+    public static void main(String[] args) throws SQLException {
+        GUI_Database gui = new GUI_Database();
+        gui.fetchData();
+    }
+
     public ArrayList<Question> getEasyQuestions() {
         ArrayList<Question> easyQuestions = new ArrayList<>();
         try (Statement statement = conn.createStatement()) {
@@ -50,8 +51,8 @@ public class GUI_Database {
         }
         return easyQuestions;
     }
-    
-     public ArrayList<Question> getHardQuestions() {
+
+    public ArrayList<Question> getHardQuestions() {
         ArrayList<Question> hardQuestions = new ArrayList<>();
         try (Statement statement = conn.createStatement()) {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM HardQuestions");
@@ -93,7 +94,27 @@ public class GUI_Database {
         }
         rs.close();
     }
-    
+
+    public void fetchData() {
+        String tableName = "participants";
+        try (Statement statement = conn.createStatement();
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName)) {
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            while (resultSet.next()) {
+                for (int i = 1; i <= columnCount; i++) {
+                    String columnName = metaData.getColumnName(i);
+                    Object value = resultSet.getObject(i);
+                    System.out.println(columnName + ": " + value);
+                }
+                System.out.println("---------------------");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     //Drop a table
     public void dropTable() {
         try (Statement statement = conn.createStatement()) {
