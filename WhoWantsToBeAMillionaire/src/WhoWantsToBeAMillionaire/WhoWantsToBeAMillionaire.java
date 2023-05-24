@@ -1,11 +1,12 @@
 package WhoWantsToBeAMillionaire;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 
 public class WhoWantsToBeAMillionaire {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
         // TODO code application logic here
         Game game = new Game();
         game.runGame();

@@ -1,6 +1,7 @@
 package WhoWantsToBeAMillionaire;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
 public class Game {
