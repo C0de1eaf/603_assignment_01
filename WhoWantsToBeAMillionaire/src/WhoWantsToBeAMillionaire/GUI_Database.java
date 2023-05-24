@@ -24,10 +24,6 @@ public class GUI_Database {
     private static final String PASSWORD = "pdc";
     private static final String URL = "jdbc:derby:WWTBAM_EmbDB;create=true";
     private Connection conn;
-    
-    public static void main(String[] args) {
-        //Test here
-    }
 
     public GUI_Database() {
         this.createConnection();
