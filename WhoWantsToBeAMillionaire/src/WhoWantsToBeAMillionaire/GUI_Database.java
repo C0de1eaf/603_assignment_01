@@ -95,8 +95,28 @@ public class GUI_Database {
         rs.close();
     }
 
+    public void fetchColumns() {
+        String tableName = "leaderboard";
+        try (Statement statement = conn.createStatement();
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName)) {
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            for (int i = 1; i <= columnCount; i++) {
+                String columnName = metaData.getColumnName(i);
+                String columnType = metaData.getColumnTypeName(i);
+                System.out.println("Column name: " + columnName);
+                System.out.println("Column type: " + columnType);
+                System.out.println("---------------------");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void fetchData() {
-        String tableName = "participants";
+        String tableName = "leaderboard";
         try (Statement statement = conn.createStatement();
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName)) {
             ResultSetMetaData metaData = resultSet.getMetaData();

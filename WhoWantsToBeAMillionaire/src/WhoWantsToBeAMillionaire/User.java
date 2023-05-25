@@ -20,7 +20,8 @@ public class User {
         boolean userExists = false;
 
         try {
-            try (Statement statement = db.conn.createStatement(); ResultSet resultSet = statement.executeQuery("SELECT * FROM participants")) {
+            try (Statement statement = db.conn.createStatement();
+                    ResultSet resultSet = statement.executeQuery("SELECT * FROM participants")) {
                 while (resultSet.next()) {
                     String participantName = resultSet.getString("name");
                     if (participantName.equalsIgnoreCase(this.name)) {
@@ -32,9 +33,7 @@ public class User {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return userExists;
-
     }
 
     // Update the list of participants with the user's new prize money
@@ -46,7 +45,6 @@ public class User {
                     String updateQuery = "UPDATE participants SET prizemoney = " + prizeMoney + " WHERE name = '" + this.name + "'";
                     statement.executeUpdate(updateQuery);
                 } else {
-
                     String insertQuery = "INSERT INTO participants (name, prizemoney) VALUES ('" + this.name + "', " + prizeMoney + ")";
                     statement.executeUpdate(insertQuery);
                 }
