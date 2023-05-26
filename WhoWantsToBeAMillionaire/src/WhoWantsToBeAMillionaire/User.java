@@ -8,11 +8,11 @@ import java.sql.Statement;
 public class User {
 
     private final String name;
-    private GUI_Database db;
+    private final MillionaireDB db;
 
     public User(String name) {
         this.name = name;
-        this.db = new GUI_Database();
+        this.db = new MillionaireDB();
     }
 
     // Check if user exists in the list of participants

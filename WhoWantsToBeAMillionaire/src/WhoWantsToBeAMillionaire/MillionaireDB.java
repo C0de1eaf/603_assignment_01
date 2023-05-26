@@ -18,14 +18,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class GUI_Database {
+public class MillionaireDB {
 
     private static final String USER_NAME = "pdc";
     private static final String PASSWORD = "pdc";
     private static final String URL = "jdbc:derby:WWTBAM_EmbDB;create=true";
     protected Connection conn;
 
-    public GUI_Database() {
+    public MillionaireDB() {
         this.createConnection();
     }
 

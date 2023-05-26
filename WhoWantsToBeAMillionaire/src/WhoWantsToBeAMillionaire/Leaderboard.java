@@ -1,10 +1,5 @@
 package WhoWantsToBeAMillionaire;
 
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,16 +7,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 public class Leaderboard {
 
     private final HashMap<String, Integer> leaderboard;
-    private GUI_Database db;
+    private final MillionaireDB db;
 
     public Leaderboard() {
         this.leaderboard = new HashMap<>();
-        this.db = new GUI_Database();
+        this.db = new MillionaireDB();
     }
 
     private void readLeaderboard() {

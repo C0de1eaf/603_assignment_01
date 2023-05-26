@@ -1,32 +1,33 @@
 package WhoWantsToBeAMillionaire;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.*;
+import javax.swing.JFrame;
 
 public class Game {
 
     // create variables that are used throughout this class
     private final List<ArrayList<Question>> questions;
-    int[] cashPrize = {100, 200, 300, 500, 1000, 5000, 10000, 50000, 100000, 250000};
+    private final int[] cashPrize;
     private final Scanner scan;
     private int currentLevel;
     private final Random rand;
-    public FiftyFifty fiftyFifty;
-    public AskTheAudience askTheAudience;
-    public PhoneAFriend phoneAFriend;
-    public Leaderboard leaderboard;
-    private GUI_Database db;
+    private final FiftyFifty fiftyFifty;
+    private final AskTheAudience askTheAudience;
+    private final PhoneAFriend phoneAFriend;
+    private final Leaderboard leaderboard;
+    private final MillionaireDB db;
 
     // sets the initial values of variables
     public Game() {
+        this.cashPrize = new int[]{100, 200, 300, 500, 1000, 5000, 10000, 50000, 100000, 250000};
         this.fiftyFifty = new FiftyFifty();
         this.askTheAudience = new AskTheAudience();
         this.phoneAFriend = new PhoneAFriend();
         this.rand = new Random();
         this.scan = new Scanner(System.in);
         this.leaderboard = new Leaderboard();
-        this.db = new GUI_Database();
+        this.db = new MillionaireDB();
         
         ArrayList<Question> easy = db.getEasyQuestions();
         ArrayList<Question> hard = db.getHardQuestions();
@@ -39,6 +40,8 @@ public class Game {
     More comments inside...
      */
     public void runGame() throws IOException {
+        //this.instantiateGUI();
+        
         // create initial variables and give them default variables.
         int totalQuestions = 10;
         currentLevel = 1;
@@ -268,6 +271,16 @@ public class Game {
             input = scan.nextLine();
         }
         return input.equalsIgnoreCase("Y");
+    }
+    
+    public void instantiateGUI(){
+        JFrame frame = new JFrame("Who Wants To Be A Millionaire");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        GameGUI GUI = new GameGUI();
+
+        frame.getContentPane().add(GUI);
+        frame.setSize(1000, 1000);
+        frame.setVisible(true);
     }
 
     /**
