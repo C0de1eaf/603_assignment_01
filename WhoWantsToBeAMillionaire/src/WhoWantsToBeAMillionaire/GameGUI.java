@@ -7,12 +7,10 @@ import java.awt.event.*;
 
 public class GameGUI extends JFrame {
 
-    int widthWindow = 1000;
-    int heightWindow = 1000;
-    public String userName;
-    public String firstName;
-    public String lastName;
-    public String fullName;
+    private int widthWindow = 1000;
+    private int heightWindow = 1000;
+    private String userName;
+    private String fullName;
 
     private JTextField firstNameInput;
     private JTextField lastNameInput;
@@ -24,6 +22,12 @@ public class GameGUI extends JFrame {
         setLayout(new BorderLayout());
         setSize(widthWindow, heightWindow);
 
+        createGUI();
+
+        setVisible(true); // Show the GUI
+    }
+
+    private void createGUI() {
         // Create panel for title label
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
@@ -38,13 +42,11 @@ public class GameGUI extends JFrame {
         JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
         // Add input text field to the input panel
-        firstNameInput = new JTextField(20); // Adjust the length as desired
-        firstNameInput.setPreferredSize(new Dimension(100, 30)); // Set the preferred size
+        firstNameInput = createTextField();
         inputPanel.add(firstNameInput);
 
         // Add input text field to the input panel
-        lastNameInput = new JTextField(20); // Adjust the length as desired
-        lastNameInput.setPreferredSize(new Dimension(100, 30)); // Set the preferred size
+        lastNameInput = createTextField();
         inputPanel.add(lastNameInput);
 
         // Create button
@@ -56,36 +58,37 @@ public class GameGUI extends JFrame {
         inputPanel.add(nameSubmitButton);
 
         add(inputPanel, BorderLayout.CENTER);
+
         firstNameInput.setToolTipText("<html><b><font color=grey>"
                 + "Please enter some text here" + "</font></b></html>");
 
-        firstNameInput.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                userName = firstNameInput.getText();
-                if (!userName.isEmpty()) {
-                    System.out.println("User input: " + userName);
-                }
-                firstNameInput.setText("");  // Clear the text field
-                updateSubmitButtonState();
+        firstNameInput.addActionListener(e -> {
+            userName = firstNameInput.getText();
+            if (!userName.isEmpty()) {
+                System.out.println("User input: " + userName);
             }
+            firstNameInput.setText("");  // Clear the text field
+            updateSubmitButtonState();
         });
 
-        nameSubmitButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (fullName != null) {
-                    System.out.println("User input: " + fullName);
-                }
-                firstNameInput.setText("");  // Clear the text field
-                lastNameInput.setText("");  // Clear the text field
-                updateSubmitButtonState();
+        nameSubmitButton.addActionListener(e -> {
+            if (fullName != null) {
+                System.out.println("User input: " + fullName);
             }
+            firstNameInput.setText("");  // Clear the text field
+            lastNameInput.setText("");  // Clear the text field
+            updateSubmitButtonState();
         });
 
         // Set document filters for the text fields
         ((AbstractDocument) firstNameInput.getDocument()).setDocumentFilter(createDocumentFilter());
         ((AbstractDocument) lastNameInput.getDocument()).setDocumentFilter(createDocumentFilter());
+    }
 
-        setVisible(true); // Show the GUI
+    private JTextField createTextField() {
+        JTextField textField = new JTextField(20); // Adjust the length as desired
+        textField.setPreferredSize(new Dimension(100, 30)); // Set the preferred size
+        return textField;
     }
 
     private DocumentFilter createDocumentFilter() {
@@ -116,11 +119,5 @@ public class GameGUI extends JFrame {
             nameSubmitButton.setEnabled(false);
             fullName = null;
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            GameGUI GameGUI = new GameGUI();
-        });
     }
 }
