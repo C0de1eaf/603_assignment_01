@@ -1,22 +1,25 @@
 package WhoWantsToBeAMillionaire;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
-public class GameGUI extends JPanel {
+public class GameGUI extends JFrame {
 
-    int width = 1000;
-    int height = 1000;
+    int widthWindow = 1000;
+    int heightWindow = 1000;
+    public String userName;
 
-    private JTextField textField;
-    private JButton button;
+    private JTextField nameInput;
+    private JButton nameSubmitButton;
 
     public GameGUI() {
+        setTitle("Who Wants To Be A Millionaire");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
+        setSize(widthWindow, heightWindow);
 
         // Create panel for title label
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -32,39 +35,55 @@ public class GameGUI extends JPanel {
         JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
         // Add input text field to the input panel
-        textField = new JTextField(10);
-        inputPanel.add(textField);
+        nameInput = new JTextField(20); // Adjust the length as desired
+        nameInput.setPreferredSize(new Dimension(200, 30)); // Set the preferred size
+        inputPanel.add(nameInput);
 
         // Create button
-        button = new JButton("Submit");
-        button.setEnabled(false); // Disable the button initially
+        nameSubmitButton = new JButton("Submit");
+        nameSubmitButton.setPreferredSize(new Dimension(100, 30)); // Set the preferred size
+        nameSubmitButton.setEnabled(false);
 
         // Add button to the input panel
-        inputPanel.add(button);
+        inputPanel.add(nameSubmitButton);
 
         add(inputPanel, BorderLayout.CENTER);
-        textField.setToolTipText("<html><b><font color=red>"
+        nameInput.setToolTipText("<html><b><font color=grey>"
                 + "Please enter some text here" + "</font></b></html>");
 
-        textField.addActionListener(new ActionListener() {
-            @Override
+        nameInput.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String userInput = textField.getText();
-                System.out.println("User input: " + userInput);
-                textField.setText("");  // Clear the text field
+                userName = nameInput.getText();
+                if (!userName.isEmpty()) {
+                    System.out.println("User input: " + userName);
+                }
+                nameInput.setText("");  // Clear the text field
+            }
+        });
+
+        nameSubmitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                userName = nameInput.getText();
+                if (!userName.isEmpty()) {
+                    System.out.println("User input: " + userName);
+                }
+                nameInput.setText("");  // Clear the text field
             }
         });
 
         // Add key event listener
-        textField.addKeyListener(new KeyAdapter() {
-            public void keyReleased(KeyEvent event) {
-                String content = textField.getText();
-                if (!content.equals("")) {
-                    button.setEnabled(true);
+        nameInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent event) {
+                String content = nameInput.getText();
+                if (!content.isEmpty()) {
+                    nameSubmitButton.setEnabled(true);
                 } else {
-                    button.setEnabled(false);
+                    nameSubmitButton.setEnabled(false);
                 }
             }
         });
+
+        setVisible(true); // Show the GUI
     }
+
 }
