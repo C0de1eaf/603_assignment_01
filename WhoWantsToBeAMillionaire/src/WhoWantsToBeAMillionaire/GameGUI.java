@@ -3,7 +3,6 @@ package WhoWantsToBeAMillionaire;
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
-import java.awt.event.*;
 
 public class GameGUI extends JFrame {
 
