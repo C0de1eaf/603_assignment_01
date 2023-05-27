@@ -81,49 +81,28 @@ public class GameGUI extends JFrame {
             }
         });
 
-        // Add key event listener
-        firstNameInput.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent event) {
-                String firstNameContent = firstNameInput.getText();
-                String lastNameContent = lastNameInput.getText();
-                if (!firstNameContent.isEmpty() && !lastNameContent.isEmpty()) {
-                    nameSubmitButton.setEnabled(true);
-                } else {
-                    nameSubmitButton.setEnabled(false);
-                }
-            }
-        });
-
-        // Limit the maximum number of characters for the text fields
-        ((AbstractDocument) firstNameInput.getDocument()).setDocumentFilter(new DocumentFilter() {
-            @Override
-            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-                int maxLength = 18;
-                int currentLength = fb.getDocument().getLength();
-                int overLimit = (currentLength + text.length()) - maxLength;
-                if (overLimit > 0) {
-                    text = text.substring(0, text.length() - overLimit);
-                }
-                super.replace(fb, offset, length, text, attrs);
-                updateSubmitButtonState();
-            }
-        });
-
-        ((AbstractDocument) lastNameInput.getDocument()).setDocumentFilter(new DocumentFilter() {
-            @Override
-            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-                int maxLength = 18;
-                int currentLength = fb.getDocument().getLength();
-                int overLimit = (currentLength + text.length()) - maxLength;
-                if (overLimit > 0) {
-                    text = text.substring(0, text.length() - overLimit);
-                }
-                super.replace(fb, offset, length, text, attrs);
-                updateSubmitButtonState();
-            }
-        });
+        // Set document filters for the text fields
+        ((AbstractDocument) firstNameInput.getDocument()).setDocumentFilter(createDocumentFilter());
+        ((AbstractDocument) lastNameInput.getDocument()).setDocumentFilter(createDocumentFilter());
 
         setVisible(true); // Show the GUI
+    }
+
+    private DocumentFilter createDocumentFilter() {
+        return new DocumentFilter() {
+            @Override
+            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < text.length(); i++) {
+                    char c = text.charAt(i);
+                    if (Character.isLetter(c) || c == '-' || c == '\'') {
+                        sb.append(c);
+                    }
+                }
+                super.replace(fb, offset, length, sb.toString(), attrs);
+                updateSubmitButtonState();
+            }
+        };
     }
 
     private void updateSubmitButtonState() {
@@ -137,5 +116,11 @@ public class GameGUI extends JFrame {
             nameSubmitButton.setEnabled(false);
             fullName = null;
         }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            GameGUI GameGUI = new GameGUI();
+        });
     }
 }
