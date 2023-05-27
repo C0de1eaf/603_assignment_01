@@ -1,21 +1,21 @@
+package WhoWantsToBeAMillionaire;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class MenuGUI extends JFrame {
+public class MenuGUI extends JPanel {
 
     private JButton playButton;
     private JButton leaderboardButton;
     private JButton exitButton;
-
+    private CardLayout cardLayout;
+    private JPanel cards;
     private int buttonWidth = 150;
-    public int buttonHeight = 50;
+    private int buttonHeight = 50;
 
-    public MenuGUI() {
-        setTitle("Who Wants To Be A Millionaire");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1000, 1000);
-        setLocationRelativeTo(null); // Center the window on the screen
-
+    public MenuGUI(CardLayout cardLayout, JPanel cards) {
+        this.cardLayout = cardLayout;
+        this.cards = cards;
         // Create a panel to hold the buttons with vertical layout
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
@@ -27,6 +27,9 @@ public class MenuGUI extends JFrame {
 
         exitButton.addActionListener(e -> System.exit(0));
 
+        // Set the layout manager for MenuGUI
+        setLayout(new BorderLayout());
+
         // Set the size and alignment for the buttons
         Dimension buttonSize = new Dimension(buttonWidth, buttonHeight);
         playButton.setMaximumSize(buttonSize);
@@ -36,6 +39,10 @@ public class MenuGUI extends JFrame {
         leaderboardButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // Create a panel to hold the buttons with vertical layout
+        buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+
         // Add vertical spacing between buttons
         buttonPanel.add(Box.createVerticalGlue());
         buttonPanel.add(playButton);
@@ -44,12 +51,10 @@ public class MenuGUI extends JFrame {
         buttonPanel.add(Box.createVerticalStrut(10)); // Adjust the spacing as needed
         buttonPanel.add(exitButton);
         buttonPanel.add(Box.createVerticalGlue());
-
-        // Set the layout manager for the content pane
-        getContentPane().setLayout(new BorderLayout());
-
-        // Add the button panel to the content pane
-        getContentPane().add(buttonPanel, BorderLayout.CENTER);
+        playButton.addActionListener(e -> {
+            cardLayout.show(cards, "gameGUI");
+        });
+        add(buttonPanel, BorderLayout.CENTER);
 
         // Show the GUI
         setVisible(true);
@@ -59,9 +64,5 @@ public class MenuGUI extends JFrame {
         JButton button = new JButton(text);
         button.setFocusable(false); // Remove button focus border
         return button;
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(MenuGUI::new);
     }
 }

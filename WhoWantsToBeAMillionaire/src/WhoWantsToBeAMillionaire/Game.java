@@ -3,8 +3,9 @@ package WhoWantsToBeAMillionaire;
 import java.io.IOException;
 import java.util.*;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
-public class Game {
+public class Game extends JFrame {
 
     // create variables that are used throughout this class
     private final List<ArrayList<Question>> questions;
@@ -28,7 +29,7 @@ public class Game {
         this.scan = new Scanner(System.in);
         this.leaderboard = new Leaderboard();
         this.db = new MillionaireDB();
-        
+
         ArrayList<Question> easy = db.getEasyQuestions();
         ArrayList<Question> hard = db.getHardQuestions();
         this.questions = Arrays.asList(easy, hard);
@@ -41,7 +42,7 @@ public class Game {
      */
     public void runGame() throws IOException {
         //this.instantiateGUI();
-        
+
         // create initial variables and give them default variables.
         int totalQuestions = 10;
         currentLevel = 1;
@@ -55,7 +56,9 @@ public class Game {
         It is stopped by setting the continuePlaying to false
          */
         do {
-            instantiateGUI();
+            SwingUtilities.invokeLater(() -> {
+                new MainFrame().setVisible(true);
+            });
             // Welcomes the player to the game
             System.out.println("\nWelcome to the Who Wants To Be A Millionaire game.");
             System.out.println("You will be asked a total of 10 questions with varying difficulty");
@@ -171,7 +174,7 @@ public class Game {
                 Checks if the user answer is equal to the question answer
                 Since the question numbers are stored as an index of an Array it goes 0, 1, 2, 3
                 Because the user was prompted to answer 1,2,3 or 4 it is logical to increase the levelAnswer by one so the index + 1 matches the users question selection
-                */
+                 */
                 if (userAnswer == levelAnswer + 1) {
                     // If the user is correct, prints correct
                     System.out.println("Correct!");
@@ -203,7 +206,7 @@ public class Game {
                     leaderboard.updateLeaderboard(newUser, currentCash);
                     break;
                 }
-                
+
                 // Asks the user if they want to continue playing and then updates the currentLevel
                 continuePlaying = continuePlaying();
                 currentLevel++;
@@ -244,7 +247,7 @@ public class Game {
     The random Question difficulty depends on the currentLevel
     Generates harder questions for when the user is on level 7, 8, 9 and 10 otherwise the questions generated are easy
     Returns the selected question
-    */
+     */
     public Question getRandomQuestion() {
         System.out.println("\n--Current Level: " + currentLevel + "--\n"); // prints out current level
         int questionIndex = rand.nextInt(questions.get(currentLevel < 7 ? 0 : 1).size()); // get random question randomly based on the size of the array
@@ -260,7 +263,7 @@ public class Game {
     Asks the user if they want to continue playing or not
     Prints the users current cash prize and asks if they want to leave.
     Checks for valid input (accepts only Y and N)
-    */
+     */
     public boolean continuePlaying() {
         scan.nextLine();
         int currentCash = getPrize();
@@ -272,10 +275,6 @@ public class Game {
             input = scan.nextLine();
         }
         return input.equalsIgnoreCase("Y");
-    }
-    
-    public void instantiateGUI(){
-        GameGUI GUI = new GameGUI();
     }
 
     /**

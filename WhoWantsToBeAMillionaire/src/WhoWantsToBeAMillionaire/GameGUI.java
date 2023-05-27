@@ -4,20 +4,20 @@ import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
 
-public class GameGUI extends JFrame {
+public class GameGUI extends JPanel {
 
     private int widthWindow = 1000;
     private int heightWindow = 1000;
     private String userName;
     private String fullName;
+    private JFrame frame;
 
     private JTextField firstNameInput;
     private JTextField lastNameInput;
     private JButton nameSubmitButton;
 
     public GameGUI() {
-        setTitle("Who Wants To Be A Millionaire");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         setLayout(new BorderLayout());
         setSize(widthWindow, heightWindow);
 
