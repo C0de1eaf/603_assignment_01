@@ -30,7 +30,7 @@ public class MillionaireDB {
     }
 
 //    public static void main(String[] args) throws SQLException {
-//        GUI_Database gui = new GUI_Database();
+//        MillionaireDB gui = new MillionaireDB();
 //        gui.fetchData();
 //    }
 
@@ -116,7 +116,7 @@ public class MillionaireDB {
     }
 
     public void fetchData() {
-        String tableName = "leaderboard";
+        String tableName = "hardquestions";
         try (Statement statement = conn.createStatement();
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName)) {
             ResultSetMetaData metaData = resultSet.getMetaData();
