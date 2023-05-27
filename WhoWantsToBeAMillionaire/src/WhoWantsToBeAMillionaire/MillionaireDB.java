@@ -12,27 +12,28 @@ package WhoWantsToBeAMillionaire;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class GUI_Database {
+public class MillionaireDB {
 
     private static final String USER_NAME = "pdc";
     private static final String PASSWORD = "pdc";
     private static final String URL = "jdbc:derby:WWTBAM_EmbDB;create=true";
-    private Connection conn;
-    
-    public static void main(String[] args) {
-        //Test here
-    }
+    protected Connection conn;
 
-    public GUI_Database() {
+    public MillionaireDB() {
         this.createConnection();
     }
-    
+
+//    public static void main(String[] args) throws SQLException {
+//        GUI_Database gui = new GUI_Database();
+//        gui.fetchData();
+//    }
+
     public ArrayList<Question> getEasyQuestions() {
         ArrayList<Question> easyQuestions = new ArrayList<>();
         try (Statement statement = conn.createStatement()) {
@@ -50,8 +51,8 @@ public class GUI_Database {
         }
         return easyQuestions;
     }
-    
-     public ArrayList<Question> getHardQuestions() {
+
+    public ArrayList<Question> getHardQuestions() {
         ArrayList<Question> hardQuestions = new ArrayList<>();
         try (Statement statement = conn.createStatement()) {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM HardQuestions");
@@ -93,7 +94,47 @@ public class GUI_Database {
         }
         rs.close();
     }
-    
+
+    public void fetchColumns() {
+        String tableName = "leaderboard";
+        try (Statement statement = conn.createStatement();
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName)) {
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            for (int i = 1; i <= columnCount; i++) {
+                String columnName = metaData.getColumnName(i);
+                String columnType = metaData.getColumnTypeName(i);
+                System.out.println("Column name: " + columnName);
+                System.out.println("Column type: " + columnType);
+                System.out.println("---------------------");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void fetchData() {
+        String tableName = "leaderboard";
+        try (Statement statement = conn.createStatement();
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName)) {
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            while (resultSet.next()) {
+                for (int i = 1; i <= columnCount; i++) {
+                    String columnName = metaData.getColumnName(i);
+                    Object value = resultSet.getObject(i);
+                    System.out.println(columnName + ": " + value);
+                }
+                System.out.println("---------------------");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     //Drop a table
     public void dropTable() {
         try (Statement statement = conn.createStatement()) {
@@ -101,42 +142,6 @@ public class GUI_Database {
             String query = "DROP TABLE HardQuestions";
             statement.executeUpdate(query);
             System.out.println("Deleted table");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    //Create a table for questions
-    public void createTable() {
-        try (Statement statement = conn.createStatement()) {
-            // Execute the SQL command to create the "EasyQuestions" table
-            String query = "CREATE TABLE HardQuestions ("
-                    + "question VARCHAR(255),"
-                    + "options VARCHAR(255),"
-                    + "correctAnswer INT)";
-            statement.executeUpdate(query);
-
-            System.out.println("Table has been created.");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    //Use this to insert Questions into DataBase
-    public void insert() {
-        QuestionList questionLists = new QuestionList();
-        questionLists.createQuestionList();
-        try (PreparedStatement statement = conn.prepareStatement(
-                "INSERT INTO HardQuestions (question, options, correctAnswer) VALUES (?, ?, ?)")) {
-            for (ArrayList<Question> questionList : questionLists.getHardQuestions()) {
-                for (Question question : questionList) {
-                    statement.setString(1, question.getQuestion());
-                    statement.setString(2, String.join(",", question.getAnswers()));
-                    statement.setInt(3, question.getCorrectAnswerIndex());
-                    statement.executeUpdate();
-                }
-            }
-            System.out.println("Done!");
         } catch (SQLException e) {
             e.printStackTrace();
         }
