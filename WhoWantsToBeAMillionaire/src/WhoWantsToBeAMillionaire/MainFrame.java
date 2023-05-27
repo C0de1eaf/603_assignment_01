@@ -8,20 +8,23 @@ public class MainFrame extends JFrame {
 
     private GameGUI gameGUI;
     private MenuGUI menuGUI;
+    private LeaderboardGUI leaderboardGUI;
 
     public MainFrame() {
         setTitle("Game and Menu");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 1000);
 
-        gameGUI = new GameGUI();
-
         CardLayout cardLayout = new CardLayout();
         JPanel cards = new JPanel(cardLayout);
 
-        cards.add(gameGUI, "gameGUI");
+        gameGUI = new GameGUI();
+        leaderboardGUI = new LeaderboardGUI(cardLayout, cards);
 
-        menuGUI = new MenuGUI(cardLayout, cards); // Only create the instance once
+        cards.add(gameGUI, "gameGUI");
+        cards.add(leaderboardGUI, "leaderboardGUI");
+
+        menuGUI = new MenuGUI(cardLayout, cards);
         cards.add(menuGUI, "menuGUI");
 
         add(cards);
