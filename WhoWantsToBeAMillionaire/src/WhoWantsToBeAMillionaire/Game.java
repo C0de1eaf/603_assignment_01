@@ -55,6 +55,7 @@ public class Game {
         It is stopped by setting the continuePlaying to false
          */
         do {
+            instantiateGUI();
             // Welcomes the player to the game
             System.out.println("\nWelcome to the Who Wants To Be A Millionaire game.");
             System.out.println("You will be asked a total of 10 questions with varying difficulty");
@@ -274,13 +275,7 @@ public class Game {
     }
     
     public void instantiateGUI(){
-        JFrame frame = new JFrame("Who Wants To Be A Millionaire");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         GameGUI GUI = new GameGUI();
-
-        frame.getContentPane().add(GUI);
-        frame.setSize(1000, 1000);
-        frame.setVisible(true);
     }
 
     /**
