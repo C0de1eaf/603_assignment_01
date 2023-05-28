@@ -25,6 +25,9 @@ public class LeaderboardGUI extends JPanel {
             System.out.println(ex);
         }
 
+        // Set the background color of the return button to solid light grey
+        returnButton.setBackground(new Color(192, 192, 192)); // RGB: 192, 192, 192 (light grey)
+
         // Remove spacing between the image and button's borders
         returnButton.setMargin(new Insets(0, 0, 0, 0));
 
