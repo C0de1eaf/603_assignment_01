@@ -3,8 +3,6 @@ package WhoWantsToBeAMillionaire;
 import javax.swing.*;
 import java.awt.*;
 
-import javax.swing.*;
-import java.awt.*;
 import javax.imageio.ImageIO;
 
 public class LeaderboardGUI extends JPanel {
@@ -12,10 +10,12 @@ public class LeaderboardGUI extends JPanel {
     private JButton returnButton;
 
     public LeaderboardGUI(CardLayout cardLayout, JPanel cards) {
-        setLayout(new BorderLayout());
+        // Set the layout to FlowLayout with left alignment
+        setLayout(new FlowLayout(FlowLayout.LEFT));
 
         // Create a return button
-        returnButton = new JButton("Return");
+        returnButton = new JButton();
+        returnButton.setPreferredSize(new Dimension(100, 100));
 
         // Set the icon for the return button
         try {
@@ -31,13 +31,12 @@ public class LeaderboardGUI extends JPanel {
         // Remove border
         returnButton.setBorderPainted(false);
 
-        // Create a panel with a fixed size
-        JPanel fixedSizePanel = new JPanel();
-        fixedSizePanel.setPreferredSize(new Dimension(50, 50));
-        fixedSizePanel.setLayout(new GridBagLayout());
-        fixedSizePanel.add(returnButton);
+        // Add ActionListener to return button
+        returnButton.addActionListener(e -> {
+            cardLayout.show(cards, "menuGUI");
+        });
 
-        // Add the fixed size panel to the LeaderboardGUI panel
-        add(fixedSizePanel, BorderLayout.NORTH);
+        // Add the return button to the LeaderboardGUI panel
+        add(returnButton);
     }
 }
