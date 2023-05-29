@@ -9,8 +9,20 @@ public class GameGUI extends JPanel {
     private int widthWindow = 1000;
     private int heightWindow = 1000;
     private String userName;
+    private Game game;
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
     private String fullName;
-    private JFrame frame;
 
     private JTextField firstNameInput;
     private JTextField lastNameInput;
@@ -59,17 +71,19 @@ public class GameGUI extends JPanel {
         add(inputPanel, BorderLayout.CENTER);
 
         firstNameInput.setToolTipText("<html><b><font color=grey>"
-                + "Please enter some text here" + "</font></b></html>");
+                + "Enter your first name here" + "</font></b></html>");
 
-        firstNameInput.addActionListener(e -> {
-            userName = firstNameInput.getText();
-            if (!userName.isEmpty()) {
-                System.out.println("User input: " + userName);
-            }
-            firstNameInput.setText("");  // Clear the text field
-            updateSubmitButtonState();
-        });
+        lastNameInput.setToolTipText("<html><b><font color=grey>"
+                + "Enter your last name here" + "</font></b></html>");
 
+//        firstNameInput.addActionListener(e -> {
+//            userName = firstNameInput.getText();
+//            if (!userName.isEmpty()) {
+//                System.out.println("User input: " + userName);
+//            }
+//            firstNameInput.setText("");  // Clear the text field
+//            updateSubmitButtonState();
+//        });
         nameSubmitButton.addActionListener(e -> {
             if (fullName != null) {
                 System.out.println("User input: " + fullName);
@@ -77,6 +91,9 @@ public class GameGUI extends JPanel {
             firstNameInput.setText("");  // Clear the text field
             lastNameInput.setText("");  // Clear the text field
             updateSubmitButtonState();
+
+            // Call the setUserNameFromGameGUI method after user submits their name
+            game.setUserNameFromGameGUI(this);
         });
 
         // Set document filters for the text fields

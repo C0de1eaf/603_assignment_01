@@ -18,6 +18,7 @@ public class Game extends JFrame {
     private final PhoneAFriend phoneAFriend;
     private final Leaderboard leaderboard;
     private final MillionaireDB db;
+    private String name;
 
     // sets the initial values of variables
     public Game() {
@@ -46,7 +47,7 @@ public class Game extends JFrame {
         // create initial variables and give them default variables.
         int totalQuestions = 10;
         currentLevel = 1;
-        String name = "";
+        name = "";
         boolean nameValidity = false;
         boolean continuePlaying = true;
         int currentCash = 0;
@@ -59,6 +60,7 @@ public class Game extends JFrame {
             SwingUtilities.invokeLater(() -> {
                 new MainFrame().setVisible(true);
             });
+            System.out.println(name);
             // Welcomes the player to the game
             System.out.println("\nWelcome to the Who Wants To Be A Millionaire game.");
             System.out.println("You will be asked a total of 10 questions with varying difficulty");
@@ -276,6 +278,14 @@ public class Game extends JFrame {
         }
         return input.equalsIgnoreCase("Y");
     }
+    
+    public void setUserNameFromGameGUI(GameGUI gameGUI) {
+    if (gameGUI != null && gameGUI.getUserName() != null) {
+        this.name = gameGUI.getUserName();
+    } else {
+        this.name = ""; // or set a default value
+    }
+}
 
     /**
      * @return the currentLevel

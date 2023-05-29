@@ -9,8 +9,15 @@ public class MainFrame extends JFrame {
     private GameGUI gameGUI;
     private MenuGUI menuGUI;
     private LeaderboardGUI leaderboardGUI;
+    private Game game;
 
     public MainFrame() {
+
+        game = new Game();
+        gameGUI = new GameGUI();
+        game.setUserNameFromGameGUI(gameGUI);
+        gameGUI.setGame(game);
+
         setTitle("Game and Menu");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 1000);
@@ -18,7 +25,6 @@ public class MainFrame extends JFrame {
         CardLayout cardLayout = new CardLayout();
         JPanel cards = new JPanel(cardLayout);
 
-        gameGUI = new GameGUI();
         leaderboardGUI = new LeaderboardGUI(cardLayout, cards);
 
         cards.add(gameGUI, "gameGUI");
@@ -29,5 +35,7 @@ public class MainFrame extends JFrame {
 
         add(cards);
         cardLayout.show(cards, "menuGUI");
+        
+        System.out.println();
     }
 }
