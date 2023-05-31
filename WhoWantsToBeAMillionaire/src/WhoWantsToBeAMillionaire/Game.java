@@ -51,15 +51,15 @@ public class Game extends JFrame {
         boolean nameValidity = false;
         boolean continuePlaying = true;
         int currentCash = 0;
-
+        SwingUtilities.invokeLater(() -> {
+            new MainFrame().setVisible(true);
+        });
         /* 
         Loops the entire program until it is stopped
         It is stopped by setting the continuePlaying to false
          */
         do {
-            SwingUtilities.invokeLater(() -> {
-                new MainFrame().setVisible(true);
-            });
+
             System.out.println(name);
             // Welcomes the player to the game
             System.out.println("\nWelcome to the Who Wants To Be A Millionaire game.");
@@ -278,14 +278,14 @@ public class Game extends JFrame {
         }
         return input.equalsIgnoreCase("Y");
     }
-    
+
     public void setUserNameFromGameGUI(GameGUI gameGUI) {
-    if (gameGUI != null && gameGUI.getUserName() != null) {
-        this.name = gameGUI.getUserName();
-    } else {
-        this.name = ""; // or set a default value
+        if (gameGUI != null && gameGUI.getUserName() != null) {
+            this.name = gameGUI.getUserName();
+        } else {
+            this.name = ""; // or set a default value
+        }
     }
-}
 
     /**
      * @return the currentLevel
