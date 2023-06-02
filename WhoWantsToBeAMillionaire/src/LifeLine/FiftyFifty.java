@@ -1,4 +1,4 @@
-package GameLifeLines;
+package LifeLine;
 
 import WhoWantsToBeAMillionaire.Question;
 import java.util.Random;

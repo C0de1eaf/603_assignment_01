@@ -1,4 +1,4 @@
-package GameLifeLines;
+package LifeLine;
 
 import java.util.ArrayList;
 

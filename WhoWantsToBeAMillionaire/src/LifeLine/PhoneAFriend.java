@@ -1,7 +1,7 @@
-package GameLifeLines;
+package LifeLine;
 
-import GameLifeLines.LifeLines;
-import GameLifeLines.FriendList;
+import LifeLine.LifeLines;
+import LifeLine.FriendList;
 import WhoWantsToBeAMillionaire.Question;
 import java.util.ArrayList;
 import java.util.Arrays;

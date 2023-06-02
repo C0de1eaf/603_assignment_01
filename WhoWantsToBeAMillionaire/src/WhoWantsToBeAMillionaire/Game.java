@@ -1,8 +1,8 @@
 package WhoWantsToBeAMillionaire;
 
-import GameLifeLines.PhoneAFriend;
-import GameLifeLines.AskTheAudience;
-import GameLifeLines.FiftyFifty;
+import LifeLine.PhoneAFriend;
+import LifeLine.AskTheAudience;
+import LifeLine.FiftyFifty;
 import MillionaireGUI.MainFrame;
 import MillionaireGUI.GameGUI;
 import MillionaireDB.Leaderboard;
