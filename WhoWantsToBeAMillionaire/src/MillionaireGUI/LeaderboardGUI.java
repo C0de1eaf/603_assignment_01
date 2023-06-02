@@ -1,5 +1,6 @@
-package WhoWantsToBeAMillionaire;
+package MillionaireGUI;
 
+import MillionaireDB.GameDB;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -120,7 +121,7 @@ public class LeaderboardGUI extends JPanel {
         String[] columnNames = {"Name", "Prize Money"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 
-        MillionaireDB db = new MillionaireDB();
+        GameDB db = new GameDB();
         ArrayList<String> leaderboardData = db.getLeaderboard();
         leaderboardData.forEach(row -> {
             String[] rowData = row.split(" ");

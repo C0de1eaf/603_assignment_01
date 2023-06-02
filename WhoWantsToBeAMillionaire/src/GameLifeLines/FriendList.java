@@ -1,4 +1,4 @@
-package WhoWantsToBeAMillionaire;
+package GameLifeLines;
 
 import java.util.ArrayList;
 

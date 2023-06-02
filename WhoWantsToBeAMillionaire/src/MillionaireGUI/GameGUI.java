@@ -1,5 +1,6 @@
-package WhoWantsToBeAMillionaire;
+package MillionaireGUI;
 
+import WhoWantsToBeAMillionaire.Game;
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;

@@ -1,5 +1,6 @@
-package WhoWantsToBeAMillionaire;
+package MillionaireDB;
 
+import WhoWantsToBeAMillionaire.Question;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -7,14 +8,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class MillionaireDB {
+public class GameDB {
 
     private static final String USER_NAME = "pdc";
     private static final String PASSWORD = "pdc";
     private static final String URL = "jdbc:derby:WWTBAM_EmbDB;create=true";
     protected Connection conn;
 
-    public MillionaireDB() {
+    public GameDB() {
         this.createConnection();
     }
 

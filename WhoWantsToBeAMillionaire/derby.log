@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
-Sat Jun 03 08:06:51 NZST 2023:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0188-7db8-526e-00000e2fd218 
-on database directory D:\DATA\Settings\Desktop\603_assignment_01\WhoWantsToBeAMillionaire\WWTBAM_EmbDB with class loader sun.misc.Launcher$AppClassLoader@5c647e05 
-Loaded from file:/D:/DATA/Settings/Desktop/603_assignment_01/WhoWantsToBeAMillionaire/lib/derby.jar
+Sat Jun 03 09:36:09 NZST 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0188-7e0a-119d-00000e4e3c40 
+on database directory C:\Users\yutas\Downloads\Year 2 Sem 1\COMP603\603_assignment_01\WhoWantsToBeAMillionaire\WWTBAM_EmbDB with class loader sun.misc.Launcher$AppClassLoader@5c647e05 
+Loaded from file:/C:/Users/yutas/Downloads/Year%202%20Sem%201/COMP603/603_assignment_01/WhoWantsToBeAMillionaire/lib/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_361-b09
-user.dir=D:\DATA\Settings\Desktop\603_assignment_01\WhoWantsToBeAMillionaire
+user.dir=C:\Users\yutas\Downloads\Year 2 Sem 1\COMP603\603_assignment_01\WhoWantsToBeAMillionaire
 os.name=Windows 11
 os.arch=amd64
 os.version=10.0

@@ -1,5 +1,13 @@
 package WhoWantsToBeAMillionaire;
 
+import GameLifeLines.PhoneAFriend;
+import GameLifeLines.AskTheAudience;
+import GameLifeLines.FiftyFifty;
+import MillionaireGUI.MainFrame;
+import MillionaireGUI.GameGUI;
+import MillionaireDB.Leaderboard;
+import MillionaireDB.User;
+import MillionaireDB.GameDB;
 import java.io.IOException;
 import java.util.*;
 import javax.swing.JFrame;
@@ -17,7 +25,7 @@ public class Game extends JFrame {
     private final AskTheAudience askTheAudience;
     private final PhoneAFriend phoneAFriend;
     private final Leaderboard leaderboard;
-    private final MillionaireDB db;
+    private final GameDB db;
     private String name;
 
     // sets the initial values of variables
@@ -29,7 +37,7 @@ public class Game extends JFrame {
         this.rand = new Random();
         this.scan = new Scanner(System.in);
         this.leaderboard = new Leaderboard();
-        this.db = new MillionaireDB();
+        this.db = new GameDB();
 
         ArrayList<Question> easy = db.getEasyQuestions();
         ArrayList<Question> hard = db.getHardQuestions();
