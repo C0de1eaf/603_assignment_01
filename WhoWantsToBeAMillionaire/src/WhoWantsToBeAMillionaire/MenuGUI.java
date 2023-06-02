@@ -2,6 +2,8 @@ package WhoWantsToBeAMillionaire;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MenuGUI extends JPanel {
 
@@ -15,8 +17,8 @@ public class MenuGUI extends JPanel {
     private JPanel cards;
 
     // Button Dimensions
-    private int buttonWidth = 150;
-    private int buttonHeight = 50;
+    private int buttonWidth = 200;
+    private int buttonHeight = 1000;
 
     public MenuGUI(CardLayout cardLayout, JPanel cards) {
         this.cardLayout = cardLayout;
@@ -31,6 +33,11 @@ public class MenuGUI extends JPanel {
         leaderboardButton = createButton("Leaderboard");
         exitButton = createButton("Exit");
 
+        Font menuButtonFont = new Font("Arial", Font.BOLD, 26);
+        playButton.setFont(menuButtonFont);
+        leaderboardButton.setFont(menuButtonFont);
+        exitButton.setFont(menuButtonFont);
+
         // Set the layout manager for MenuGUI
         setLayout(new BorderLayout());
 
@@ -43,6 +50,10 @@ public class MenuGUI extends JPanel {
         leaderboardButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        addMouseListenerToButton(playButton, Color.decode("#FFD700"), Color.decode("#FFA500"));
+        addMouseListenerToButton(leaderboardButton, Color.decode("#FFD700"), Color.decode("#FFA500"));
+        addMouseListenerToButton(exitButton, Color.decode("#FFD700"), Color.decode("#FFA500"));
+
         // Add buttons to the button panel with spacing
         buttonPanel.add(Box.createVerticalGlue());
         buttonPanel.add(playButton);
@@ -51,7 +62,7 @@ public class MenuGUI extends JPanel {
         buttonPanel.add(Box.createVerticalStrut(10));
         buttonPanel.add(exitButton);
         buttonPanel.add(Box.createVerticalGlue());
-        
+
         // Add ActionListener to play button
         playButton.addActionListener(e -> {
             cardLayout.show(cards, "gameGUI");
@@ -60,12 +71,12 @@ public class MenuGUI extends JPanel {
         leaderboardButton.addActionListener(e -> {
             cardLayout.show(cards, "leaderboardGUI");
         });
-        
+
         // Add ActionListener to exit button
         exitButton.addActionListener(e -> {
             System.exit(0);
         });
-        
+
         // Add the button panel to MenuGUI
         add(buttonPanel, BorderLayout.CENTER);
 
@@ -78,4 +89,30 @@ public class MenuGUI extends JPanel {
         button.setFocusable(false); // Remove button focus border
         return button;
     }
+
+    public void addMouseListenerToButton(JButton button, Color defaultColor, Color hoverColor) {
+        button.setBackground(new Color(255, 215, 0));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(hoverColor);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(defaultColor);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                button.setBackground(hoverColor);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                button.setBackground(defaultColor);
+            }
+        });
+    }
+
 }

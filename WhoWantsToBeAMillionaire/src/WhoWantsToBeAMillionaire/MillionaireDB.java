@@ -1,14 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package WhoWantsToBeAMillionaire;
 
-/**
- *
- * @author yutas
- */
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -31,7 +22,6 @@ public class MillionaireDB {
 //        MillionaireDB db = new MillionaireDB();
 //        System.out.println(db.getLeaderboard().toString());
 //    }
-    
     //Obtains the easyQuestions from the database
     public ArrayList<Question> getEasyQuestions() {
         ArrayList<Question> easyQuestions = new ArrayList<>(); //Create an ArrayList
