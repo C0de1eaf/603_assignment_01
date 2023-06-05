@@ -1,9 +1,8 @@
 package MillionaireGUI;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import javax.swing.*;
 
 public class MenuGUI extends JPanel {
 
@@ -12,22 +11,13 @@ public class MenuGUI extends JPanel {
     private JButton leaderboardButton;
     private JButton exitButton;
 
-    // CardLayout and Jpanel
+    // CardLayout and JPanel
     private CardLayout cardLayout;
     private JPanel cards;
-
-    // Button Dimensions
-    private int buttonWidth = 200;
-    private int buttonHeight = 1000;
 
     public MenuGUI(CardLayout cardLayout, JPanel cards) {
         this.cardLayout = cardLayout;
         this.cards = cards;
-
-
-        // Create a panel to hold the buttons with vertical layout
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 
         // Create the buttons
         playButton = createButton("Play");
@@ -39,30 +29,29 @@ public class MenuGUI extends JPanel {
         leaderboardButton.setFont(menuButtonFont);
         exitButton.setFont(menuButtonFont);
 
-        // Set the layout manager for MenuGUI
-        setLayout(new BorderLayout());
+        // Set the preferred size for the buttons
+        Dimension buttonSize = new Dimension(200, 50);
+        playButton.setPreferredSize(buttonSize);
+        leaderboardButton.setPreferredSize(buttonSize);
+        exitButton.setPreferredSize(buttonSize);
 
-        // Set the size and alignment for the buttons
-        Dimension buttonSize = new Dimension(buttonWidth, buttonHeight);
-        playButton.setMaximumSize(buttonSize);
-        leaderboardButton.setMaximumSize(buttonSize);
-        exitButton.setMaximumSize(buttonSize);
-        playButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        leaderboardButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Set the layout manager for MenuGUI
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(10, 0, 10, 0);
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        add(playButton, gbc);
+        gbc.gridy++;
+        add(leaderboardButton, gbc);
+        gbc.gridy++;
+        add(exitButton, gbc);
 
         addMouseListenerToButton(playButton, Color.decode("#FFD700"), Color.decode("#FFA500"));
         addMouseListenerToButton(leaderboardButton, Color.decode("#FFD700"), Color.decode("#FFA500"));
         addMouseListenerToButton(exitButton, Color.decode("#FFD700"), Color.decode("#FFA500"));
-
-        // Add buttons to the button panel with spacing
-        buttonPanel.add(Box.createVerticalGlue());
-        buttonPanel.add(playButton);
-        buttonPanel.add(Box.createVerticalStrut(10));
-        buttonPanel.add(leaderboardButton);
-        buttonPanel.add(Box.createVerticalStrut(10));
-        buttonPanel.add(exitButton);
-        buttonPanel.add(Box.createVerticalGlue());
 
         // Add ActionListener to play button
         playButton.addActionListener(e -> {
@@ -77,9 +66,6 @@ public class MenuGUI extends JPanel {
         exitButton.addActionListener(e -> {
             System.exit(0);
         });
-
-        // Add the button panel to MenuGUI
-        add(buttonPanel, BorderLayout.CENTER);
 
         // Set MenuGUI visibility
         setVisible(true);
@@ -115,5 +101,4 @@ public class MenuGUI extends JPanel {
             }
         });
     }
-
 }

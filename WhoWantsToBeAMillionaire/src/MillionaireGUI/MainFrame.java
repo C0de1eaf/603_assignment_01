@@ -1,24 +1,18 @@
 package MillionaireGUI;
 
-import MillionaireGUI.GameGUI;
-import MillionaireGUI.MenuGUI;
-import MillionaireGUI.LeaderboardGUI;
-import WhoWantsToBeAMillionaire.Game;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.*;
 
 public class MainFrame extends JFrame {
 
     private final GameGUI gameGUI;
     private final MenuGUI menuGUI;
     private final LeaderboardGUI leaderboardGUI;
-    private final Game game;
 
     public MainFrame() {
 
@@ -30,19 +24,18 @@ public class MainFrame extends JFrame {
         titleLabel.setFont(new Font("Arial", Font.BOLD, 48));
         titlePanel.add(titleLabel);
 
-        // Use GridBagLayout to center the titlePanel
-        setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridy = 0;
-        add(titlePanel, gbc);
+        // Use GroupLayout to layout the components
+        GroupLayout layout = new GroupLayout(getContentPane());
+        setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
 
         CardLayout cardLayout = new CardLayout();
         JPanel cards = new JPanel(cardLayout);
 
-        game = new Game();
         gameGUI = new GameGUI(cardLayout, cards);
 
-        setTitle("Game and Menu");
+        setTitle("Who Wants To Be A Millionaire");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 1000);
 
@@ -54,9 +47,17 @@ public class MainFrame extends JFrame {
         menuGUI = new MenuGUI(cardLayout, cards);
         cards.add(menuGUI, "menuGUI");
 
-        gbc.gridy = 1;
-        add(cards, gbc);
+        // Define GroupLayout rules
+        layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                .addComponent(titlePanel)
+                .addComponent(cards)
+        );
+
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addComponent(titlePanel)
+                .addComponent(cards)
+        );
+
         cardLayout.show(cards, "menuGUI");
     }
-
 }

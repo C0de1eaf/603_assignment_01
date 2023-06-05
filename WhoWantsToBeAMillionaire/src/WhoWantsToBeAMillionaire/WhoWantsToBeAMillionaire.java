@@ -2,7 +2,6 @@ package WhoWantsToBeAMillionaire;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import javax.swing.JFrame;
 
 public class WhoWantsToBeAMillionaire {
 
