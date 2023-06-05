@@ -24,6 +24,7 @@ public class MenuGUI extends JPanel {
         this.cardLayout = cardLayout;
         this.cards = cards;
 
+
         // Create a panel to hold the buttons with vertical layout
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));

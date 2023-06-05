@@ -279,14 +279,6 @@ public class Game extends JFrame {
         return input.equalsIgnoreCase("Y");
     }
 
-    public void setUserNameFromGameGUI(GameGUI gameGUI) {
-        if (gameGUI != null && gameGUI.getUserName() != null) {
-            this.name = gameGUI.getUserName();
-        } else {
-            this.name = ""; // or set a default value
-        }
-    }
-
     /**
      * @return the currentLevel
      */

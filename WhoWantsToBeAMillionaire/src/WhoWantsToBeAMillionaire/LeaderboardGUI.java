@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -20,13 +19,20 @@ public class LeaderboardGUI extends JPanel {
     public LeaderboardGUI(CardLayout cardLayout, JPanel cards) {
         setLayout(new GridBagLayout());
 
+        createReturnButton(cardLayout, cards);
+        createLeaderboardTable();
+
+    }
+
+    public void createReturnButton(CardLayout cardLayout, JPanel cards) {
+        /*
+         * RETURN BUTTON CONTENT
+         */
+
         // Create returnButton panel
         JPanel returnButtonPanel = new JPanel();
         returnButtonPanel.setLayout(new BoxLayout(returnButtonPanel, BoxLayout.Y_AXIS));
 
-        /*
-         * RETURN BUTTON CONTENT
-         */
         // Create the return button
         try {
             BufferedImage panelImage = ImageIO.read(new File("resources/cropped_return.png"));
@@ -84,11 +90,13 @@ public class LeaderboardGUI extends JPanel {
         returnButtonPanel.add(returnButton);
 
         // Set up the GridBagConstraints for the return button
-        GridBagConstraints gbcReturnButtonPanel = new GridBagConstraints(0, 3, 1, 1, 1.0, 1.0, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE, new Insets(0, 20, 20, 0), 0, 0);
+        GridBagConstraints gbcReturnButtonPanel = new GridBagConstraints(0, 3, 1, 1, 1.0, 0.1, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE, new Insets(0, 20, 20, 0), 0, 0);
 
         // Add returnButtonPanel to the main panel
         add(returnButtonPanel, gbcReturnButtonPanel);
+    }
 
+    public void createLeaderboardTable() {
         // Create the panel for the top five winners text
         JPanel topFivePanel = new JPanel();
         topFivePanel.setLayout(new BoxLayout(topFivePanel, BoxLayout.X_AXIS));
@@ -96,14 +104,14 @@ public class LeaderboardGUI extends JPanel {
 
         // Create the label for the top five winners text
         JLabel topFiveLabel = new JLabel("Top Five Winners");
-        topFiveLabel.setFont(new Font("Arial", Font.BOLD, 36)); // Set the font for the label
+        topFiveLabel.setFont(new Font("Arial", Font.PLAIN, 36)); // Set the font for the label
         topFiveLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Add the label to the top five panel
         topFivePanel.add(topFiveLabel);
 
         // Set up the GridBagConstraints for the top five panel
-        GridBagConstraints gbcTopFive = new GridBagConstraints(0, 1, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 1, 1);
+        GridBagConstraints gbcTopFive = new GridBagConstraints(0, 1, 1, 1, 1.0, 0.1, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(100, 0, 0, 0), 1, 1);
 
         // Add the top five panel and the leaderboard panel to the main panel
         add(topFivePanel, gbcTopFive);
@@ -158,11 +166,11 @@ public class LeaderboardGUI extends JPanel {
         leaderboardTable.setIntercellSpacing(new Dimension(0, 0));
 
         // Set up the GridBagConstraints for the leaderboard
-        GridBagConstraints gbcLeaderboard = new GridBagConstraints(0, 2, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 1, 1);
+        GridBagConstraints gbcLeaderboard = new GridBagConstraints(0, 2, 1, 1, 1.0, 0.8, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(10, 0, 0, 0), 1, 1);
 
         // Set the header of the table
         JTableHeader header = leaderboardTable.getTableHeader();
-        header.setFont(new Font("Arial", Font.BOLD, 28)); // Set the new font for the header
+        header.setFont(new Font("Arial", Font.PLAIN, 28)); // Set the new font for the header
 
         leaderboardPanel.add(header);
 
