@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class MainFrame extends JFrame {
 
-    private final GameGUI gameGUI;
+    private final GameIntroGUI gameIntroGUI;
     private final MenuGUI menuGUI;
     private final LeaderboardGUI leaderboardGUI;
 
@@ -31,7 +31,7 @@ public class MainFrame extends JFrame {
         CardLayout cardLayout = new CardLayout();
         JPanel cards = new JPanel(cardLayout);
 
-        gameGUI = new GameGUI(cardLayout, cards);
+        gameIntroGUI = new GameIntroGUI(cardLayout, cards);
 
         setTitle("Who Wants To Be A Millionaire");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,7 +39,7 @@ public class MainFrame extends JFrame {
 
         leaderboardGUI = new LeaderboardGUI(cardLayout, cards);
 
-        cards.add(gameGUI, "gameGUI");
+        cards.add(gameIntroGUI, "gameGUI");
         cards.add(leaderboardGUI, "leaderboardGUI");
 
         menuGUI = new MenuGUI(cardLayout, cards);

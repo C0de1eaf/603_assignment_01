@@ -4,7 +4,6 @@ import LifeLine.PhoneAFriend;
 import LifeLine.AskTheAudience;
 import LifeLine.FiftyFifty;
 import MillionaireGUI.MainFrame;
-import MillionaireGUI.GameGUI;
 import MillionaireDB.Leaderboard;
 import MillionaireDB.User;
 import MillionaireDB.GameDB;
