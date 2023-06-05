@@ -1,4 +1,4 @@
-package WhoWantsToBeAMillionaire;
+package MillionaireGUI;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,5 +1,9 @@
-package WhoWantsToBeAMillionaire;
+package MillionaireGUI;
 
+import MillionaireGUI.GameGUI;
+import MillionaireGUI.MenuGUI;
+import MillionaireGUI.LeaderboardGUI;
+import WhoWantsToBeAMillionaire.Game;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;

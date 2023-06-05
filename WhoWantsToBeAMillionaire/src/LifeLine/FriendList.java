@@ -1,4 +1,4 @@
-package WhoWantsToBeAMillionaire;
+package LifeLine;
 
 import java.util.ArrayList;
 

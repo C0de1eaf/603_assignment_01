@@ -1,5 +1,6 @@
-package WhoWantsToBeAMillionaire;
+package MillionaireDB;
 
+import MillionaireDB.GameDB;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,11 +9,11 @@ import java.sql.Statement;
 public class User {
 
     private final String name;
-    private final MillionaireDB db;
+    private final GameDB db;
 
     public User(String name) {
         this.name = name;
-        this.db = new MillionaireDB();
+        this.db = new GameDB();
     }
 
     // Check if user exists in the list of participants

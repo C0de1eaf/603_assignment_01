@@ -1,5 +1,6 @@
-package WhoWantsToBeAMillionaire;
+package LifeLine;
 
+import WhoWantsToBeAMillionaire.Question;
 import java.util.Random;
 
 // This class provides the implementation for the Fifty-Fifty lifeline.

@@ -1,6 +1,6 @@
 // This code defines an abstract class called `LifeLines`.
 // It provides a blueprint for implementing the lifelines in the "Who Wants to Be a Millionaire" game.
-package WhoWantsToBeAMillionaire;
+package LifeLine;
 
 public abstract class LifeLines {
 

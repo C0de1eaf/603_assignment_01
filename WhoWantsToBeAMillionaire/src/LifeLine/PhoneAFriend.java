@@ -1,5 +1,8 @@
-package WhoWantsToBeAMillionaire;
+package LifeLine;
 
+import LifeLine.LifeLines;
+import LifeLine.FriendList;
+import WhoWantsToBeAMillionaire.Question;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;

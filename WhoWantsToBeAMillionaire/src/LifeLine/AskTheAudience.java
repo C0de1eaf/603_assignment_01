@@ -1,5 +1,6 @@
-package WhoWantsToBeAMillionaire;
+package LifeLine;
 
+import WhoWantsToBeAMillionaire.Question;
 import java.util.Random;
 
 public class AskTheAudience extends LifeLines {

@@ -1,5 +1,7 @@
-package WhoWantsToBeAMillionaire;
+package MillionaireDB;
 
+import MillionaireDB.User;
+import MillionaireDB.GameDB;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,11 +13,11 @@ import java.util.Map;
 public class Leaderboard {
 
     private final HashMap<String, Integer> leaderboard;
-    private final MillionaireDB db;
+    private final GameDB db;
 
     public Leaderboard() {
         this.leaderboard = new HashMap<>();
-        this.db = new MillionaireDB();
+        this.db = new GameDB();
     }
 
     private void readLeaderboard() {
