@@ -5,8 +5,9 @@ import java.awt.*;
 
 public class MainFrame extends JFrame {
 
-    private final GameIntroGUI gameIntroGUI;
     private final MenuGUI menuGUI;
+    private final GameGUI gameGUI;
+    private final GameIntroGUI gameIntroGUI;
     private final LeaderboardGUI leaderboardGUI;
 
     public MainFrame() {
@@ -31,19 +32,19 @@ public class MainFrame extends JFrame {
         CardLayout cardLayout = new CardLayout();
         JPanel cards = new JPanel(cardLayout);
 
-        gameIntroGUI = new GameIntroGUI(cardLayout, cards);
-
         setTitle("Who Wants To Be A Millionaire");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1200, 1000);
 
+        menuGUI = new MenuGUI(cardLayout, cards);
+        gameGUI = new GameGUI(cardLayout, cards);
+        gameIntroGUI = new GameIntroGUI(cardLayout, cards, gameGUI);
         leaderboardGUI = new LeaderboardGUI(cardLayout, cards);
 
-        cards.add(gameIntroGUI, "gameGUI");
-        cards.add(leaderboardGUI, "leaderboardGUI");
-
-        menuGUI = new MenuGUI(cardLayout, cards);
         cards.add(menuGUI, "menuGUI");
+        cards.add(gameIntroGUI, "gameIntroGUI");
+        cards.add(gameGUI, "gameGUI");
+        cards.add(leaderboardGUI, "leaderboardGUI");
 
         // Define GroupLayout rules
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)

@@ -3,6 +3,8 @@ package MillionaireGUI;
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -20,6 +22,7 @@ public class GameIntroGUI extends JPanel {
     private String fullName;
     private JButton returnButton;
     private JLabel instructionsLabel;
+    private final GameGUI gameGUI;
 
     public String getUserName() {
         return fullName;
@@ -29,7 +32,8 @@ public class GameIntroGUI extends JPanel {
         this.fullName = fullName;
     }
 
-    public GameIntroGUI(CardLayout cardLayout, JPanel cards) {
+    public GameIntroGUI(CardLayout cardLayout, JPanel cards, GameGUI gameGUI) {
+        this.gameGUI = gameGUI;
         createGUI(cardLayout, cards);
     }
 
@@ -58,6 +62,7 @@ public class GameIntroGUI extends JPanel {
             buttons.add(button);
         }
 
+        inputPanel.add(nameSubmitButton);
         // Replace the specific buttons with the ones from the list
         JButton continueButton = buttons.get(0);
         JButton aButton = buttons.get(1);
@@ -124,6 +129,15 @@ public class GameIntroGUI extends JPanel {
         layout.linkSize(SwingConstants.HORIZONTAL, continueButton, aButton, bButton, cButton, dButton, returnButton, fiftyFiftyButton, atAButton, pafButton, fillerButton);
         layout.linkSize(SwingConstants.VERTICAL, continueButton, aButton, bButton, cButton, dButton, returnButton, fiftyFiftyButton, atAButton, pafButton, fillerButton);
 
+        nameSubmitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setUserName(firstNameInput.getText() + " " + lastNameInput.getText());
+                gameGUI.setUserName(getUserName()); // Pass the user's name to the GameGUI class
+                cardLayout.show(cards, "gameGUI");
+            }
+        });
+
         // Set action listeners and document filters
         setupInputListenersAndFilters(inputPanel);
     }
@@ -138,7 +152,7 @@ public class GameIntroGUI extends JPanel {
 
         nameSubmitButton = createNameSubmitButton();
         inputPanel.add(nameSubmitButton);
-        
+
         return inputPanel;
     }
 
@@ -286,7 +300,7 @@ public class GameIntroGUI extends JPanel {
         if (!firstName.isEmpty() && !lastName.isEmpty()) {
             nameSubmitButton.setEnabled(true);
             fullName = firstName + " " + lastName;
-            
+
         } else {
             nameSubmitButton.setEnabled(false);
         }
