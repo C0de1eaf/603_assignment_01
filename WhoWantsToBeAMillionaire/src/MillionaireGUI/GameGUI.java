@@ -8,11 +8,12 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 public class GameGUI extends JPanel {
 
-    private JPanel returnButtonPanel;
     private JTextField firstNameInput;
     private JTextField lastNameInput;
     private JButton nameSubmitButton;
@@ -39,71 +40,81 @@ public class GameGUI extends JPanel {
         // Create input panel with input fields and button
         JPanel inputPanel = createInputPanel();
 
-        // Create buttons
-        JButton continueButton = new JButton("Continue");
-        JButton aButton = new JButton("Option A");
-        JButton bButton = new JButton("Option B");
-        JButton cButton = new JButton("Option C");
-        JButton dButton = new JButton("Option D");
+        // Button texts
+        String[] buttonTexts = {
+            "Continue", "Option A", "Option B", "Option C", "Option D",
+            "50 - 50", "AtA", "PaF", "Filler"
+        };
+
+        // Set preferred button size
+        Dimension buttonSize = new Dimension(220, 220);
+
+        // Create buttons and store them in a List
+        List<JButton> buttons = new ArrayList<>();
+        for (String buttonText : buttonTexts) {
+            JButton button = new JButton(buttonText);
+            button.setPreferredSize(buttonSize);
+            button.setEnabled(false);
+            buttons.add(button);
+        }
+
+        // Replace the specific buttons with the ones from the list
+        JButton continueButton = buttons.get(0);
+        JButton aButton = buttons.get(1);
+        JButton bButton = buttons.get(2);
+        JButton cButton = buttons.get(3);
+        JButton dButton = buttons.get(4);
         returnButton = createReturnButton(cardLayout, cards);
-        JButton fiftyFiftyButton = new JButton("50 - 50");
-        JButton atAButton = new JButton("AtA");
-        JButton pafButton = new JButton("PaF");
-        JButton fillerButton = new JButton("Filler");
+        JButton fiftyFiftyButton = buttons.get(5);
+        JButton atAButton = buttons.get(6);
+        JButton pafButton = buttons.get(7);
+        JButton fillerButton = buttons.get(8);
 
         // Add instructions label
         instructionsLabel = createInstructionsLabel();
 
         // Set GroupLayout's horizontal and vertical groups
         layout.setHorizontalGroup(layout.createSequentialGroup()
-                .addGap(2)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                         .addComponent(instructionsLabel)
                         .addComponent(inputPanel)
-//                        .addComponent(returnButtonPanel)
                         .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup()
                                         .addComponent(continueButton)
                                         .addComponent(returnButton))
-                                .addGap(2, 2, Short.MAX_VALUE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup()
                                         .addComponent(aButton)
                                         .addComponent(fiftyFiftyButton))
-                                .addGap(2, 2, Short.MAX_VALUE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup()
                                         .addComponent(bButton)
                                         .addComponent(atAButton))
-                                .addGap(2, 2, Short.MAX_VALUE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup()
                                         .addComponent(cButton)
                                         .addComponent(pafButton))
-                                .addGap(2, 2, Short.MAX_VALUE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup()
                                         .addComponent(dButton)
                                         .addComponent(fillerButton))))
-                .addGap(2)
         );
 
         layout.setVerticalGroup(layout.createSequentialGroup()
-                .addGap(2)
                 .addComponent(instructionsLabel)
                 .addComponent(inputPanel)
-//                .addComponent(returnButtonPanel)
-                .addGap(2, 2, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(continueButton)
                         .addComponent(aButton)
                         .addComponent(bButton)
                         .addComponent(cButton)
                         .addComponent(dButton))
-                .addGap(2, 2, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(returnButton)
                         .addComponent(fiftyFiftyButton)
                         .addComponent(atAButton)
                         .addComponent(pafButton)
                         .addComponent(fillerButton))
-                .addGap(2)
         );
 
         // Link the sizes of all buttons
@@ -183,19 +194,12 @@ public class GameGUI extends JPanel {
          * RETURN BUTTON CONTENT
          */
 
-        // Create returnButton panel
-        JPanel returnButtonPanel = new JPanel();
-        returnButtonPanel.setLayout(new BoxLayout(returnButtonPanel, BoxLayout.Y_AXIS));
-
         // Create the return button
         try {
             BufferedImage panelImage = ImageIO.read(new File("resources/cropped_return.png"));
             ImageIcon returnButtonIcon = new ImageIcon(panelImage);
 
             returnButton = new JButton(returnButtonIcon);
-
-            // Add spacing around the buttons border
-            returnButton.setMargin(new Insets(0, 5, 0, 5));
 
             // Add text to the right of the image
             returnButton.setText("Return");

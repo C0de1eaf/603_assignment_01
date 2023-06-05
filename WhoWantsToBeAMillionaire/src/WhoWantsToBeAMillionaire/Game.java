@@ -59,6 +59,7 @@ public class Game extends JFrame {
         boolean nameValidity = false;
         boolean continuePlaying = true;
         int currentCash = 0;
+
         SwingUtilities.invokeLater(() -> {
             new MainFrame().setVisible(true);
         });

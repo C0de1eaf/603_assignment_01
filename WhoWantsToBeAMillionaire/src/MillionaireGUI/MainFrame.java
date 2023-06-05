@@ -35,7 +35,7 @@ public class MainFrame extends JFrame {
 
         setTitle("Who Wants To Be A Millionaire");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1000, 1000);
+        setSize(1200, 1000);
 
         leaderboardGUI = new LeaderboardGUI(cardLayout, cards);
 
