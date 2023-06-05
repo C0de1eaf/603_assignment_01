@@ -72,6 +72,7 @@ public class GameGUI extends JPanel {
 
         // Add instructions label
         instructionsLabel = createInstructionsLabel();
+        instructionsLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Set GroupLayout's horizontal and vertical groups
         layout.setHorizontalGroup(layout.createSequentialGroup()
@@ -100,9 +101,11 @@ public class GameGUI extends JPanel {
                                         .addComponent(fillerButton))))
         );
 
+        // All of the buttons anchored to the bottom with proper spacing in between
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addComponent(instructionsLabel)
                 .addComponent(inputPanel)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(continueButton)
                         .addComponent(aButton)
@@ -301,11 +304,11 @@ public class GameGUI extends JPanel {
     }
 
     private JLabel createInstructionsLabel() {
-        JLabel instructionsLabelCreate = new JLabel("<html>Welcome to the Who Wants To Be A Millionaire game.<br/>"
+        JLabel instructionsLabelCreate = new JLabel("<html><body><center>Welcome to the Who Wants To Be A Millionaire game.<br/>"
                 + "You will be asked a total of 10 questions with varying <br/>"
                 + "difficulty as the questions go on. Please answer them by<br/>"
-                + "clicking on the correct answer in order to move on.</html>");
-        Font font = new Font("Arial", Font.PLAIN, 20);
+                + "clicking on the correct answer in order to move on.</center></body></html>");
+        Font font = new Font("Arial", Font.PLAIN, 28);
         instructionsLabelCreate.setFont(font);
         instructionsLabelCreate.setVisible(false);
         return instructionsLabelCreate;
