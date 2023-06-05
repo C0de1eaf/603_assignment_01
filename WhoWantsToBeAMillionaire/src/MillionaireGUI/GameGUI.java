@@ -1,6 +1,5 @@
 package MillionaireGUI;
 
-import WhoWantsToBeAMillionaire.Game;
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
@@ -32,31 +31,35 @@ public class GameGUI extends JPanel {
     }
 
     public void createGUI(CardLayout cardLayout, JPanel cards) {
+        // Create input panel with input fields and button
+        JPanel inputPanel = createInputPanel();
 
-        // Create panel for input and button
-        JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        
-//        createReturnButton(cardLayout, cards);
+        // Add input panel to the main panel
+        add(inputPanel, BorderLayout.SOUTH);
 
+        // Add instructions label
         instructionsLabel = createInstructionsLabel();
         add(instructionsLabel);
 
-        // Add input text field to the input panel
-        firstNameInput = createFirstNameInput();
-        inputPanel.add(firstNameInput);
+        // Set action listeners and document filters
+        setupInputListenersAndFilters(inputPanel);
+    }
 
-        // Add input text field to the input panel
+    private JPanel createInputPanel() {
+        JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        firstNameInput = createFirstNameInput();
         lastNameInput = createLastNameInput();
+        inputPanel.add(firstNameInput);
         inputPanel.add(lastNameInput);
 
-        // Create button
         nameSubmitButton = createNameSubmitButton();
-
-        // Add button to the input panel
         inputPanel.add(nameSubmitButton);
 
-        add(inputPanel, BorderLayout.SOUTH);
+        return inputPanel;
+    }
 
+    private void setupInputListenersAndFilters(JPanel inputPanel) {
         firstNameInput.addActionListener(e -> {
             fullName = firstNameInput.getText();
             if (!fullName.isEmpty()) {
@@ -115,7 +118,6 @@ public class GameGUI extends JPanel {
             fullName = firstName + " " + lastName;
         } else {
             nameSubmitButton.setEnabled(false);
-//            fullName = null;
         }
     }
 

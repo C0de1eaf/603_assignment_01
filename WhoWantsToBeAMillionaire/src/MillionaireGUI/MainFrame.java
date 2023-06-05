@@ -1,12 +1,7 @@
 package MillionaireGUI;
 
-import java.awt.CardLayout;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.*;
+import java.awt.*;
 
 public class MainFrame extends JFrame {
 
@@ -23,6 +18,9 @@ public class MainFrame extends JFrame {
         JLabel titleLabel = new JLabel("<html><body><center>Who Wants To Be<br>A Millionaire</center></body></html>");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 48));
         titlePanel.add(titleLabel);
+
+        // Add an empty border to create a gap at the top of the title panel
+        titlePanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
 
         // Use GroupLayout to layout the components
         GroupLayout layout = new GroupLayout(getContentPane());
