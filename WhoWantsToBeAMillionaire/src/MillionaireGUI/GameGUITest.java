@@ -1,43 +1,29 @@
 package MillionaireGUI;
 
 import javax.swing.*;
-import javax.swing.text.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 
-public class GameIntroGUI extends JPanel {
+public class GameGUITest extends JPanel {
 
     private JTextField firstNameInput;
     private JTextField lastNameInput;
-    private JButton nameSubmitButton;
     private String fullName;
     private JButton returnButton;
     private JLabel instructionsLabel;
-    private final GameGUI gameGUI;
+    private JButton nameSubmitButton;
 
-    public String getUserName() {
-        return fullName;
-    }
-
-    public void setUserName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public GameIntroGUI(CardLayout cardLayout, JPanel cards, GameGUI gameGUI) {
-        this.gameGUI = gameGUI;
-        createGUI(cardLayout, cards);
-    }
-
-    public void createGUI(CardLayout cardLayout, JPanel cards) {
+    public GameGUITest(CardLayout cardLayout, JPanel cards) {
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
 
@@ -54,7 +40,7 @@ public class GameIntroGUI extends JPanel {
         Dimension buttonSize = new Dimension(220, 220);
 
         // Create buttons and store them in a List
-        List<JButton> buttons = new ArrayList<>();
+        java.util.List<JButton> buttons = new ArrayList<>();
         for (String buttonText : buttonTexts) {
             JButton button = new JButton(buttonText);
             button.setPreferredSize(buttonSize);
@@ -63,6 +49,7 @@ public class GameIntroGUI extends JPanel {
         }
 
         inputPanel.add(nameSubmitButton);
+
         // Replace the specific buttons with the ones from the list
         JButton continueButton = buttons.get(0);
         JButton aButton = buttons.get(1);
@@ -129,31 +116,8 @@ public class GameIntroGUI extends JPanel {
         layout.linkSize(SwingConstants.HORIZONTAL, continueButton, aButton, bButton, cButton, dButton, returnButton, fiftyFiftyButton, atAButton, pafButton, fillerButton);
         layout.linkSize(SwingConstants.VERTICAL, continueButton, aButton, bButton, cButton, dButton, returnButton, fiftyFiftyButton, atAButton, pafButton, fillerButton);
 
-        nameSubmitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setUserName(firstNameInput.getText() + " " + lastNameInput.getText());
-                gameGUI.setUserName(getUserName()); // Pass the user's name to the GameGUI class
-                cardLayout.show(cards, "gameGUI");
-            }
-        });
-
         // Set action listeners and document filters
         setupInputListenersAndFilters(inputPanel);
-    }
-
-    private JPanel createInputPanel() {
-        JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
-        firstNameInput = createFirstNameInput();
-        lastNameInput = createLastNameInput();
-        inputPanel.add(firstNameInput);
-        inputPanel.add(lastNameInput);
-
-        nameSubmitButton = createNameSubmitButton();
-        inputPanel.add(nameSubmitButton);
-
-        return inputPanel;
     }
 
     private void setupInputListenersAndFilters(JPanel inputPanel) {
@@ -203,6 +167,24 @@ public class GameIntroGUI extends JPanel {
                 updateSubmitButtonState();
             }
         };
+    }
+
+    private JPanel createInputPanel() {
+        JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        firstNameInput = createFirstNameInput();
+        lastNameInput = createLastNameInput();
+        inputPanel.add(firstNameInput);
+        inputPanel.add(lastNameInput);
+
+        nameSubmitButton = createNameSubmitButton();
+        inputPanel.add(nameSubmitButton);
+
+        return inputPanel;
+    }
+
+    public void showGameIntro(CardLayout cardLayout, JPanel cards) {
+        cardLayout.show(cards, "gameIntroGUI");
     }
 
     private JButton createReturnButton(CardLayout cardLayout, JPanel cards, JPanel inputPanel) {
@@ -327,5 +309,9 @@ public class GameIntroGUI extends JPanel {
         instructionsLabelCreate.setFont(font);
         instructionsLabelCreate.setVisible(false);
         return instructionsLabelCreate;
+    }
+
+    void setUserName(String userName) {
+        this.fullName = userName;
     }
 }

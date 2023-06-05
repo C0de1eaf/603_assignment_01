@@ -55,7 +55,7 @@ public class MenuGUI extends JPanel {
 
         // Add ActionListener to play button
         playButton.addActionListener(e -> {
-            cardLayout.show(cards, "gameIntroGUI");
+            cardLayout.show(cards, "gameGUI");
         });
 
         leaderboardButton.addActionListener(e -> {

@@ -7,7 +7,6 @@ public class MainFrame extends JFrame {
 
     private final MenuGUI menuGUI;
     private final GameGUI gameGUI;
-    private final GameIntroGUI gameIntroGUI;
     private final LeaderboardGUI leaderboardGUI;
 
     public MainFrame() {
@@ -38,11 +37,9 @@ public class MainFrame extends JFrame {
 
         menuGUI = new MenuGUI(cardLayout, cards);
         gameGUI = new GameGUI(cardLayout, cards);
-        gameIntroGUI = new GameIntroGUI(cardLayout, cards, gameGUI);
         leaderboardGUI = new LeaderboardGUI(cardLayout, cards);
 
         cards.add(menuGUI, "menuGUI");
-        cards.add(gameIntroGUI, "gameIntroGUI");
         cards.add(gameGUI, "gameGUI");
         cards.add(leaderboardGUI, "leaderboardGUI");
 
