@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -83,7 +84,7 @@ public class LeaderboardGUI extends JPanel {
                     returnButton.setBackground(new Color(255, 215, 0));
                 }
             });
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             System.out.println(ex);
         }
 
@@ -140,6 +141,7 @@ public class LeaderboardGUI extends JPanel {
 
         class CustomTableCellRenderer extends DefaultTableCellRenderer {
 
+            @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 

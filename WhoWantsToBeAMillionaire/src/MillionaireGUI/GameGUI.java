@@ -7,10 +7,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class GameGUI extends JPanel {
 
+    private JPanel returnButtonPanel;
     private JTextField firstNameInput;
     private JTextField lastNameInput;
     private JButton nameSubmitButton;
@@ -31,15 +33,82 @@ public class GameGUI extends JPanel {
     }
 
     public void createGUI(CardLayout cardLayout, JPanel cards) {
+        GroupLayout layout = new GroupLayout(this);
+        this.setLayout(layout);
+
         // Create input panel with input fields and button
         JPanel inputPanel = createInputPanel();
 
-        // Add input panel to the main panel
-        add(inputPanel, BorderLayout.SOUTH);
+        // Create buttons
+        JButton continueButton = new JButton("Continue");
+        JButton aButton = new JButton("Option A");
+        JButton bButton = new JButton("Option B");
+        JButton cButton = new JButton("Option C");
+        JButton dButton = new JButton("Option D");
+        returnButton = createReturnButton(cardLayout, cards);
+        JButton fiftyFiftyButton = new JButton("50 - 50");
+        JButton atAButton = new JButton("AtA");
+        JButton pafButton = new JButton("PaF");
+        JButton fillerButton = new JButton("Filler");
 
         // Add instructions label
         instructionsLabel = createInstructionsLabel();
-        add(instructionsLabel);
+
+        // Set GroupLayout's horizontal and vertical groups
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGap(2)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                        .addComponent(instructionsLabel)
+                        .addComponent(inputPanel)
+//                        .addComponent(returnButtonPanel)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup()
+                                        .addComponent(continueButton)
+                                        .addComponent(returnButton))
+                                .addGap(2, 2, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup()
+                                        .addComponent(aButton)
+                                        .addComponent(fiftyFiftyButton))
+                                .addGap(2, 2, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup()
+                                        .addComponent(bButton)
+                                        .addComponent(atAButton))
+                                .addGap(2, 2, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup()
+                                        .addComponent(cButton)
+                                        .addComponent(pafButton))
+                                .addGap(2, 2, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup()
+                                        .addComponent(dButton)
+                                        .addComponent(fillerButton))))
+                .addGap(2)
+        );
+
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGap(2)
+                .addComponent(instructionsLabel)
+                .addComponent(inputPanel)
+//                .addComponent(returnButtonPanel)
+                .addGap(2, 2, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup()
+                        .addComponent(continueButton)
+                        .addComponent(aButton)
+                        .addComponent(bButton)
+                        .addComponent(cButton)
+                        .addComponent(dButton))
+                .addGap(2, 2, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup()
+                        .addComponent(returnButton)
+                        .addComponent(fiftyFiftyButton)
+                        .addComponent(atAButton)
+                        .addComponent(pafButton)
+                        .addComponent(fillerButton))
+                .addGap(2)
+        );
+
+        // Link the sizes of all buttons
+        layout.linkSize(SwingConstants.HORIZONTAL, continueButton, aButton, bButton, cButton, dButton, returnButton, fiftyFiftyButton, atAButton, pafButton, fillerButton);
+        layout.linkSize(SwingConstants.VERTICAL, continueButton, aButton, bButton, cButton, dButton, returnButton, fiftyFiftyButton, atAButton, pafButton, fillerButton);
 
         // Set action listeners and document filters
         setupInputListenersAndFilters(inputPanel);
@@ -109,19 +178,7 @@ public class GameGUI extends JPanel {
         };
     }
 
-    private void updateSubmitButtonState() {
-        String firstName = firstNameInput.getText();
-        String lastName = lastNameInput.getText();
-
-        if (!firstName.isEmpty() && !lastName.isEmpty()) {
-            nameSubmitButton.setEnabled(true);
-            fullName = firstName + " " + lastName;
-        } else {
-            nameSubmitButton.setEnabled(false);
-        }
-    }
-
-    public JPanel createReturnButton(CardLayout cardLayout, JPanel cards) {
+    public JButton createReturnButton(CardLayout cardLayout, JPanel cards) {
         /*
          * RETURN BUTTON CONTENT
          */
@@ -179,19 +236,11 @@ public class GameGUI extends JPanel {
                     returnButton.setBackground(new Color(255, 215, 0));
                 }
             });
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             System.out.println(ex);
         }
 
-        // Add the components to the return button panel
-        returnButtonPanel.add(returnButton);
-
-        // Set up the GridBagConstraints for the return button
-        GridBagConstraints gbcReturnButtonPanel = new GridBagConstraints(0, 3, 1, 1, 1.0, 1.0, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE, new Insets(0, 20, 20, 0), 0, 0);
-
-        // Add returnButtonPanel to the main panel
-        add(returnButtonPanel, gbcReturnButtonPanel);
-        return returnButtonPanel;
+        return returnButton;
     }
 
     private JTextField createFirstNameInput() {
@@ -210,10 +259,25 @@ public class GameGUI extends JPanel {
         return lastNameTextField;
     }
 
+    private void updateSubmitButtonState() {
+        String firstName = firstNameInput.getText();
+        String lastName = lastNameInput.getText();
+
+        if (!firstName.isEmpty() && !lastName.isEmpty()) {
+            nameSubmitButton.setEnabled(true);
+            fullName = firstName + " " + lastName;
+        } else {
+            nameSubmitButton.setEnabled(false);
+        }
+    }
+
     private JButton createNameSubmitButton() {
         JButton nameSubmitButtonCreate = new JButton("Submit");
         Font submitTextFont = new Font("Arial", Font.BOLD, 10);
-        nameSubmitButtonCreate.setPreferredSize(new Dimension(100, 37));
+        nameSubmitButtonCreate.setPreferredSize(new Dimension(80, 36));
+
+        // Background default colour
+        nameSubmitButtonCreate.setBackground(new Color(255, 215, 0));
         nameSubmitButtonCreate.setEnabled(false);
         nameSubmitButtonCreate.setFont(submitTextFont);
         return nameSubmitButtonCreate;
@@ -229,5 +293,4 @@ public class GameGUI extends JPanel {
         instructionsLabelCreate.setVisible(false);
         return instructionsLabelCreate;
     }
-
 }
