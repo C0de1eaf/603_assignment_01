@@ -64,7 +64,7 @@ public class GameGUI extends JPanel {
         JButton bButton = buttons.get(2);
         JButton cButton = buttons.get(3);
         JButton dButton = buttons.get(4);
-        returnButton = createReturnButton(cardLayout, cards);
+        returnButton = createReturnButton(cardLayout, cards, inputPanel);
         JButton fiftyFiftyButton = buttons.get(5);
         JButton atAButton = buttons.get(6);
         JButton pafButton = buttons.get(7);
@@ -152,15 +152,14 @@ public class GameGUI extends JPanel {
         nameSubmitButton.addActionListener(e -> {
             if (fullName != null) {
                 System.out.println("User input: " + fullName);
+                inputPanel.setVisible(false);
+                nameSubmitButton.setVisible(false);
+                instructionsLabel.setVisible(true);
+            } else {
+                firstNameInput.setText("");  // Clear the text field
+                lastNameInput.setText("");  // Clear the text field
+                updateSubmitButtonState();
             }
-            firstNameInput.setText("");  // Clear the text field
-            lastNameInput.setText("");  // Clear the text field
-            updateSubmitButtonState();
-
-            // Hide inputPanel and nameSubmitButton, and show messageLabel
-            inputPanel.setVisible(false);
-            nameSubmitButton.setVisible(false);
-            instructionsLabel.setVisible(true);
         });
 
         // Set document filters for the text fields
@@ -189,7 +188,7 @@ public class GameGUI extends JPanel {
         };
     }
 
-    public JButton createReturnButton(CardLayout cardLayout, JPanel cards) {
+    private JButton createReturnButton(CardLayout cardLayout, JPanel cards, JPanel inputPanel) {
         /*
          * RETURN BUTTON CONTENT
          */
@@ -212,6 +211,16 @@ public class GameGUI extends JPanel {
 
             // Add ActionListener to return button
             returnButton.addActionListener(e -> {
+                // Reset values and components
+                firstNameInput.setText("");
+                lastNameInput.setText("");
+                fullName = null;
+                nameSubmitButton.setEnabled(false);
+                inputPanel.setVisible(true);
+                nameSubmitButton.setVisible(true);
+                instructionsLabel.setVisible(false);
+
+                // Show menuGUI
                 cardLayout.show(cards, "menuGUI");
             });
 
@@ -243,6 +252,10 @@ public class GameGUI extends JPanel {
         } catch (IOException ex) {
             System.out.println(ex);
         }
+
+        // Set margins for the return button
+        Insets buttonMargin = new Insets(-7, 0, 0, 0);
+        returnButton.setMargin(buttonMargin);
 
         return returnButton;
     }

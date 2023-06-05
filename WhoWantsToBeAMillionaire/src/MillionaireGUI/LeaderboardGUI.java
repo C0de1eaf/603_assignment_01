@@ -26,7 +26,7 @@ public class LeaderboardGUI extends JPanel {
 
     }
 
-    public void createReturnButton(CardLayout cardLayout, JPanel cards) {
+    private void createReturnButton(CardLayout cardLayout, JPanel cards) {
         /*
          * RETURN BUTTON CONTENT
          */
