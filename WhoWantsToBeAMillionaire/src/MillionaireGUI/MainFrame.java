@@ -34,7 +34,7 @@ public class MainFrame extends JFrame {
 
         setTitle("Who Wants To Be A Millionaire");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1200, 1000);
+        setSize(1700, 1000);
 
         menuGUI = new MenuGUI(cardLayout, cards);
         gameGUI = new GameGUI(cardLayout, cards);
@@ -62,6 +62,5 @@ public class MainFrame extends JFrame {
         SwingUtilities.invokeLater(() -> {
             new MainFrame().setVisible(true);
         });
-
     }
 }

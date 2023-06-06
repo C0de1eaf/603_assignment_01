@@ -14,18 +14,22 @@ import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 import javax.imageio.ImageIO;
+import javax.swing.border.LineBorder;
 
 public final class GameGUI extends JPanel {
 
+    private int currentLevel;
     private JTextField firstNameInput;
     private JTextField lastNameInput;
     private JButton nameSubmitButton;
     private String fullName;
     private JButton returnButton;
-    private JLabel instructionsLabel;
+    private JLabel mainLabel;
     private GameDB gameDatabase;
     private List<ArrayList<Question>> questions;
+    private Question currentQuestion;
     public int MAX_CHARS = 18;
 
     public String getFullName() {
@@ -43,11 +47,14 @@ public final class GameGUI extends JPanel {
     public void createGUI(CardLayout cardLayout, JPanel cards) {
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
+
+        // Create Database stuff.
         this.gameDatabase = new GameDB();
         gameDatabase.createConnection();
         ArrayList<Question> easy = gameDatabase.getEasyQuestions();
         ArrayList<Question> hard = gameDatabase.getHardQuestions();
         this.questions = Arrays.asList(easy, hard);
+        currentLevel = 1;
 
         UIManager.put("Button.disabledText", new Color(200, 200, 200)); // Set the text color for disabled buttons
         UIManager.put("Button.disabled", new Color(100, 100, 100)); // Set the background color for disabled buttons
@@ -88,14 +95,27 @@ public final class GameGUI extends JPanel {
         JButton pafButton = buttons.get(7);
         JButton fillerButton = buttons.get(8);
 
+        // Create a new JPanel for the mainLabel
+        JPanel mainLabelPanel = new JPanel();
+        Dimension mainLabelPanelSize = new Dimension(1124, 300);
+        mainLabelPanel.setSize(mainLabelPanelSize);
+        mainLabelPanel.setMinimumSize(mainLabelPanelSize);
+        mainLabelPanel.setMaximumSize(mainLabelPanelSize);
+        mainLabelPanel.setPreferredSize(mainLabelPanelSize);
+        mainLabelPanel.setLayout(new BorderLayout());
+        mainLabelPanel.setBorder(new LineBorder(Color.BLACK, 5));
+
         // Add instructions label
-        instructionsLabel = createInstructionsLabel();
-        instructionsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        mainLabel = createMainLabel();
+        mainLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Add the mainLabel to the mainLabelPanel
+        mainLabelPanel.add(mainLabel, BorderLayout.CENTER);
 
         // Set GroupLayout's horizontal and vertical groups
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                        .addComponent(instructionsLabel)
+                        .addComponent(mainLabelPanel) // Replace mainLabel with mainLabelPanel
                         .addComponent(inputPanel)
                         .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup()
@@ -121,7 +141,7 @@ public final class GameGUI extends JPanel {
 
         // All of the buttons anchored to the bottom with proper spacing in between
         layout.setVerticalGroup(layout.createSequentialGroup()
-                .addComponent(instructionsLabel)
+                .addComponent(mainLabelPanel) // Replace mainLabel with mainLabelPanel
                 .addComponent(inputPanel)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -144,9 +164,35 @@ public final class GameGUI extends JPanel {
 
         nameSubmitButton.addActionListener((ActionEvent e) -> {
             setFullName(firstNameInput.getText() + " " + lastNameInput.getText());
-            updateIntroductionText();
+            updateMainLabel();
             cardLayout.show(cards, "gameGUI");
             continueButton.setEnabled(true); // Enable the continue button
+            setColourOfButton(continueButton); // Update the color of the continue button
+        });
+
+        continueButton.addActionListener((ActionEvent e) -> {
+            returnButton.setEnabled(false);
+//            continueButton.setEnabled(false);
+            currentQuestion = getRandomQuestion();
+            mainLabel.setText(currentQuestion.getQuestion());
+            String[] answers = currentQuestion.getAnswers();
+            aButton.setText(answers[0]);
+            bButton.setText(answers[1]);
+            cButton.setText(answers[2]);
+            dButton.setText(answers[3]);
+            aButton.setEnabled(true);
+            bButton.setEnabled(true);
+            cButton.setEnabled(true);
+            dButton.setEnabled(true);
+            currentLevel++;
+
+            // Update the color of the buttons
+            setColourOfButton(continueButton);
+            setColourOfButton(returnButton);
+            setColourOfButton(aButton);
+            setColourOfButton(bButton);
+            setColourOfButton(cButton);
+            setColourOfButton(dButton);
         });
 
         // Set action listeners and document filters
@@ -182,7 +228,7 @@ public final class GameGUI extends JPanel {
                 System.out.println("User input: " + fullName);
                 inputPanel.setVisible(false);
                 nameSubmitButton.setVisible(false);
-                instructionsLabel.setVisible(true);
+                mainLabel.setVisible(true);
             } else {
                 firstNameInput.setText("");  // Clear the text field
                 lastNameInput.setText("");  // Clear the text field
@@ -246,7 +292,7 @@ public final class GameGUI extends JPanel {
                 nameSubmitButton.setEnabled(false);
                 inputPanel.setVisible(true);
                 nameSubmitButton.setVisible(true);
-                instructionsLabel.setVisible(false);
+                mainLabel.setText("");
 
                 // Show menuGUI
                 cardLayout.show(cards, "menuGUI");
@@ -298,30 +344,34 @@ public final class GameGUI extends JPanel {
         nameSubmitButtonCreate.setPreferredSize(new Dimension(80, 36));
 
         // Background default colour
-        nameSubmitButtonCreate.setBackground(new Color(255, 215, 0));
+        setColourOfButton(nameSubmitButtonCreate);
         nameSubmitButtonCreate.setEnabled(false);
         nameSubmitButtonCreate.setFont(submitTextFont);
         return nameSubmitButtonCreate;
     }
 
-    private JLabel createInstructionsLabel() {
-        JLabel instructionsLabelCreate = new JLabel();
+    private JLabel createMainLabel() {
+        JLabel mainLabelCreate = new JLabel();
         Font font = new Font("Arial", Font.PLAIN, 28);
-        instructionsLabelCreate.setFont(font);
-        instructionsLabelCreate.setVisible(false);
-        return instructionsLabelCreate;
+        mainLabelCreate.setFont(font);
+        mainLabelCreate.setVisible(false);
+        return mainLabelCreate;
     }
 
-    private void updateIntroductionText() {
-        instructionsLabel.setText("<html><body><center>Welcome <b><i>" + fullName + "</i></b> to the Who Wants To Be A Millionaire game.<br/>"
+    private void updateMainLabel() {
+        mainLabel.setText("<html><div style='text-align: center;'>"
+                + "Welcome <b><i>" + fullName + "</i></b> to the Who Wants To Be A Millionaire game.<br/>"
                 + "You will be asked a total of 10 questions with varying <br/>"
                 + "difficulty as the questions go on. Please answer them by<br/>"
-                + "clicking on the correct answer in order to move on.</center></body></html>");
+                + "clicking on the correct answer in order to move on.<br/>"
+                + "Once the question is asked, you will not be able to leave the <br/>"
+                + "game but you will be able to quit any time before every round <br/>"
+                + "starts and keep all of your current money winnings</div></html>");
     }
 
     public void setColourOfButton(JButton button) {
         // Set font for the button
-        Font returnButtonFont = new Font("Arial", Font.BOLD, 26);
+        Font returnButtonFont = new Font("Arial", Font.BOLD, 20);
         button.setFont(returnButtonFont);
 
         // Background default colour
@@ -363,4 +413,15 @@ public final class GameGUI extends JPanel {
         });
     }
 
+    public Question getRandomQuestion() {
+        Random rand = new Random();
+        System.out.println("\n--Current Level: " + currentLevel + "--\n"); // prints out current level
+        int questionIndex = rand.nextInt(questions.get(currentLevel < 7 ? 0 : 1).size()); // get random question randomly based on the size of the array
+        ArrayList<Question> questionList = questions.get(currentLevel < 7 ? 0 : 1); // create a new ArrayList variable based on the level difficulty
+        Question selectedQuestion = questionList.get(questionIndex);
+
+        questionList.remove(questionIndex); // remove the chosen question from the ArrayList
+
+        return selectedQuestion;
+    }
 }
