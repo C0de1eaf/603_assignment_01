@@ -60,28 +60,29 @@ public class LeaderboardGUI extends JPanel {
             });
 
             // Background default colour
-            returnButton.setBackground(new Color(255, 215, 0));
+            returnButton.setBackground(new Color(100, 150, 255));
 
             // Add interactivity to return button
             returnButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    returnButton.setBackground(new Color(255, 165, 0));
+                    returnButton.setBackground(new Color(80, 130, 235));
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    returnButton.setBackground(new Color(255, 215, 0));
+                    returnButton.setBackground(new Color(100, 150, 255));
+
                 }
 
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    returnButton.setBackground(new Color(255, 165, 0));
+                    returnButton.setBackground(new Color(60, 110, 215));
                 }
 
                 @Override
                 public void mouseReleased(MouseEvent e) {
-                    returnButton.setBackground(new Color(255, 215, 0));
+                    returnButton.setBackground(new Color(100, 150, 255));
                 }
             });
         } catch (IOException ex) {

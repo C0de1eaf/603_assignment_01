@@ -1,10 +1,11 @@
 package MillionaireGUI;
 
+import MillionaireDB.GameDB;
+import WhoWantsToBeAMillionaire.Question;
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -12,9 +13,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.imageio.ImageIO;
 
-public class GameGUI extends JPanel {
+public final class GameGUI extends JPanel {
 
     private JTextField firstNameInput;
     private JTextField lastNameInput;
@@ -22,6 +24,8 @@ public class GameGUI extends JPanel {
     private String fullName;
     private JButton returnButton;
     private JLabel instructionsLabel;
+    private GameDB gameDatabase;
+    private List<ArrayList<Question>> questions;
     public int MAX_CHARS = 18;
 
     public String getFullName() {
@@ -39,6 +43,14 @@ public class GameGUI extends JPanel {
     public void createGUI(CardLayout cardLayout, JPanel cards) {
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
+        this.gameDatabase = new GameDB();
+        gameDatabase.createConnection();
+        ArrayList<Question> easy = gameDatabase.getEasyQuestions();
+        ArrayList<Question> hard = gameDatabase.getHardQuestions();
+        this.questions = Arrays.asList(easy, hard);
+
+        UIManager.put("Button.disabledText", new Color(200, 200, 200)); // Set the text color for disabled buttons
+        UIManager.put("Button.disabled", new Color(100, 100, 100)); // Set the background color for disabled buttons
 
         // Create input panel with input fields and button
         JPanel inputPanel = createInputPanel();
@@ -59,6 +71,8 @@ public class GameGUI extends JPanel {
             button.setPreferredSize(buttonSize);
             button.setEnabled(false);
             buttons.add(button);
+
+            setColourOfButton(button);
         }
 
         inputPanel.add(nameSubmitButton);
@@ -68,8 +82,8 @@ public class GameGUI extends JPanel {
         JButton bButton = buttons.get(2);
         JButton cButton = buttons.get(3);
         JButton dButton = buttons.get(4);
-        returnButton = createReturnButton(cardLayout, cards, inputPanel);
         JButton fiftyFiftyButton = buttons.get(5);
+        returnButton = createReturnButton(cardLayout, cards, inputPanel);
         JButton atAButton = buttons.get(6);
         JButton pafButton = buttons.get(7);
         JButton fillerButton = buttons.get(8);
@@ -128,13 +142,11 @@ public class GameGUI extends JPanel {
         layout.linkSize(SwingConstants.HORIZONTAL, continueButton, aButton, bButton, cButton, dButton, returnButton, fiftyFiftyButton, atAButton, pafButton, fillerButton);
         layout.linkSize(SwingConstants.VERTICAL, continueButton, aButton, bButton, cButton, dButton, returnButton, fiftyFiftyButton, atAButton, pafButton, fillerButton);
 
-        nameSubmitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setFullName(firstNameInput.getText() + " " + lastNameInput.getText());
-                updateIntroductionText();
-                cardLayout.show(cards, "gameGUI");
-            }
+        nameSubmitButton.addActionListener((ActionEvent e) -> {
+            setFullName(firstNameInput.getText() + " " + lastNameInput.getText());
+            updateIntroductionText();
+            cardLayout.show(cards, "gameGUI");
+            continueButton.setEnabled(true); // Enable the continue button
         });
 
         // Set action listeners and document filters
@@ -240,39 +252,14 @@ public class GameGUI extends JPanel {
                 cardLayout.show(cards, "menuGUI");
             });
 
-            // Background default colour
-            returnButton.setBackground(new Color(255, 215, 0));
+            // Set the default colour scheme of the button
+            setColourOfButton(returnButton);
 
-            // Add interactivity to return button
-            returnButton.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    returnButton.setBackground(new Color(255, 165, 0));
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    returnButton.setBackground(new Color(255, 215, 0));
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    returnButton.setBackground(new Color(255, 165, 0));
-                }
-
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    returnButton.setBackground(new Color(255, 215, 0));
-                }
-            });
         } catch (IOException ex) {
             System.out.println(ex);
         }
 
         // Set margins for the return button
-        Insets buttonMargin = new Insets(-7, 0, 0, 0);
-        returnButton.setMargin(buttonMargin);
-
         return returnButton;
     }
 
@@ -326,10 +313,54 @@ public class GameGUI extends JPanel {
     }
 
     private void updateIntroductionText() {
-        instructionsLabel.setText("<html><body><center>Welcome " + fullName + " to the Who Wants To Be A Millionaire game.<br/>"
+        instructionsLabel.setText("<html><body><center>Welcome <b><i>" + fullName + "</i></b> to the Who Wants To Be A Millionaire game.<br/>"
                 + "You will be asked a total of 10 questions with varying <br/>"
                 + "difficulty as the questions go on. Please answer them by<br/>"
                 + "clicking on the correct answer in order to move on.</center></body></html>");
+    }
+
+    public void setColourOfButton(JButton button) {
+        // Set font for the button
+        Font returnButtonFont = new Font("Arial", Font.BOLD, 26);
+        button.setFont(returnButtonFont);
+
+        // Background default colour
+        if (button.isEnabled()) {
+            button.setBackground(new Color(100, 150, 255));
+        } else {
+            button.setBackground(new Color(180, 180, 180));
+        }
+
+        // Add interactivity to return button
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if (button.isEnabled()) {
+                    button.setBackground(new Color(80, 130, 235));
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if (button.isEnabled()) {
+                    button.setBackground(new Color(100, 150, 255));
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (button.isEnabled()) {
+                    button.setBackground(new Color(60, 110, 215));
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (button.isEnabled()) {
+                    button.setBackground(new Color(100, 150, 255));
+                }
+            }
+        });
     }
 
 }

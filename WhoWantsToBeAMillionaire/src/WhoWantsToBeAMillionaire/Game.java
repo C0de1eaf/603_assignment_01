@@ -16,6 +16,7 @@ public class Game extends JFrame {
 
     // create variables that are used throughout this class
     private final List<ArrayList<Question>> questions;
+    private final GameDB db;
     private final int[] cashPrize;
     private final Scanner scan;
     private int currentLevel;
@@ -24,7 +25,6 @@ public class Game extends JFrame {
     private final AskTheAudience askTheAudience;
     private final PhoneAFriend phoneAFriend;
     private final Leaderboard leaderboard;
-    private final GameDB db;
     private String name;
 
     // sets the initial values of variables
@@ -36,8 +36,8 @@ public class Game extends JFrame {
         this.rand = new Random();
         this.scan = new Scanner(System.in);
         this.leaderboard = new Leaderboard();
-        this.db = new GameDB();
 
+        this.db = new GameDB();
         ArrayList<Question> easy = db.getEasyQuestions();
         ArrayList<Question> hard = db.getHardQuestions();
         this.questions = Arrays.asList(easy, hard);

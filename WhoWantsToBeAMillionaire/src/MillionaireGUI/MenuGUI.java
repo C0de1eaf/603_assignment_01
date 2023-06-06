@@ -24,13 +24,8 @@ public class MenuGUI extends JPanel {
         leaderboardButton = createButton("Leaderboard");
         exitButton = createButton("Exit");
 
-        Font menuButtonFont = new Font("Arial", Font.BOLD, 26);
-        playButton.setFont(menuButtonFont);
-        leaderboardButton.setFont(menuButtonFont);
-        exitButton.setFont(menuButtonFont);
-
         // Set the preferred size for the buttons
-        Dimension buttonSize = new Dimension(200, 50);
+        Dimension buttonSize = new Dimension(300, 60);
         playButton.setPreferredSize(buttonSize);
         leaderboardButton.setPreferredSize(buttonSize);
         exitButton.setPreferredSize(buttonSize);
@@ -78,26 +73,34 @@ public class MenuGUI extends JPanel {
     }
 
     public void addMouseListenerToButton(JButton button, Color defaultColor, Color hoverColor) {
-        button.setBackground(new Color(255, 215, 0));
+        // Set font for the button
+        Font returnButtonFont = new Font("Arial", Font.BOLD, 26);
+        button.setFont(returnButtonFont);
+
+        // Background default colour
+        button.setBackground(new Color(100, 150, 255));
+
+        // Add interactivity to return button
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                button.setBackground(hoverColor);
+                button.setBackground(new Color(80, 130, 235));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                button.setBackground(defaultColor);
+                button.setBackground(new Color(100, 150, 255));
+
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                button.setBackground(hoverColor);
+                button.setBackground(new Color(60, 110, 215));
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                button.setBackground(defaultColor);
+                button.setBackground(new Color(100, 150, 255));
             }
         });
     }

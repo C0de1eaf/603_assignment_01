@@ -18,6 +18,7 @@ public class MainFrame extends JFrame {
         JLabel titleLabel = new JLabel("<html><body><center>Who Wants To Be<br>A Millionaire</center></body></html>");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 48));
         titlePanel.add(titleLabel);
+        setResizable(false);
 
         // Add an empty border to create a gap at the top of the title panel
         titlePanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
@@ -55,5 +56,12 @@ public class MainFrame extends JFrame {
         );
 
         cardLayout.show(cards, "menuGUI");
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new MainFrame().setVisible(true);
+        });
+
     }
 }
