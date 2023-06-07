@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import javax.imageio.ImageIO;
-import javax.swing.border.LineBorder;
 
 public final class GameGUI extends JPanel {
 
@@ -101,9 +100,6 @@ public final class GameGUI extends JPanel {
         mainLabelPanel.setPreferredSize(new Dimension(1124, 300));
         mainLabelPanel.setLayout(new BorderLayout());
 
-        // Add a black thick border around the mainLabelPanel for testing purposes
-        mainLabelPanel.setBorder(new LineBorder(Color.BLACK, 5));
-
         // Add instructions label
         mainLabel = createMainLabel();
         mainLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -175,10 +171,10 @@ public final class GameGUI extends JPanel {
             currentQuestion = getRandomQuestion();
             mainLabel.setText(currentQuestion.getQuestion());
             String[] answers = currentQuestion.getAnswers();
-            aButton.setText("A) "+ answers[0]);
-            bButton.setText("B) "+ answers[1]);
-            cButton.setText("C) "+ answers[2]);
-            dButton.setText("D) "+ answers[3]);
+            aButton.setText("A) " + answers[0]);
+            bButton.setText("B) " + answers[1]);
+            cButton.setText("C) " + answers[2]);
+            dButton.setText("D) " + answers[3]);
             aButton.setEnabled(true);
             bButton.setEnabled(true);
             cButton.setEnabled(true);
@@ -192,6 +188,23 @@ public final class GameGUI extends JPanel {
             setColourOfButton(bButton);
             setColourOfButton(cButton);
             setColourOfButton(dButton);
+        });
+
+        // Modify the action listeners for the answer buttons
+        aButton.addActionListener((ActionEvent e) -> {
+            checkAnswer(0);
+        });
+
+        bButton.addActionListener((ActionEvent e) -> {
+            checkAnswer(1);
+        });
+
+        cButton.addActionListener((ActionEvent e) -> {
+            checkAnswer(2);
+        });
+
+        dButton.addActionListener((ActionEvent e) -> {
+            checkAnswer(3);
         });
 
         // Set action listeners and document filters
@@ -422,5 +435,17 @@ public final class GameGUI extends JPanel {
         questionList.remove(questionIndex); // remove the chosen question from the ArrayList
 
         return selectedQuestion;
+    }
+
+    private void checkAnswer(int selectedAnswerIndex) {
+        if (selectedAnswerIndex == currentQuestion.getCorrectAnswerIndex()) {
+            JOptionPane.showMessageDialog(this, "Correct Answer!", "Result", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "You lose!", "Result", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void goToNextQuestion() {
+        getRandomQuestion();
     }
 }
