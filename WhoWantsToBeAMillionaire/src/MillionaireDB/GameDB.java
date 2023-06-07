@@ -18,11 +18,7 @@ public class GameDB {
     public GameDB() {
         this.createConnection();
     }
-
-//    public static void main(String[] args) {
-//        MillionaireDB db = new MillionaireDB();
-//        System.out.println(db.getLeaderboard().toString());
-//    }
+    
     //Obtains the easyQuestions from the database
     public ArrayList<Question> getEasyQuestions() {
         ArrayList<Question> easyQuestions = new ArrayList<>(); //Create an ArrayList
