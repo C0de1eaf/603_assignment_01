@@ -21,7 +21,8 @@ public final class GameGUI extends JPanel {
 
     private boolean isCorrect;
     private int currentLevel;
-    private int[] cashPrize;
+    private final int[] cashPrize;
+    private final int currentCashPrize;
     private JTextField firstNameInput;
     private JTextField lastNameInput;
     private JButton nameSubmitButton;
@@ -33,16 +34,19 @@ public final class GameGUI extends JPanel {
     private Question currentQuestion;
     public int MAX_CHARS = 18;
 
-    JPanel inputPanel;
-    JButton continueButton;
-    JButton aButton;
-    JButton bButton;
-    JButton cButton;
-    JButton dButton;
-    JButton fiftyFiftyButton;
-    JButton atAButton;
-    JButton pafButton;
-    JButton fillerButton;
+    private final JPanel inputPanel;
+    private final JButton continueButton;
+    private final JButton aButton;
+    private final JButton bButton;
+    private final JButton cButton;
+    private final JButton dButton;
+    private final JButton fiftyFiftyButton;
+    private final JButton atAButton;
+    private final JButton pafButton;
+    private final JButton currentScoreAndLevelButton;
+
+    private JPanel levelPanel;
+    private JLabel levelLabel;
 
     public String getFullName() {
         return fullName;
@@ -59,7 +63,7 @@ public final class GameGUI extends JPanel {
         // Button texts
         String[] buttonTexts = {
             "Continue", "Option A", "Option B", "Option C", "Option D",
-            "50 - 50", "AtA", "PaF", "Filler"
+            "50 - 50", "AtA", "PaF", "Game Info Panel"
         };
 
         // Set preferred button size
@@ -87,16 +91,15 @@ public final class GameGUI extends JPanel {
         fiftyFiftyButton = buttons.get(5);
         atAButton = buttons.get(6);
         pafButton = buttons.get(7);
-        fillerButton = buttons.get(8);
+        currentScoreAndLevelButton = buttons.get(8);
         this.cashPrize = new int[]{100, 200, 300, 500, 1000, 5000, 10000, 50000, 100000, 250000};
         createGUI(cardLayout, cards);
+        currentCashPrize = 0;
     }
 
     public void createGUI(CardLayout cardLayout, JPanel cards) {
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
-
-        int currentCashPrize = 0;
 
         // Create Database stuff.
         this.gameDatabase = new GameDB();
@@ -146,7 +149,7 @@ public final class GameGUI extends JPanel {
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup()
                                         .addComponent(dButton)
-                                        .addComponent(fillerButton))))
+                                        .addComponent(currentScoreAndLevelButton))))
         );
 
         // All of the buttons anchored to the bottom with proper spacing in between
@@ -165,12 +168,12 @@ public final class GameGUI extends JPanel {
                         .addComponent(fiftyFiftyButton)
                         .addComponent(atAButton)
                         .addComponent(pafButton)
-                        .addComponent(fillerButton))
+                        .addComponent(currentScoreAndLevelButton))
         );
 
         // Link the sizes of all buttons
-        layout.linkSize(SwingConstants.HORIZONTAL, continueButton, aButton, bButton, cButton, dButton, returnButton, fiftyFiftyButton, atAButton, pafButton, fillerButton);
-        layout.linkSize(SwingConstants.VERTICAL, continueButton, aButton, bButton, cButton, dButton, returnButton, fiftyFiftyButton, atAButton, pafButton, fillerButton);
+        layout.linkSize(SwingConstants.HORIZONTAL, continueButton, aButton, bButton, cButton, dButton, returnButton, fiftyFiftyButton, atAButton, pafButton, currentScoreAndLevelButton);
+        layout.linkSize(SwingConstants.VERTICAL, continueButton, aButton, bButton, cButton, dButton, returnButton, fiftyFiftyButton, atAButton, pafButton, currentScoreAndLevelButton);
 
         nameSubmitButton.addActionListener((ActionEvent e) -> {
             setFullName(firstNameInput.getText() + " " + lastNameInput.getText());
@@ -194,6 +197,10 @@ public final class GameGUI extends JPanel {
             bButton.setEnabled(true);
             cButton.setEnabled(true);
             dButton.setEnabled(true);
+
+            // Set up the currentScoreAndLevelButton values
+            currentScoreAndLevelButton.setText("<html><center><i><font color='black'>Current Level :" + currentLevel + "<br>Reward: $" + currentCashPrize + "</font></center><i></html>");
+
             currentLevel++;
 
             // Update the color of the buttons
@@ -230,17 +237,17 @@ public final class GameGUI extends JPanel {
     }
 
     private JPanel createInputPanel() {
-        JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel inputPanelReturn = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
         firstNameInput = createFirstNameInput();
         lastNameInput = createLastNameInput();
-        inputPanel.add(firstNameInput);
-        inputPanel.add(lastNameInput);
+        inputPanelReturn.add(firstNameInput);
+        inputPanelReturn.add(lastNameInput);
 
         nameSubmitButton = createNameSubmitButton();
-        inputPanel.add(nameSubmitButton);
+        inputPanelReturn.add(nameSubmitButton);
 
-        return inputPanel;
+        return inputPanelReturn;
     }
 
     private void setupInputListenersAndFilters(JPanel inputPanel) {
@@ -293,10 +300,6 @@ public final class GameGUI extends JPanel {
     }
 
     private JButton createReturnButton(CardLayout cardLayout, JPanel cards, JPanel inputPanel) {
-        /*
-         * RETURN BUTTON CONTENT
-         */
-
         // Create the return button
         try {
             BufferedImage panelImage = ImageIO.read(new File("resources/cropped_return.png"));
