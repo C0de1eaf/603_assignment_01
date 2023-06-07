@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 
 public final class GameGUI extends JPanel {
 
+    private boolean isCorrect;
     private int currentLevel;
     private JTextField firstNameInput;
     private JTextField lastNameInput;
@@ -30,6 +31,16 @@ public final class GameGUI extends JPanel {
     private List<ArrayList<Question>> questions;
     private Question currentQuestion;
     public int MAX_CHARS = 18;
+
+    JButton continueButton;
+    JButton aButton;
+    JButton bButton;
+    JButton cButton;
+    JButton dButton;
+    JButton fiftyFiftyButton;
+    JButton atAButton;
+    JButton pafButton;
+    JButton fillerButton;
 
     public String getFullName() {
         return fullName;
@@ -68,7 +79,7 @@ public final class GameGUI extends JPanel {
         };
 
         // Set preferred button size
-        Dimension buttonSize = new Dimension(220, 220);
+        Dimension buttonSize = new Dimension(300, 220);
 
         // Create buttons and store them in a List
         List<JButton> buttons = new ArrayList<>();
@@ -83,16 +94,16 @@ public final class GameGUI extends JPanel {
 
         inputPanel.add(nameSubmitButton);
         // Replace the specific buttons with the ones from the list
-        JButton continueButton = buttons.get(0);
-        JButton aButton = buttons.get(1);
-        JButton bButton = buttons.get(2);
-        JButton cButton = buttons.get(3);
-        JButton dButton = buttons.get(4);
-        JButton fiftyFiftyButton = buttons.get(5);
+        continueButton = buttons.get(0);
+        aButton = buttons.get(1);
+        bButton = buttons.get(2);
+        cButton = buttons.get(3);
+        dButton = buttons.get(4);
         returnButton = createReturnButton(cardLayout, cards, inputPanel);
-        JButton atAButton = buttons.get(6);
-        JButton pafButton = buttons.get(7);
-        JButton fillerButton = buttons.get(8);
+        fiftyFiftyButton = buttons.get(5);
+        atAButton = buttons.get(6);
+        pafButton = buttons.get(7);
+        fillerButton = buttons.get(8);
 
         // Create a new JPanel for the mainLabel
         JPanel mainLabelPanel = new JPanel();
@@ -167,7 +178,7 @@ public final class GameGUI extends JPanel {
 
         continueButton.addActionListener((ActionEvent e) -> {
             returnButton.setEnabled(false);
-//            continueButton.setEnabled(false);
+            continueButton.setEnabled(false);
             currentQuestion = getRandomQuestion();
             mainLabel.setText(currentQuestion.getQuestion());
             String[] answers = currentQuestion.getAnswers();
@@ -190,21 +201,24 @@ public final class GameGUI extends JPanel {
             setColourOfButton(dButton);
         });
 
-        // Modify the action listeners for the answer buttons
         aButton.addActionListener((ActionEvent e) -> {
-            checkAnswer(0);
+            isCorrect = checkAnswerCorrect(0);
+            showIntervalScreen(isCorrect);
         });
 
         bButton.addActionListener((ActionEvent e) -> {
-            checkAnswer(1);
+            isCorrect = checkAnswerCorrect(1);
+            showIntervalScreen(isCorrect);
         });
 
         cButton.addActionListener((ActionEvent e) -> {
-            checkAnswer(2);
+            isCorrect = checkAnswerCorrect(2);
+            showIntervalScreen(isCorrect);
         });
 
         dButton.addActionListener((ActionEvent e) -> {
-            checkAnswer(3);
+            isCorrect = checkAnswerCorrect(3);
+            showIntervalScreen(isCorrect);
         });
 
         // Set action listeners and document filters
@@ -437,15 +451,36 @@ public final class GameGUI extends JPanel {
         return selectedQuestion;
     }
 
-    private void checkAnswer(int selectedAnswerIndex) {
-        if (selectedAnswerIndex == currentQuestion.getCorrectAnswerIndex()) {
-            JOptionPane.showMessageDialog(this, "Correct Answer!", "Result", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "You lose!", "Result", JOptionPane.ERROR_MESSAGE);
-        }
+    private boolean checkAnswerCorrect(int selectedAnswerIndex) {
+        return selectedAnswerIndex == currentQuestion.getCorrectAnswerIndex();
     }
 
-    private void goToNextQuestion() {
-        getRandomQuestion();
+    private void showIntervalScreen(boolean isCorrect) {
+        if (isCorrect) {
+            mainLabel.setText("<html>Click <b>Continue</b> to keep playing. Or click <b>Return</b> to exit the game with your current score.</html>");
+            continueButton.setEnabled(true);
+            returnButton.setEnabled(true);
+        } else {
+            mainLabel.setText("<html>Incorrect. Click <b>Return</b> to exit the game with your current score.</html>");
+            continueButton.setEnabled(false);
+            returnButton.setEnabled(true);
+        }
+
+        // Disable all answer buttons
+        aButton.setEnabled(false);
+        bButton.setEnabled(false);
+        cButton.setEnabled(false);
+        dButton.setEnabled(false);
+
+        // Reset the colour of option buttons
+        setColourOfButton(aButton);
+        setColourOfButton(bButton);
+        setColourOfButton(cButton);
+        setColourOfButton(dButton);
+
+        // Update the color of the buttons
+        setColourOfButton(continueButton);
+        setColourOfButton(returnButton);
     }
+
 }

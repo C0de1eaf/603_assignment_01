@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Wed Jun 07 15:30:53 NZST 2023:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0188-93e8-4944-00000e2fd1a0 
+Wed Jun 07 16:25:29 NZST 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0188-941a-4644-00000e2f9990 
 on database directory D:\DATA\Settings\Desktop\603_assignment_01\WhoWantsToBeAMillionaire\WWTBAM_EmbDB with class loader sun.misc.Launcher$AppClassLoader@5c647e05 
 Loaded from file:/D:/DATA/Settings/Desktop/603_assignment_01/WhoWantsToBeAMillionaire/lib/derby.jar
 java.vendor=Oracle Corporation
