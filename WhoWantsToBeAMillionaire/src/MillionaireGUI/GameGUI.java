@@ -97,12 +97,11 @@ public final class GameGUI extends JPanel {
 
         // Create a new JPanel for the mainLabel
         JPanel mainLabelPanel = new JPanel();
-        Dimension mainLabelPanelSize = new Dimension(1124, 300);
-        mainLabelPanel.setSize(mainLabelPanelSize);
-        mainLabelPanel.setMinimumSize(mainLabelPanelSize);
-        mainLabelPanel.setMaximumSize(mainLabelPanelSize);
-        mainLabelPanel.setPreferredSize(mainLabelPanelSize);
+        mainLabelPanel.setSize(1124, 300);
+        mainLabelPanel.setPreferredSize(new Dimension(1124, 300));
         mainLabelPanel.setLayout(new BorderLayout());
+
+        // Add a black thick border around the mainLabelPanel for testing purposes
         mainLabelPanel.setBorder(new LineBorder(Color.BLACK, 5));
 
         // Add instructions label
@@ -176,10 +175,10 @@ public final class GameGUI extends JPanel {
             currentQuestion = getRandomQuestion();
             mainLabel.setText(currentQuestion.getQuestion());
             String[] answers = currentQuestion.getAnswers();
-            aButton.setText(answers[0]);
-            bButton.setText(answers[1]);
-            cButton.setText(answers[2]);
-            dButton.setText(answers[3]);
+            aButton.setText("A) "+ answers[0]);
+            bButton.setText("B) "+ answers[1]);
+            cButton.setText("C) "+ answers[2]);
+            dButton.setText("D) "+ answers[3]);
             aButton.setEnabled(true);
             bButton.setEnabled(true);
             cButton.setEnabled(true);
