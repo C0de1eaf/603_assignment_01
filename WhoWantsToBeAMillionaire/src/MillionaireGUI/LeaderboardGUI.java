@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-public class LeaderboardGUI extends JPanel {
+public final class LeaderboardGUI extends JPanel {
 
     private JButton returnButton;
 
@@ -26,9 +26,6 @@ public class LeaderboardGUI extends JPanel {
     }
 
     private void createReturnButton(CardLayout cardLayout, JPanel cards) {
-        /*
-         * RETURN BUTTON CONTENT
-         */
 
         // Create returnButton panel
         JPanel returnButtonPanel = new JPanel();
@@ -99,22 +96,21 @@ public class LeaderboardGUI extends JPanel {
     }
 
     public void createLeaderboardTable() {
+        setLayout(new GridBagLayout());
+
         // Create the panel for the top five winners text
         JPanel topFivePanel = new JPanel();
+        topFivePanel.setLayout(new GridBagLayout());
+        topFivePanel.setOpaque(false);
 
         // Create the label for the top five winners text
         JLabel topFiveLabel = new JLabel("Top Five Winners");
         topFiveLabel.setFont(new Font("Arial", Font.PLAIN, 42)); // Set the font for the label
-
-        // Add the label to the top five panel
-        topFivePanel.add(topFiveLabel);
+        topFivePanel.add(topFiveLabel, new GridBagConstraints(0, 0, 1, 1, 0.1, 0.1, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 20, 0, 0), 0, 0));
 
         // Add the top five panel and the leaderboard panel to the main panel
-        add(topFivePanel);
+        add(topFivePanel, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(0, 20, 20, 0), 0, 0));
 
-        /*
-         * LEADERBOARD TABLE CONTENT
-         */
         // Create leaderboard Panel
         JPanel leaderboardPanel = new JPanel();
         leaderboardPanel.setLayout(new BoxLayout(leaderboardPanel, BoxLayout.Y_AXIS));
@@ -125,7 +121,7 @@ public class LeaderboardGUI extends JPanel {
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 
         GameDB db = new GameDB();
-        ArrayList<String> leaderboardData = db.getLeaderboard();
+        ArrayList<String> leaderboardData = getUpdatedLeaderboardData();
         leaderboardData.forEach(row -> {
             String[] rowData = row.split(" ");
             String fullName = rowData[0] + " " + rowData[1]; // Concatenate first and last name
@@ -162,9 +158,6 @@ public class LeaderboardGUI extends JPanel {
 
         leaderboardTable.setIntercellSpacing(new Dimension(0, 0));
 
-        // Set up the GridBagConstraints for the leaderboard
-        GridBagConstraints gbcLeaderboard = new GridBagConstraints(0, 2, 1, 1, 1.0, 0.8, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(10, 0, 0, 0), 1, 1);
-
         // Set the header of the table
         JTableHeader header = leaderboardTable.getTableHeader();
         header.setFont(new Font("Arial", Font.PLAIN, 34)); // Set the new font for the header
@@ -173,6 +166,11 @@ public class LeaderboardGUI extends JPanel {
 
         // Add leaderboardTable to leaderboardPanel and add leaderboardPanel to the main panel
         leaderboardPanel.add(leaderboardTable);
-        add(leaderboardPanel, gbcLeaderboard);
+        add(leaderboardPanel, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.8, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(10, 0, 0, 0), 1, 1));
+    }
+
+    private ArrayList<String> getUpdatedLeaderboardData() {
+        GameDB db = new GameDB();
+        return db.getLeaderboard();
     }
 }

@@ -1,7 +1,5 @@
 package MillionaireDB;
 
-import MillionaireDB.User;
-import MillionaireDB.GameDB;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;

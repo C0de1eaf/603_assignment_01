@@ -1,6 +1,8 @@
 package MillionaireGUI;
 
 import MillionaireDB.GameDB;
+import MillionaireDB.Leaderboard;
+import MillionaireDB.User;
 import WhoWantsToBeAMillionaire.Question;
 import javax.swing.*;
 import javax.swing.text.*;
@@ -15,6 +17,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 public final class GameGUI extends JPanel {
@@ -22,7 +26,7 @@ public final class GameGUI extends JPanel {
     private boolean isCorrect;
     private int currentLevel;
     private final int[] cashPrize;
-    private final int currentCashPrize;
+    private int currentCashPrize;
     private JTextField firstNameInput;
     private JTextField lastNameInput;
     private JButton nameSubmitButton;
@@ -44,17 +48,8 @@ public final class GameGUI extends JPanel {
     private final JButton atAButton;
     private final JButton pafButton;
     private final JButton currentScoreAndLevelButton;
-
-    private JPanel levelPanel;
-    private JLabel levelLabel;
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
+    private User newUser;
+    private final Leaderboard leaderboard;
 
     public GameGUI(CardLayout cardLayout, JPanel cards) {
         // Create input panel with input fields and button
@@ -79,7 +74,7 @@ public final class GameGUI extends JPanel {
 
             setColourOfButton(button);
         }
-
+        leaderboard = new Leaderboard();
         inputPanel.add(nameSubmitButton);
         // Replace the specific buttons with the ones from the list
         continueButton = buttons.get(0);
@@ -93,8 +88,8 @@ public final class GameGUI extends JPanel {
         pafButton = buttons.get(7);
         currentScoreAndLevelButton = buttons.get(8);
         this.cashPrize = new int[]{100, 200, 300, 500, 1000, 5000, 10000, 50000, 100000, 250000};
-        createGUI(cardLayout, cards);
         currentCashPrize = 0;
+        createGUI(cardLayout, cards);
     }
 
     public void createGUI(CardLayout cardLayout, JPanel cards) {
@@ -154,7 +149,7 @@ public final class GameGUI extends JPanel {
 
         // All of the buttons anchored to the bottom with proper spacing in between
         layout.setVerticalGroup(layout.createSequentialGroup()
-                .addComponent(mainLabelPanel) // Replace mainLabel with mainLabelPanel
+                .addComponent(mainLabelPanel)
                 .addComponent(inputPanel)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -176,7 +171,9 @@ public final class GameGUI extends JPanel {
         layout.linkSize(SwingConstants.VERTICAL, continueButton, aButton, bButton, cButton, dButton, returnButton, fiftyFiftyButton, atAButton, pafButton, currentScoreAndLevelButton);
 
         nameSubmitButton.addActionListener((ActionEvent e) -> {
-            setFullName(firstNameInput.getText() + " " + lastNameInput.getText());
+            fullName = (firstNameInput.getText() + " " + lastNameInput.getText());
+            System.out.println(fullName);
+            newUser = new User(fullName);
             updateMainLabel();
             cardLayout.show(cards, "gameGUI");
             continueButton.setEnabled(true); // Enable the continue button
@@ -197,11 +194,11 @@ public final class GameGUI extends JPanel {
             bButton.setEnabled(true);
             cButton.setEnabled(true);
             dButton.setEnabled(true);
-
             // Set up the currentScoreAndLevelButton values
-            currentScoreAndLevelButton.setText("<html><center><i><font color='black'>Current Level :" + currentLevel + "<br>Reward: $" + currentCashPrize + "</font></center><i></html>");
+            currentScoreAndLevelButton.setEnabled(true);
+            setColourOfScoreAndPrizeButton(currentScoreAndLevelButton);
 
-            currentLevel++;
+            currentScoreAndLevelButton.setText("<html><center><font color='black'>Level :" + currentLevel + " | Reward: $" + currentCashPrize + "</font></center></html>");
 
             // Update the color of the buttons
             setColourOfButton(continueButton);
@@ -214,22 +211,38 @@ public final class GameGUI extends JPanel {
 
         aButton.addActionListener((ActionEvent e) -> {
             isCorrect = checkAnswerCorrect(0);
-            showIntervalScreen(isCorrect);
+            try {
+                showIntervalScreen(isCorrect);
+            } catch (IOException ex) {
+                Logger.getLogger(GameGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 
         bButton.addActionListener((ActionEvent e) -> {
             isCorrect = checkAnswerCorrect(1);
-            showIntervalScreen(isCorrect);
+            try {
+                showIntervalScreen(isCorrect);
+            } catch (IOException ex) {
+                Logger.getLogger(GameGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 
         cButton.addActionListener((ActionEvent e) -> {
             isCorrect = checkAnswerCorrect(2);
-            showIntervalScreen(isCorrect);
+            try {
+                showIntervalScreen(isCorrect);
+            } catch (IOException ex) {
+                Logger.getLogger(GameGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 
         dButton.addActionListener((ActionEvent e) -> {
             isCorrect = checkAnswerCorrect(3);
-            showIntervalScreen(isCorrect);
+            try {
+                showIntervalScreen(isCorrect);
+            } catch (IOException ex) {
+                Logger.getLogger(GameGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 
         // Set action listeners and document filters
@@ -241,7 +254,13 @@ public final class GameGUI extends JPanel {
 
         firstNameInput = createFirstNameInput();
         lastNameInput = createLastNameInput();
+        JLabel firstNameLabel = createFirstNameLabel();  // Initialize firstNameLabel
+        JLabel lastNameLabel = createLastNameLabel();    // Initialize lastNameLabel
+
+        // Add the JLabels to the input panel
+        inputPanelReturn.add(firstNameLabel);
         inputPanelReturn.add(firstNameInput);
+        inputPanelReturn.add(lastNameLabel);
         inputPanelReturn.add(lastNameInput);
 
         nameSubmitButton = createNameSubmitButton();
@@ -267,8 +286,6 @@ public final class GameGUI extends JPanel {
                 nameSubmitButton.setVisible(false);
                 mainLabel.setVisible(true);
             } else {
-                firstNameInput.setText("");  // Clear the text field
-                lastNameInput.setText("");  // Clear the text field
                 updateSubmitButtonState();
             }
         });
@@ -345,7 +362,7 @@ public final class GameGUI extends JPanel {
     private JTextField createFirstNameInput() {
         JTextField firstNameTextField = new JTextField(20);
         firstNameTextField.setToolTipText("<html><b><font color=grey>"
-                + "Enter your first name here" + "</font></b></html>");
+                + "Enter your <b>first name</b> here" + "</font></b></html>");
         firstNameTextField.setPreferredSize(new Dimension(0, 37));
         return firstNameTextField;
     }
@@ -353,9 +370,23 @@ public final class GameGUI extends JPanel {
     private JTextField createLastNameInput() {
         JTextField lastNameTextField = new JTextField(20);
         lastNameTextField.setToolTipText("<html><b><font color=grey>"
-                + "Enter your last name here" + "</font></b></html>");
+                + "Enter your <b>last name</b> here" + "</font></b></html>");
         lastNameTextField.setPreferredSize(new Dimension(0, 37));
         return lastNameTextField;
+    }
+
+    private JLabel createFirstNameLabel() {
+        JLabel firstNameLabel = new JLabel("First Name");
+        Font fnFont = new Font("Arial", Font.PLAIN, 20);
+        firstNameLabel.setFont(fnFont);
+        return firstNameLabel;
+    }
+
+    private JLabel createLastNameLabel() {
+        JLabel lastNameLabel = new JLabel("Last Name");
+        Font lnFont = new Font("Arial", Font.PLAIN, 20);
+        lastNameLabel.setFont(lnFont);
+        return lastNameLabel;
     }
 
     private void updateSubmitButtonState() {
@@ -373,7 +404,7 @@ public final class GameGUI extends JPanel {
 
     private JButton createNameSubmitButton() {
         JButton nameSubmitButtonCreate = new JButton("Submit");
-        Font submitTextFont = new Font("Arial", Font.BOLD, 10);
+        Font submitTextFont = new Font("Arial", Font.BOLD, 12);
         nameSubmitButtonCreate.setPreferredSize(new Dimension(80, 36));
 
         // Background default colour
@@ -410,8 +441,10 @@ public final class GameGUI extends JPanel {
         // Background default colour
         if (button.isEnabled()) {
             button.setBackground(new Color(100, 150, 255));
+
         } else {
             button.setBackground(new Color(180, 180, 180));
+
         }
 
         // Add interactivity to return button
@@ -446,6 +479,15 @@ public final class GameGUI extends JPanel {
         });
     }
 
+    public void setColourOfScoreAndPrizeButton(JButton button) {
+        // Background default colour
+        if (button.isEnabled()) {
+            button.setBackground(new Color(197, 148, 175));
+        }
+        // Add interactivity to return button
+        button.setEnabled(false);
+    }
+
     public Question getRandomQuestion() {
         Random rand = new Random();
         System.out.println("\n--Current Level: " + currentLevel + "--\n"); // prints out current level
@@ -462,19 +504,54 @@ public final class GameGUI extends JPanel {
         return selectedAnswerIndex == currentQuestion.getCorrectAnswerIndex();
     }
 
-    private void showIntervalScreen(boolean isCorrect) {
+    private void showIntervalScreen(boolean isCorrect) throws IOException {
+        ArrayList<String> leaderboardData = getUpdatedLeaderboardData();
+
+        int lowestValue = Integer.MAX_VALUE;
+        for (String row : leaderboardData) {
+            String[] rowData = row.split(" ");
+            int playerValue = Integer.parseInt(rowData[2]);
+            if (playerValue < lowestValue) {
+                lowestValue = playerValue;
+            }
+        }
+
         if (isCorrect) {
-            mainLabel.setText("<html><center><b>Correct!<br><br>"
-                    + "</b>Click <b>Continue</b> to keep playing this game.<br>"
-                    + "Click <b>Return</b> to exit the game with your current prize money.</center></html>");
-            continueButton.setEnabled(true);
-            returnButton.setEnabled(true);
+            if (currentLevel == 10) {
+                // Check if the player has answered 10 questions correctly
+                mainLabel.setText("<html><center><b>Congratulations! You won the game!</b><br><br>"
+                        + fullName + " has answered all 10 questions correctly and won <b>$" + cashPrize[currentLevel - 1] + "</b>!</center></html>");
+                continueButton.setEnabled(false); // Disable the continue button
+                returnButton.setEnabled(true);
+
+            } else {
+                currentCashPrize = cashPrize[currentLevel - 1]; // Update the cash prize
+                mainLabel.setText("<html><center><b>Correct!<br><br>"
+                        + "</b>Click <b>Continue</b> to go to the next level to try and win <b>$" + cashPrize[currentLevel] + "</b> or<br>"
+                        + "Click <b>Return</b> to exit the game with your current prize money of <b>$" + cashPrize[currentLevel - 1] + "</b>.</center></html>");
+                continueButton.setEnabled(true);
+                returnButton.setEnabled(true);
+            }
+
         } else {
             mainLabel.setText("<html><center><b>Incorrect!</b><br><br>"
                     + "Unfortunately you lose, no prize money is gained.<br>"
                     + "Click <b>Return</b> and <b>Play</b> again to try and win!</center></html>");
             continueButton.setEnabled(false);
             returnButton.setEnabled(true);
+        }
+
+        // Update the currentScoreAndLevelButton values
+        currentScoreAndLevelButton.setText("<html><center><font colour='black'>Level :" + currentLevel + " | Reward: $" + currentCashPrize + "</font></center></html>");
+
+        // Store the user's name and score in the database
+        newUser.update(currentCashPrize);
+        System.out.println(newUser.userExists());
+        System.out.println(newUser.getName() + " won " + currentCashPrize);
+
+        // Update the leaderboard with the user's name and score
+        if (currentCashPrize > lowestValue) {
+            leaderboard.updateLeaderboard(newUser, currentCashPrize);
         }
 
         // Disable all answer buttons
@@ -492,5 +569,11 @@ public final class GameGUI extends JPanel {
         // Update the color of the buttons
         setColourOfButton(continueButton);
         setColourOfButton(returnButton);
+        currentLevel++;
+    }
+
+    private ArrayList<String> getUpdatedLeaderboardData() {
+        GameDB db = new GameDB();
+        return db.getLeaderboard();
     }
 }
