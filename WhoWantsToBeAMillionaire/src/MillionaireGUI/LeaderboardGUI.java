@@ -19,7 +19,6 @@ public class LeaderboardGUI extends JPanel {
     private JButton returnButton;
 
     public LeaderboardGUI(CardLayout cardLayout, JPanel cards) {
-        setLayout(new GridBagLayout());
 
         createReturnButton(cardLayout, cards);
         createLeaderboardTable();
@@ -105,7 +104,7 @@ public class LeaderboardGUI extends JPanel {
 
         // Create the label for the top five winners text
         JLabel topFiveLabel = new JLabel("Top Five Winners");
-        topFiveLabel.setFont(new Font("Arial", Font.PLAIN, 36)); // Set the font for the label
+        topFiveLabel.setFont(new Font("Arial", Font.PLAIN, 42)); // Set the font for the label
 
         // Add the label to the top five panel
         topFivePanel.add(topFiveLabel);
@@ -119,7 +118,7 @@ public class LeaderboardGUI extends JPanel {
         // Create leaderboard Panel
         JPanel leaderboardPanel = new JPanel();
         leaderboardPanel.setLayout(new BoxLayout(leaderboardPanel, BoxLayout.Y_AXIS));
-        leaderboardPanel.setPreferredSize(new Dimension(550, 550));
+        leaderboardPanel.setPreferredSize(new Dimension(600, 600));
 
         // Set up the JTable model
         String[] columnNames = {"Name", "Prize Money"};
@@ -154,7 +153,7 @@ public class LeaderboardGUI extends JPanel {
         leaderboardTable.setFocusable(false); // Disable the JTable's focusable property
         leaderboardTable.getTableHeader().setReorderingAllowed(false); // Disable column reordering
         leaderboardTable.getTableHeader().setResizingAllowed(false);
-        leaderboardTable.setRowHeight(40); // Set the height of each row in the table
+        leaderboardTable.setRowHeight(60); // Set the height of each row in the table
         leaderboardTable.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         for (int i = 0; i < leaderboardTable.getColumnCount(); i++) {
@@ -168,7 +167,7 @@ public class LeaderboardGUI extends JPanel {
 
         // Set the header of the table
         JTableHeader header = leaderboardTable.getTableHeader();
-        header.setFont(new Font("Arial", Font.PLAIN, 28)); // Set the new font for the header
+        header.setFont(new Font("Arial", Font.PLAIN, 34)); // Set the new font for the header
 
         leaderboardPanel.add(header);
 

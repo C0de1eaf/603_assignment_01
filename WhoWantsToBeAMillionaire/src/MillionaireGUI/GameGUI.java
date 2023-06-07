@@ -21,6 +21,7 @@ public final class GameGUI extends JPanel {
 
     private boolean isCorrect;
     private int currentLevel;
+    private int[] cashPrize;
     private JTextField firstNameInput;
     private JTextField lastNameInput;
     private JButton nameSubmitButton;
@@ -32,6 +33,7 @@ public final class GameGUI extends JPanel {
     private Question currentQuestion;
     public int MAX_CHARS = 18;
 
+    JPanel inputPanel;
     JButton continueButton;
     JButton aButton;
     JButton bButton;
@@ -51,26 +53,8 @@ public final class GameGUI extends JPanel {
     }
 
     public GameGUI(CardLayout cardLayout, JPanel cards) {
-        createGUI(cardLayout, cards);
-    }
-
-    public void createGUI(CardLayout cardLayout, JPanel cards) {
-        GroupLayout layout = new GroupLayout(this);
-        this.setLayout(layout);
-
-        // Create Database stuff.
-        this.gameDatabase = new GameDB();
-        gameDatabase.createConnection();
-        ArrayList<Question> easy = gameDatabase.getEasyQuestions();
-        ArrayList<Question> hard = gameDatabase.getHardQuestions();
-        this.questions = Arrays.asList(easy, hard);
-        currentLevel = 1;
-
-        UIManager.put("Button.disabledText", new Color(200, 200, 200)); // Set the text color for disabled buttons
-        UIManager.put("Button.disabled", new Color(100, 100, 100)); // Set the background color for disabled buttons
-
         // Create input panel with input fields and button
-        JPanel inputPanel = createInputPanel();
+        inputPanel = createInputPanel();
 
         // Button texts
         String[] buttonTexts = {
@@ -104,6 +88,26 @@ public final class GameGUI extends JPanel {
         atAButton = buttons.get(6);
         pafButton = buttons.get(7);
         fillerButton = buttons.get(8);
+        this.cashPrize = new int[]{100, 200, 300, 500, 1000, 5000, 10000, 50000, 100000, 250000};
+        createGUI(cardLayout, cards);
+    }
+
+    public void createGUI(CardLayout cardLayout, JPanel cards) {
+        GroupLayout layout = new GroupLayout(this);
+        this.setLayout(layout);
+
+        int currentCashPrize = 0;
+
+        // Create Database stuff.
+        this.gameDatabase = new GameDB();
+        gameDatabase.createConnection();
+        ArrayList<Question> easy = gameDatabase.getEasyQuestions();
+        ArrayList<Question> hard = gameDatabase.getHardQuestions();
+        this.questions = Arrays.asList(easy, hard);
+        currentLevel = 1;
+
+        UIManager.put("Button.disabledText", new Color(200, 200, 200)); // Set the text color for disabled buttons
+        UIManager.put("Button.disabled", new Color(100, 100, 100)); // Set the background color for disabled buttons
 
         // Create a new JPanel for the mainLabel
         JPanel mainLabelPanel = new JPanel();
@@ -457,11 +461,15 @@ public final class GameGUI extends JPanel {
 
     private void showIntervalScreen(boolean isCorrect) {
         if (isCorrect) {
-            mainLabel.setText("<html>Click <b>Continue</b> to keep playing. Or click <b>Return</b> to exit the game with your current score.</html>");
+            mainLabel.setText("<html><center><b>Correct!<br><br>"
+                    + "</b>Click <b>Continue</b> to keep playing this game.<br>"
+                    + "Click <b>Return</b> to exit the game with your current prize money.</center></html>");
             continueButton.setEnabled(true);
             returnButton.setEnabled(true);
         } else {
-            mainLabel.setText("<html>Incorrect. Click <b>Return</b> to exit the game with your current score.</html>");
+            mainLabel.setText("<html><center><b>Incorrect!</b><br><br>"
+                    + "Unfortunately you lose, no prize money is gained.<br>"
+                    + "Click <b>Return</b> and <b>Play</b> again to try and win!</center></html>");
             continueButton.setEnabled(false);
             returnButton.setEnabled(true);
         }
@@ -482,5 +490,4 @@ public final class GameGUI extends JPanel {
         setColourOfButton(continueButton);
         setColourOfButton(returnButton);
     }
-
 }
