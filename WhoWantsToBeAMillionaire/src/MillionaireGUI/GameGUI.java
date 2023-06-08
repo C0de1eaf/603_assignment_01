@@ -22,15 +22,17 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 
-public final class GameGUI extends JPanel implements SystemInit{
+public final class GameGUI extends JPanel implements SystemInit {
 
     private boolean isCorrect;
     private int currentLevel;
     private final int[] cashPrize;
     private String[] answers;
     private int currentCashPrize;
-    private JTextField firstNameInput;
-    private JTextField lastNameInput;
+    private JTextField firstNameTextField;
+    private JTextField lastNameTextField;
+    private JLabel firstNameLabel;
+    private JLabel lastNameLabel;
     private JButton nameSubmitButton;
     private String fullName;
     private JButton returnButton;
@@ -40,7 +42,6 @@ public final class GameGUI extends JPanel implements SystemInit{
     private Question currentQuestion;
     private User newUser;
     public int MAX_CHARS = 18;
-//    private boolean buttonStatus;
 
     private final JPanel mainLabelPanel;
     private final JPanel inputPanel;
@@ -77,7 +78,7 @@ public final class GameGUI extends JPanel implements SystemInit{
         inputPanel.add(nameSubmitButton);
         returnButton = createReturnButton(cardLayout, cards, inputPanel);
 
-        cashPrize = new int[]{0, 100, 200, 300, 500, 1000, 5000, 10000, 50000, 100000, 250000};
+        cashPrize = new int[]{0, 100, 200, 300, 500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 125000, 250000, 500000, 1000000};
         currentCashPrize = cashPrize[0];
 
         createGUI(cardLayout, cards);
@@ -88,11 +89,6 @@ public final class GameGUI extends JPanel implements SystemInit{
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
 
-        gameDatabase = new GameDB();
-        gameDatabase.createConnection();
-        ArrayList<Question> easy = gameDatabase.getEasyQuestions();
-        ArrayList<Question> hard = gameDatabase.getHardQuestions();
-        questions = Arrays.asList(easy, hard);
         resetToDefault();
 
         mainLabelPanel.setSize(1124, 300);
@@ -149,8 +145,7 @@ public final class GameGUI extends JPanel implements SystemInit{
     }
 
     private void handleNameSubmitButtonAction() {
-        fullName = (firstNameInput.getText() + " " + lastNameInput.getText());
-        System.out.println(fullName);
+        fullName = (firstNameTextField.getText() + " " + lastNameTextField.getText());
         newUser = new User(fullName);
         updateMainLabel();
         continueButton.setEnabled(true);
@@ -197,6 +192,7 @@ public final class GameGUI extends JPanel implements SystemInit{
         }
     }
 
+    @Override
     public List<JButton> createButtons(String[] buttonTexts, Dimension buttonSize) {
         List<JButton> buttons = new ArrayList<>();
         for (String buttonText : buttonTexts) {
@@ -213,36 +209,34 @@ public final class GameGUI extends JPanel implements SystemInit{
     public JPanel createInputPanel() {
         JPanel inputPanelReturn = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-        firstNameInput = createFirstNameInput();
-        lastNameInput = createLastNameInput();
-        JLabel firstNameLabel = createFirstNameLabel();  // Initialize firstNameLabel
-        JLabel lastNameLabel = createLastNameLabel();    // Initialize lastNameLabel
+        firstNameTextField = createInput("First Name");
+        lastNameTextField = createInput("Last Name");
+        firstNameLabel = createLabel("First Name");
+        lastNameLabel = createLabel("Last Name");
 
         // Add the JLabels to the input panel
         inputPanelReturn.add(firstNameLabel);
-        inputPanelReturn.add(firstNameInput);
+        inputPanelReturn.add(firstNameTextField);
         inputPanelReturn.add(lastNameLabel);
-        inputPanelReturn.add(lastNameInput);
+        inputPanelReturn.add(lastNameTextField);
 
-        nameSubmitButton = createNameSubmitButton();
+        nameSubmitButton = createSubmitButton();
         inputPanelReturn.add(nameSubmitButton);
 
         return inputPanelReturn;
     }
 
     private void setupInputListenersAndFilters(JPanel inputPanel) {
-        firstNameInput.addActionListener(e -> {
-            fullName = firstNameInput.getText();
+        firstNameTextField.addActionListener(e -> {
+            fullName = firstNameTextField.getText();
             if (!fullName.isEmpty()) {
-                System.out.println("User input: " + fullName);
             }
-            firstNameInput.setText("");  // Clear the text field
+            firstNameTextField.setText("");  // Clear the text field
             updateSubmitButtonState();
         });
 
         nameSubmitButton.addActionListener(e -> {
             if (fullName != null) {
-                System.out.println("User input: " + fullName);
                 inputPanel.setVisible(false);
                 nameSubmitButton.setVisible(false);
                 mainLabel.setVisible(true);
@@ -252,8 +246,8 @@ public final class GameGUI extends JPanel implements SystemInit{
         });
 
         // Set document filters for the text fields
-        ((AbstractDocument) firstNameInput.getDocument()).setDocumentFilter(createDocumentFilter());
-        ((AbstractDocument) lastNameInput.getDocument()).setDocumentFilter(createDocumentFilter());
+        ((AbstractDocument) firstNameTextField.getDocument()).setDocumentFilter(createDocumentFilter());
+        ((AbstractDocument) lastNameTextField.getDocument()).setDocumentFilter(createDocumentFilter());
     }
 
     @Override
@@ -305,8 +299,8 @@ public final class GameGUI extends JPanel implements SystemInit{
                     if (response == JOptionPane.YES_OPTION) {
                         try {
                             // Reset values and components
-                            firstNameInput.setText("");
-                            lastNameInput.setText("");
+                            firstNameTextField.setText("");
+                            lastNameTextField.setText("");
                             fullName = null;
                             nameSubmitButton.setEnabled(false);
                             inputPanel.setVisible(true);
@@ -323,8 +317,13 @@ public final class GameGUI extends JPanel implements SystemInit{
 
                     }
                 } else {
-                    resetToDefault();
-                    cardLayout.show(cards, "menuGUI");
+                    try {
+                        updateLeaderboardData();
+                        resetToDefault();
+                        cardLayout.show(cards, "menuGUI");
+                    } catch (IOException ex) {
+                        Logger.getLogger(GameGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
 
             });
@@ -341,39 +340,24 @@ public final class GameGUI extends JPanel implements SystemInit{
         return returnButton;
     }
 
-    private JTextField createFirstNameInput() {
-        JTextField firstNameTextField = new JTextField(20);
-        firstNameTextField.setToolTipText("<html><b><font color=grey>"
-                + "Enter your <b>first name</b> here" + "</font></b></html>");
-        firstNameTextField.setPreferredSize(new Dimension(0, 37));
-        return firstNameTextField;
+    private JTextField createInput(String toolTipText) {
+        JTextField textField = new JTextField(20);
+        textField.setToolTipText("<html><b><font color=grey>"
+                + "Enter your <b>" + toolTipText + "</b> here" + "</font></b></html>");
+        textField.setPreferredSize(new Dimension(0, 37));
+        return textField;
     }
 
-    private JTextField createLastNameInput() {
-        JTextField lastNameTextField = new JTextField(20);
-        lastNameTextField.setToolTipText("<html><b><font color=grey>"
-                + "Enter your <b>last name</b> here" + "</font></b></html>");
-        lastNameTextField.setPreferredSize(new Dimension(0, 37));
-        return lastNameTextField;
-    }
-
-    private JLabel createFirstNameLabel() {
-        JLabel firstNameLabel = new JLabel("First Name");
-        Font fnFont = new Font("Arial", Font.PLAIN, 20);
-        firstNameLabel.setFont(fnFont);
-        return firstNameLabel;
-    }
-
-    private JLabel createLastNameLabel() {
-        JLabel lastNameLabel = new JLabel("Last Name");
-        Font lnFont = new Font("Arial", Font.PLAIN, 20);
-        lastNameLabel.setFont(lnFont);
-        return lastNameLabel;
+    private JLabel createLabel(String labelText) {
+        JLabel label = new JLabel(labelText);
+        Font font = new Font("Arial", Font.PLAIN, 20);
+        label.setFont(font);
+        return label;
     }
 
     private void updateSubmitButtonState() {
-        String firstName = firstNameInput.getText();
-        String lastName = lastNameInput.getText();
+        String firstName = firstNameTextField.getText();
+        String lastName = lastNameTextField.getText();
 
         if (!firstName.isEmpty() && !lastName.isEmpty()) {
             nameSubmitButton.setEnabled(true);
@@ -384,16 +368,16 @@ public final class GameGUI extends JPanel implements SystemInit{
         }
     }
 
-    private JButton createNameSubmitButton() {
-        JButton nameSubmitButtonCreate = new JButton("Submit");
+    private JButton createSubmitButton() {
+        JButton submitButton = new JButton("Submit");
         Font submitTextFont = new Font("Arial", Font.BOLD, 12);
-        nameSubmitButtonCreate.setPreferredSize(new Dimension(80, 36));
+        submitButton.setPreferredSize(new Dimension(80, 36));
 
-        // Background default colour
-        setColourOfButton(nameSubmitButtonCreate);
-        nameSubmitButtonCreate.setEnabled(false);
-        nameSubmitButtonCreate.setFont(submitTextFont);
-        return nameSubmitButtonCreate;
+        // Background default color
+        setColourOfButton(submitButton);
+        submitButton.setEnabled(false);
+        submitButton.setFont(submitTextFont);
+        return submitButton;
     }
 
     private JLabel createMainLabel() {
@@ -474,11 +458,13 @@ public final class GameGUI extends JPanel implements SystemInit{
         Random rand = new Random();
         currentLevel++;
         System.out.println("\n--Current Level: " + currentLevel + "--\n"); // prints out current level
-        int questionIndex = rand.nextInt(questions.get(currentLevel < 7 ? 0 : 1).size()); // get random question randomly based on the size of the array
-        ArrayList<Question> questionList = questions.get(currentLevel < 7 ? 0 : 1); // create a new ArrayList variable based on the level difficulty
+        int questionIndex = rand.nextInt(questions.get(currentLevel < 10 ? 0 : 1).size()); // get random question randomly based on the size of the array
+        ArrayList<Question> questionList = questions.get(currentLevel < 10 ? 0 : 1); // create a new ArrayList variable based on the level difficulty
         Question selectedQuestion = questionList.get(questionIndex);
 
         questionList.remove(questionIndex); // remove the chosen question from the ArrayList
+
+        System.out.println(questionList.size());
 
         return selectedQuestion;
     }
@@ -488,7 +474,6 @@ public final class GameGUI extends JPanel implements SystemInit{
     }
 
     private void showIntervalScreen(boolean isCorrect) throws IOException {
-        updateLeaderboardData();
         if (isCorrect) {
             handleAnswer(true);
         } else {
@@ -510,18 +495,19 @@ public final class GameGUI extends JPanel implements SystemInit{
     private void handleAnswer(boolean isCorrect) {
         String message;
         if (isCorrect) {
-
             currentCashPrize = cashPrize[currentLevel];
-            message = currentLevel == 10
+            message = currentLevel == 15
                     ? "<html><center><b>Congratulations! You won the game!</b><br><br>"
-                    + fullName + " has answered all 10 questions correctly and won <b>$"
+                    + fullName + " has answered all 15 questions correctly and won <b>$"
                     + currentCashPrize + "</b>!</center></html>"
                     : "<html><center><b>Correct!<br><br>"
                     + "</b>Click <b>Continue</b> to go to the next level to try and win <b>$"
                     + cashPrize[currentLevel + 1] + "</b> or<br>"
                     + "Click <b>Return</b> to exit the game with your current prize money of <b>$"
                     + currentCashPrize + "</b>.</center></html>";
-            continueButton.setEnabled(true);
+
+            // Disable continueButton if currentLevel reaches 15
+            continueButton.setEnabled(currentLevel != 15);
         } else {
             currentCashPrize = cashPrize[0];
             message = "<html><center><b>Incorrect!</b><br><br>"
@@ -599,9 +585,19 @@ public final class GameGUI extends JPanel implements SystemInit{
         );
     }
 
+    // Setup default value 
     public void resetToDefault() {
         currentLevel = 0;
         currentCashPrize = cashPrize[0];
+        firstNameTextField.setText("");
+        lastNameTextField.setText("");
+        nameSubmitButton.setVisible(true);
+        inputPanel.setVisible(true);
+        gameDatabase = new GameDB();
+        gameDatabase.createConnection();
+        ArrayList<Question> easy = gameDatabase.getEasyQuestions();
+        ArrayList<Question> hard = gameDatabase.getHardQuestions();
+        questions = Arrays.asList(easy, hard);
         resetButtonToDefault(continueButton);
         resetButtonToDefault(aButton);
         resetButtonToDefault(bButton);
@@ -615,6 +611,7 @@ public final class GameGUI extends JPanel implements SystemInit{
     }
 
     public void resetButtonToDefault(JButton button) {
+        button.setBackground(new Color(180, 180, 180));
         button.setEnabled(false);
         button.setText("");
     }

@@ -3,6 +3,8 @@ package MillionaireGUI;
 import MillionaireDB.GameDB;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -17,12 +19,21 @@ import javax.swing.table.JTableHeader;
 public final class LeaderboardGUI extends JPanel {
 
     private JButton returnButton;
+    private JTable leaderboardTable;
 
     public LeaderboardGUI(CardLayout cardLayout, JPanel cards) {
         setLayout(new BorderLayout(5, 5));
 
         createReturnButton(cardLayout, cards);
         createLeaderboardTable();
+        updateLeaderboard(leaderboardTable);
+
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                refreshLeaderboard();
+            }
+        });
     }
 
     private void createReturnButton(CardLayout cardLayout, JPanel cards) {
@@ -113,7 +124,9 @@ public final class LeaderboardGUI extends JPanel {
         leaderboardPanel.setPreferredSize(new Dimension(600, 600));
 
         // create the whole leaderBoardTable
-        JTable leaderboardTable = createTable();
+        leaderboardTable = createTable();
+
+        updateLeaderboard(leaderboardTable);
 
         // Set the header of the table
         JTableHeader header = leaderboardTable.getTableHeader();
@@ -129,6 +142,23 @@ public final class LeaderboardGUI extends JPanel {
     private ArrayList<String> getUpdatedLeaderboardData() {
         GameDB db = new GameDB();
         return db.getLeaderboard();
+    }
+
+    private void updateLeaderboard(JTable leaderboardTable) {
+        DefaultTableModel model = (DefaultTableModel) leaderboardTable.getModel();
+        model.setRowCount(0);
+
+        ArrayList<String> leaderboardData = getUpdatedLeaderboardData();
+        leaderboardData.forEach(row -> {
+            String[] rowData = row.split(" ");
+            String fullName = rowData[0] + " " + rowData[1]; // Concatenate first and last name
+            int prizeMoney = Integer.parseInt(rowData[2]); // Parse prize money to an integer
+            model.addRow(new Object[]{fullName, prizeMoney});
+        });
+    }
+
+    public void refreshLeaderboard() {
+        updateLeaderboard(leaderboardTable);
     }
 
     private JTable createTable() {
@@ -157,22 +187,22 @@ public final class LeaderboardGUI extends JPanel {
         }
 
         // Create the JTable and set its properties
-        JTable leaderboardTable = new JTable(model);
-        leaderboardTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Set the selection mode to single selection
-        leaderboardTable.setDefaultRenderer(Object.class, new CustomTableCellRenderer()); // Set the custom renderer for each column
-        leaderboardTable.setDefaultEditor(Object.class, null); // Make the JTable non-editable
-        leaderboardTable.setFocusable(false); // Disable the JTable's focusable property
-        leaderboardTable.getTableHeader().setReorderingAllowed(false); // Disable column reordering
-        leaderboardTable.getTableHeader().setResizingAllowed(false);
-        leaderboardTable.setRowHeight(60); // Set the height of each row in the table
-        leaderboardTable.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JTable createLeaderboardTable = new JTable(model);
+        createLeaderboardTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);           // Set the selection mode to single selection
+        createLeaderboardTable.setDefaultRenderer(Object.class, new CustomTableCellRenderer()); // Set the custom renderer for each column
+        createLeaderboardTable.setDefaultEditor(Object.class, null);                            // Make the JTable non-editable
+        createLeaderboardTable.setFocusable(false);                                             // Disable the JTable's focusable property
+        createLeaderboardTable.getTableHeader().setReorderingAllowed(false);                    // Disable column reordering
+        createLeaderboardTable.getTableHeader().setResizingAllowed(false);
+        createLeaderboardTable.setRowHeight(60);                                                // Set the height of each row in the table
+        createLeaderboardTable.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        for (int i = 0; i < leaderboardTable.getColumnCount(); i++) {
-            leaderboardTable.getColumnModel().getColumn(i).setCellRenderer(new CustomTableCellRenderer());
+        for (int i = 0; i < createLeaderboardTable.getColumnCount(); i++) {
+            createLeaderboardTable.getColumnModel().getColumn(i).setCellRenderer(new CustomTableCellRenderer());
         }
 
-        leaderboardTable.setIntercellSpacing(new Dimension(0, 0));
+        createLeaderboardTable.setIntercellSpacing(new Dimension(0, 0));
 
-        return leaderboardTable;
+        return createLeaderboardTable;
     }
 }

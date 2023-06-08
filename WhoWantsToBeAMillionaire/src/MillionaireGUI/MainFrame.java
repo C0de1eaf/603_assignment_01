@@ -36,9 +36,11 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1700, 1000);
 
-        menuGUI = new MenuGUI(cardLayout, cards);
-        gameGUI = new GameGUI(cardLayout, cards);
         leaderboardGUI = new LeaderboardGUI(cardLayout, cards);
+        menuGUI = new MenuGUI(cardLayout, cards, leaderboardGUI);
+        gameGUI = new GameGUI(cardLayout, cards);
+
+        LeaderboardGUI leaderboardGUI = new LeaderboardGUI(cardLayout, cards);
 
         cards.add(menuGUI, "menuGUI");
         cards.add(gameGUI, "gameGUI");

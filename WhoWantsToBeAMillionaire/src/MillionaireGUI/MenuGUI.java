@@ -4,20 +4,22 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MenuGUI extends JPanel {
+public final class MenuGUI extends JPanel {
 
     // Buttons
-    private JButton playButton;
-    private JButton leaderboardButton;
-    private JButton exitButton;
+    private final JButton playButton;
+    private final JButton leaderboardButton;
+    private final JButton exitButton;
 
     // CardLayout and JPanel
-    private CardLayout cardLayout;
-    private JPanel cards;
+    private final CardLayout cardLayout;
+    private final JPanel cards;
+    private final LeaderboardGUI leaderboardGUI;
 
-    public MenuGUI(CardLayout cardLayout, JPanel cards) {
+    public MenuGUI(CardLayout cardLayout, JPanel cards, LeaderboardGUI leaderboardGUI) {
         this.cardLayout = cardLayout;
         this.cards = cards;
+        this.leaderboardGUI = leaderboardGUI;
 
         // Create the buttons
         playButton = createButton("Play");
@@ -54,6 +56,7 @@ public class MenuGUI extends JPanel {
         });
 
         leaderboardButton.addActionListener(e -> {
+            leaderboardGUI.refreshLeaderboard();
             cardLayout.show(cards, "leaderboardGUI");
         });
 
