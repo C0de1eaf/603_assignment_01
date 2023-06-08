@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 
-public final class GameGUI extends JPanel {
+public final class GameGUI extends JPanel implements SystemInit{
 
     private boolean isCorrect;
     private int currentLevel;
@@ -83,6 +83,7 @@ public final class GameGUI extends JPanel {
         createGUI(cardLayout, cards);
     }
 
+    @Override
     public void createGUI(CardLayout cardLayout, JPanel cards) {
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
@@ -208,7 +209,8 @@ public final class GameGUI extends JPanel {
         return buttons;
     }
 
-    private JPanel createInputPanel() {
+    @Override
+    public JPanel createInputPanel() {
         JPanel inputPanelReturn = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
         firstNameInput = createFirstNameInput();
@@ -254,7 +256,8 @@ public final class GameGUI extends JPanel {
         ((AbstractDocument) lastNameInput.getDocument()).setDocumentFilter(createDocumentFilter());
     }
 
-    private DocumentFilter createDocumentFilter() {
+    @Override
+    public DocumentFilter createDocumentFilter() {
         return new DocumentFilter() {
             @Override
             public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
@@ -466,6 +469,7 @@ public final class GameGUI extends JPanel {
         button.setEnabled(false);
     }
 
+    @Override
     public Question getRandomQuestion() {
         Random rand = new Random();
         currentLevel++;
@@ -493,7 +497,8 @@ public final class GameGUI extends JPanel {
         updateButtons();
     }
 
-    private void updateLeaderboardData() throws IOException {
+    @Override
+    public void updateLeaderboardData() throws IOException {
         ArrayList<String> leaderboardData = new GameDB().getLeaderboard();
         int lowestValue = leaderboardData.stream()
                 .mapToInt(row -> Integer.parseInt(row.split(" ")[2]))
@@ -538,7 +543,8 @@ public final class GameGUI extends JPanel {
         setColourOfButton(returnButton);
     }
 
-    private void storeUserScoreAndUpdateLeaderboard(int lowestValue) throws IOException {
+    @Override
+    public void storeUserScoreAndUpdateLeaderboard(int lowestValue) throws IOException {
         newUser.update(currentCashPrize);
         if (currentCashPrize > lowestValue) {
             leaderboard.updateLeaderboard(newUser, currentCashPrize);
