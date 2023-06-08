@@ -19,17 +19,16 @@ public final class LeaderboardGUI extends JPanel {
     private JButton returnButton;
 
     public LeaderboardGUI(CardLayout cardLayout, JPanel cards) {
+        setLayout(new BorderLayout(5, 5));
 
         createReturnButton(cardLayout, cards);
         createLeaderboardTable();
-
     }
 
     private void createReturnButton(CardLayout cardLayout, JPanel cards) {
-
         // Create returnButton panel
         JPanel returnButtonPanel = new JPanel();
-        returnButtonPanel.setLayout(new BoxLayout(returnButtonPanel, BoxLayout.Y_AXIS));
+        returnButtonPanel.setLayout(new BorderLayout());
 
         // Create the return button
         try {
@@ -68,7 +67,6 @@ public final class LeaderboardGUI extends JPanel {
                 @Override
                 public void mouseExited(MouseEvent e) {
                     returnButton.setBackground(new Color(100, 150, 255));
-
                 }
 
                 @Override
@@ -86,17 +84,15 @@ public final class LeaderboardGUI extends JPanel {
         }
 
         // Add the components to the return button panel
-        returnButtonPanel.add(returnButton);
-
-        // Set up the GridBagConstraints for the return button
-        GridBagConstraints gbcReturnButtonPanel = new GridBagConstraints(0, 3, 1, 1, 1.0, 0.1, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE, new Insets(0, 20, 20, 0), 0, 0);
+        returnButtonPanel.add(returnButton, BorderLayout.WEST);
 
         // Add returnButtonPanel to the main panel
-        add(returnButtonPanel, gbcReturnButtonPanel);
+        add(returnButtonPanel, BorderLayout.SOUTH);
     }
 
     public void createLeaderboardTable() {
-        setLayout(new GridBagLayout());
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
 
         // Create the panel for the top five winners text
         JPanel topFivePanel = new JPanel();
@@ -109,18 +105,37 @@ public final class LeaderboardGUI extends JPanel {
         topFivePanel.add(topFiveLabel, new GridBagConstraints(0, 0, 1, 1, 0.1, 0.1, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 20, 0, 0), 0, 0));
 
         // Add the top five panel and the leaderboard panel to the main panel
-        add(topFivePanel, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(0, 20, 20, 0), 0, 0));
+        mainPanel.add(topFivePanel, BorderLayout.NORTH);
 
         // Create leaderboard Panel
         JPanel leaderboardPanel = new JPanel();
         leaderboardPanel.setLayout(new BoxLayout(leaderboardPanel, BoxLayout.Y_AXIS));
         leaderboardPanel.setPreferredSize(new Dimension(600, 600));
 
+        // create the whole leaderBoardTable
+        JTable leaderboardTable = createTable();
+
+        // Set the header of the table
+        JTableHeader header = leaderboardTable.getTableHeader();
+        header.setFont(new Font("Arial", Font.PLAIN, 34)); // Set the new font for the header
+
+        leaderboardPanel.add(header);
+
+        // Add leaderboardTable to leaderboardPanel and add leaderboardPanel to the main panel
+        leaderboardPanel.add(leaderboardTable);
+        add(leaderboardPanel);
+    }
+
+    private ArrayList<String> getUpdatedLeaderboardData() {
+        GameDB db = new GameDB();
+        return db.getLeaderboard();
+    }
+
+    private JTable createTable() {
         // Set up the JTable model
         String[] columnNames = {"Name", "Prize Money"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 
-        GameDB db = new GameDB();
         ArrayList<String> leaderboardData = getUpdatedLeaderboardData();
         leaderboardData.forEach(row -> {
             String[] rowData = row.split(" ");
@@ -158,19 +173,6 @@ public final class LeaderboardGUI extends JPanel {
 
         leaderboardTable.setIntercellSpacing(new Dimension(0, 0));
 
-        // Set the header of the table
-        JTableHeader header = leaderboardTable.getTableHeader();
-        header.setFont(new Font("Arial", Font.PLAIN, 34)); // Set the new font for the header
-
-        leaderboardPanel.add(header);
-
-        // Add leaderboardTable to leaderboardPanel and add leaderboardPanel to the main panel
-        leaderboardPanel.add(leaderboardTable);
-        add(leaderboardPanel, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.8, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(10, 0, 0, 0), 1, 1));
-    }
-
-    private ArrayList<String> getUpdatedLeaderboardData() {
-        GameDB db = new GameDB();
-        return db.getLeaderboard();
+        return leaderboardTable;
     }
 }
