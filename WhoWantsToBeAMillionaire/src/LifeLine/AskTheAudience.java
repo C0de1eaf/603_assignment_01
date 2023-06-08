@@ -5,13 +5,13 @@ import java.util.Random;
 
 public class AskTheAudience extends LifeLines {
 
+    int rand1, rand2, rand3;
+
     // Method to ask the audience for their opinion
     public void askTheAudience(Question question) {
 
         // Create a new Random object
         Random rand = new Random();
-
-        int rand1, rand2, rand3;
 
         // Get the index of the correct answer for the question
         int highestValueIndex = question.getCorrectAnswerIndex();
