@@ -23,6 +23,7 @@ public class GameDB {
         GameDB db = new GameDB();
         System.out.println(db.getLeaderboard().toString());
     }
+  
     
     //Obtains the easyQuestions from the database
     public ArrayList<Question> getEasyQuestions() {
