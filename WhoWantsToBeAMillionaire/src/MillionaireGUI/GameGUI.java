@@ -43,6 +43,7 @@ public final class GameGUI extends JPanel implements SystemInit {
     private Question currentQuestion;
     private User newUser;
     public int MAX_CHARS = 18;
+    private boolean atAButtonUsed;
 
     private final JPanel mainLabelPanel;
     private final JPanel inputPanel;
@@ -65,6 +66,8 @@ public final class GameGUI extends JPanel implements SystemInit {
             "Continue", "A", "B", "C", "D",
             "50 - 50", "AtA", "PaF", "Game Info Panel"
         };
+        currentLevel = 0;
+        mainLabel = new JLabel();
         Dimension buttonSize = new Dimension(300, 120);
         List<JButton> buttons = createButtons(buttonTexts, buttonSize);
         continueButton = buttons.get(0);
@@ -83,6 +86,13 @@ public final class GameGUI extends JPanel implements SystemInit {
 
         cashPrize = new int[]{0, 100, 200, 300, 500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 125000, 250000, 500000, 1000000};
         currentCashPrize = cashPrize[0];
+        gameDatabase = new GameDB();
+        gameDatabase.createConnection();
+        ArrayList<Question> easy = gameDatabase.getEasyQuestions();
+        ArrayList<Question> hard = gameDatabase.getHardQuestions();
+        questions = Arrays.asList(easy, hard);
+        currentQuestion = getRandomQuestion();
+        LifelineAtA = new AskTheAudienceGUI(currentQuestion.getAnswers(), currentQuestion.getCorrectAnswerIndex(), currentQuestion.getQuestion());
 
         createGUI(cardLayout, cards);
     }
@@ -126,6 +136,7 @@ public final class GameGUI extends JPanel implements SystemInit {
 
         continueButton.addActionListener((ActionEvent e) -> {
             handleContinueButtonAction();
+
         });
 
         aButton.addActionListener((ActionEvent e) -> {
@@ -144,6 +155,14 @@ public final class GameGUI extends JPanel implements SystemInit {
             handleAnswerButtonAction(3);
         });
         // Set action listeners and document filters
+
+        atAButton.addActionListener((ActionEvent e) -> {
+            askTheAudienceButton();
+            LifelineAtA.lifeLineUsed();
+            atAButton.setEnabled(false);
+            atAButtonUsed = true;
+        });
+
         setupInputListenersAndFilters(inputPanel);
     }
 
@@ -162,21 +181,28 @@ public final class GameGUI extends JPanel implements SystemInit {
     }
 
     private void handleContinueButtonAction() {
+        currentQuestion = getRandomQuestion();
         returnButton.setEnabled(false);
         continueButton.setEnabled(false);
-
+        LifelineAtA = new AskTheAudienceGUI(currentQuestion.getAnswers(), currentQuestion.getCorrectAnswerIndex(), currentQuestion.getQuestion());
         aButton.setEnabled(true);
         bButton.setEnabled(true);
         cButton.setEnabled(true);
         dButton.setEnabled(true);
+        dButton.setEnabled(true);
 
-        currentQuestion = getRandomQuestion();
+        // Enable atAButton
+        if (!atAButtonUsed) {
+            atAButton.setEnabled(true);
+        }
+
         mainLabel.setText(currentQuestion.getQuestion());
         answers = currentQuestion.getAnswers();
         aButton.setText("A) " + answers[0]);
         bButton.setText("B) " + answers[1]);
         cButton.setText("C) " + answers[2]);
         dButton.setText("D) " + answers[3]);
+        atAButton.setText("Ask The Audience");
 
         setColourOfButton(continueButton);
         setColourOfButton(returnButton);
@@ -184,6 +210,7 @@ public final class GameGUI extends JPanel implements SystemInit {
         setColourOfButton(bButton);
         setColourOfButton(cButton);
         setColourOfButton(dButton);
+        setColourOfButton(atAButton);
     }
 
     private void handleAnswerButtonAction(int answerIndex) {
@@ -192,6 +219,23 @@ public final class GameGUI extends JPanel implements SystemInit {
             showIntervalScreen(isCorrect);
         } catch (IOException ex) {
             Logger.getLogger(GameGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        // Remove LifelineAtA component and repaint mainLabelPanel
+        mainLabelPanel.removeAll();
+        mainLabelPanel.add(mainLabel, BorderLayout.CENTER);
+        mainLabelPanel.revalidate();
+        mainLabelPanel.repaint();
+    }
+
+    private void askTheAudienceButton() {
+        if (!LifelineAtA.isUsed()) {
+            LifelineAtA.isUsed();
+            mainLabelPanel.removeAll();
+            mainLabelPanel.add(LifelineAtA, BorderLayout.CENTER);
+            mainLabelPanel.revalidate();
+            mainLabelPanel.repaint();
+            atAButton.setEnabled(false);
+            setColourOfButton(atAButton);
         }
     }
 
@@ -460,16 +504,12 @@ public final class GameGUI extends JPanel implements SystemInit {
     public Question getRandomQuestion() {
         Random rand = new Random();
         currentLevel++;
-        System.out.println("\n--Current Level: " + currentLevel + "--\n"); // prints out current level
         int questionIndex = rand.nextInt(questions.get(currentLevel < 10 ? 0 : 1).size()); // get random question randomly based on the size of the array
         ArrayList<Question> questionList = questions.get(currentLevel < 10 ? 0 : 1); // create a new ArrayList variable based on the level difficulty
         Question selectedQuestion = questionList.get(questionIndex);
 
         questionList.remove(questionIndex); // remove the chosen question from the ArrayList
 
-        for (int i = 0; i < selectedQuestion.getAnswers().length; i++) {
-            System.out.println(selectedQuestion.getAnswers()[i]);
-        }
         selectedQuestion.getCorrectAnswerIndex();
 
         return selectedQuestion;
@@ -527,7 +567,7 @@ public final class GameGUI extends JPanel implements SystemInit {
 
     private void updateButtons() {
         currentScoreAndLevelButton.setText("<html><center>Level :" + currentLevel + " | Reward: $" + currentCashPrize + "</center></html>");
-        Stream.of(aButton, bButton, cButton, dButton).forEach(button -> {
+        Stream.of(aButton, bButton, cButton, dButton, atAButton).forEach(button -> {
             button.setEnabled(false);
             setColourOfButton(button);
         });
@@ -540,9 +580,6 @@ public final class GameGUI extends JPanel implements SystemInit {
         newUser.update(currentCashPrize);
         if (currentCashPrize > lowestValue) {
             leaderboard.updateLeaderboard(newUser, currentCashPrize);
-        } else {
-            leaderboard.updateLeaderboard(newUser, currentCashPrize);
-
         }
     }
 
@@ -598,12 +635,14 @@ public final class GameGUI extends JPanel implements SystemInit {
     public void resetToDefault() {
         currentLevel = 0;
         currentCashPrize = cashPrize[0];
+        mainLabel.setText(null);
         firstNameTextField.setText("");
         lastNameTextField.setText("");
         nameSubmitButton.setVisible(true);
         inputPanel.setVisible(true);
         gameDatabase = new GameDB();
         gameDatabase.createConnection();
+        atAButtonUsed = false;
         ArrayList<Question> easy = gameDatabase.getEasyQuestions();
         ArrayList<Question> hard = gameDatabase.getHardQuestions();
         questions = Arrays.asList(easy, hard);

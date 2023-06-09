@@ -1,56 +1,93 @@
 package LifeLine;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.util.Random;
 import javax.swing.JPanel;
 
-public abstract class AskTheAudienceGUI extends JPanel implements LifeLineInterface {
+public final class AskTheAudienceGUI extends JPanel implements LifeLineInterface {
 
-    private static final Color BACKGROUND_COLOR = Color.white;
-    private static final Color[] BAR_COLORS = {Color.red, Color.blue, Color.green, Color.orange};
-    private final String[] barTitles;
-    private final int correctAnswerIndex;
-
+    private final String[] barString;
+    private final int[] percentages;
+    private final String questionName;
     private boolean isUsed = false;
 
-    public AskTheAudienceGUI(final String[] barTitles, int correctAnswerIndex) {
-        this.barTitles = barTitles;
-        this.correctAnswerIndex = correctAnswerIndex;
+    public AskTheAudienceGUI(final String[] barString, final int correctAnswerIndex, final String questionName) {
+        this.questionName = questionName;
+        this.barString = barString;
+        this.percentages = generateRandomPercentages(correctAnswerIndex);
     }
 
     @Override
     protected void paintComponent(final Graphics g) {
         super.paintComponent(g);
+        drawTitle(g);
         drawBars(g);
     }
 
+    private void drawTitle(final Graphics g) {
+        String question = "The audience have voted for: " + questionName;
+
+        Font newFont = new Font("Arial", Font.BOLD, 28);
+        g.setFont(newFont);
+
+        int panelWidth = getWidth();
+        int panelHeight = getHeight();
+        int titleWidth = g.getFontMetrics().stringWidth(question);
+        int titleX = (panelWidth - titleWidth) / 2;
+        int titleY = panelHeight / 5;
+
+        g.setColor(Color.BLACK);
+        g.drawString(question, titleX, titleY);
+    }
+
+    private static final Color[] BAR_COLORS = {
+        new Color(152, 204, 152),
+        new Color(102, 204, 102),
+        new Color(51, 153, 51),
+        new Color(0, 102, 0)
+    };
+
     private void drawBars(final Graphics g) {
-        int OUTER_MARGIN = 20,
-                WIDTH = 400 + 2 * OUTER_MARGIN,
-                HEIGHT = 300 + 2 * OUTER_MARGIN;
+        int panelWidth = getWidth();
+        int panelHeight = getHeight();
+        int centerX = panelWidth / 2;
+        setOpaque(false);
 
-        g.setColor(BACKGROUND_COLOR);
-        g.fillRect(0, 0, WIDTH, HEIGHT);
+        for (int i = 0; i < barString.length; i++) {
+            g.setColor(BAR_COLORS[i]); // Change this line
+            final int barWidth = 200;
+            final int gap = 70;
+            final int x = centerX - (barWidth * barString.length + gap * (barString.length - 1)) / 2 + (barWidth + gap) * i;
+            final int barHeight = 5 * percentages[i];
 
-        final int barHeight = 20;
-        for (int i = 0; i < barTitles.length; i++) {
-            g.setColor(BAR_COLORS[i]);
-            final int y = OUTER_MARGIN + 50 * i;
-            final int barWidth = 5 * barTitles[i].indexOf(i);
-            final int x = OUTER_MARGIN;
-            g.fillRect(x, y, barWidth, barHeight);
-            g.drawString((i + 1) + ") " + barTitles[i] + "%", x + barWidth + 5, y + barHeight - 5);
+            Font currentFont = g.getFont();
+            Font newFont = currentFont.deriveFont(20f);
+            g.setFont(newFont);
+
+            drawCenteredString(g, barString[i] + ": " + percentages[i] + "%", x, panelHeight - barHeight - 25, barWidth, newFont);
+
+            g.fillRect(x, panelHeight - barHeight, barWidth, barHeight);
         }
+    }
+
+    public void drawCenteredString(Graphics g, String text, int x, int y, int width, Font font) {
+
+        FontMetrics metrics = g.getFontMetrics(font);
+        int xPos = x + (width - metrics.stringWidth(text)) / 2;
+        g.setFont(font);
+        g.drawString(text, xPos, y);
     }
 
     public int[] generateRandomPercentages(int correctAnswerIndex) {
         Random rand = new Random();
 
-        int rand1 = rand.nextInt(26) + 10;
-        int rand2 = rand.nextInt(26) + 10;
+        int rand1 = rand.nextInt(26) + 15;
+        int rand2 = rand.nextInt(26) + 15;
 
-        int rand3 = (rand1 + rand2) > 65 ? rand.nextInt(20) + 10 : rand.nextInt(26) + 10;
+        int rand3 = (rand1 + rand2) > 65 ? rand.nextInt(20) + 15 : rand.nextInt(26) + 10;
 
         int sum = rand1 + rand2 + rand3;
         int rand4 = 100 - sum;
