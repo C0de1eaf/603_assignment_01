@@ -19,10 +19,11 @@ public class GameDB {
         this.createConnection();
     }
     
-    public static void main(String[] args) {
-        GameDB db = new GameDB();
-        System.out.println(db.getLeaderboard().toString());
-    }
+//    public static void main(String[] args) {
+//        GameDB db = new GameDB();
+//        System.out.println(db.getLeaderboard().toString());
+//    }
+//  
     
     //Obtains the easyQuestions from the database
     public ArrayList<Question> getEasyQuestions() {
