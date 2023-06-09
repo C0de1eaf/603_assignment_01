@@ -110,11 +110,6 @@ public final class LeaderboardGUI extends JPanel {
         topFivePanel.setLayout(new GridBagLayout());
         topFivePanel.setOpaque(false);
 
-        // Create the label for the top five winners text
-        JLabel topFiveLabel = new JLabel("Top Five Winners");
-        topFiveLabel.setFont(new Font("Arial", Font.PLAIN, 42)); // Set the font for the label
-        topFivePanel.add(topFiveLabel, new GridBagConstraints(0, 0, 1, 1, 0.1, 0.1, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 20, 0, 0), 0, 0));
-
         // Add the top five panel and the leaderboard panel to the main panel
         mainPanel.add(topFivePanel, BorderLayout.NORTH);
 

@@ -1,5 +1,6 @@
 package MillionaireGUI;
 
+import LifeLine.*;
 import MillionaireDB.GameDB;
 import MillionaireDB.Leaderboard;
 import MillionaireDB.User;
@@ -56,13 +57,15 @@ public final class GameGUI extends JPanel implements SystemInit {
     private final JButton currentScoreAndLevelButton;
     private final Leaderboard leaderboard;
 
+    private AskTheAudienceGUI LifelineAtA;
+
     public GameGUI(CardLayout cardLayout, JPanel cards) {
         inputPanel = createInputPanel();
         String[] buttonTexts = {
             "Continue", "A", "B", "C", "D",
             "50 - 50", "AtA", "PaF", "Game Info Panel"
         };
-        Dimension buttonSize = new Dimension(300, 220);
+        Dimension buttonSize = new Dimension(300, 120);
         List<JButton> buttons = createButtons(buttonTexts, buttonSize);
         continueButton = buttons.get(0);
         aButton = buttons.get(1);
@@ -293,7 +296,7 @@ public final class GameGUI extends JPanel implements SystemInit {
             returnButton.addActionListener(e -> {
                 if (!(currentCashPrize == cashPrize[0])) {
                     // Show confirmation dialog
-                    int response = JOptionPane.showConfirmDialog(null, "<html>You are leaving the game<br>If you leave you recieve $" + currentCashPrize + " under your name(" + fullName + ")<br>You will not be able to resume",
+                    int response = JOptionPane.showConfirmDialog(null, "<html>You are leaving the game<br>If you leave you recieve $" + currentCashPrize + " under your name (" + fullName + ")<br>You will not be able to resume",
                             "Confirm Exit", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
                     if (response == JOptionPane.YES_OPTION) {
