@@ -116,7 +116,6 @@ public final class LeaderboardGUI extends JPanel {
         // Create leaderboard Panel
         JPanel leaderboardPanel = new JPanel();
         leaderboardPanel.setLayout(new BoxLayout(leaderboardPanel, BoxLayout.Y_AXIS));
-        leaderboardPanel.setPreferredSize(new Dimension(600, 600));
 
         // create the whole leaderBoardTable
         leaderboardTable = createTable();
@@ -189,7 +188,7 @@ public final class LeaderboardGUI extends JPanel {
         createLeaderboardTable.setFocusable(false);                                             // Disable the JTable's focusable property
         createLeaderboardTable.getTableHeader().setReorderingAllowed(false);                    // Disable column reordering
         createLeaderboardTable.getTableHeader().setResizingAllowed(false);
-        createLeaderboardTable.setRowHeight(60);                                                // Set the height of each row in the table
+        createLeaderboardTable.setRowHeight(30);                                                // Set the height of each row in the table
         createLeaderboardTable.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         for (int i = 0; i < createLeaderboardTable.getColumnCount(); i++) {
