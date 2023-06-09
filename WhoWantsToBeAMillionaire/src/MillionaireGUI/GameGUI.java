@@ -44,6 +44,8 @@ public final class GameGUI extends JPanel implements SystemInit {
     private User newUser;
     public int MAX_CHARS = 18;
     private boolean atAButtonUsed;
+    private boolean fiftyFiftyButtonUsed;
+    private boolean pafButtonUsed;
 
     private final JPanel mainLabelPanel;
     private final JPanel inputPanel;
@@ -156,14 +158,55 @@ public final class GameGUI extends JPanel implements SystemInit {
         });
         // Set action listeners and document filters
 
+        fiftyFiftyButton.addActionListener((ActionEvent e) -> {
+            fiftyFiftyButtonHandler();
+        });
+
         atAButton.addActionListener((ActionEvent e) -> {
             askTheAudienceButton();
             LifelineAtA.lifeLineUsed();
-            atAButton.setEnabled(false);
-            atAButtonUsed = true;
+        });
+
+        pafButton.addActionListener((ActionEvent e) -> {
+            phoneAFriendButtonHandler();
         });
 
         setupInputListenersAndFilters(inputPanel);
+    }
+
+    // Setup default value 
+    public void resetToDefault() {
+        currentLevel = 0;
+        currentCashPrize = cashPrize[0];
+        mainLabel.setText(null);
+        firstNameTextField.setText("");
+        lastNameTextField.setText("");
+        nameSubmitButton.setVisible(true);
+        inputPanel.setVisible(true);
+        gameDatabase = new GameDB();
+        gameDatabase.createConnection();
+        atAButtonUsed = false;
+        fiftyFiftyButtonUsed = false;
+        pafButtonUsed = false;
+        ArrayList<Question> easy = gameDatabase.getEasyQuestions();
+        ArrayList<Question> hard = gameDatabase.getHardQuestions();
+        questions = Arrays.asList(easy, hard);
+        resetButtonToDefault(continueButton);
+        resetButtonToDefault(aButton);
+        resetButtonToDefault(bButton);
+        resetButtonToDefault(cButton);
+        resetButtonToDefault(dButton);
+        resetButtonToDefault(returnButton);
+        resetButtonToDefault(fiftyFiftyButton);
+        resetButtonToDefault(atAButton);
+        resetButtonToDefault(pafButton);
+        resetButtonToDefault(currentScoreAndLevelButton);
+    }
+
+    public void resetButtonToDefault(JButton button) {
+        button.setBackground(new Color(180, 180, 180));
+        button.setEnabled(false);
+        button.setText("");
     }
 
     private void handleNameSubmitButtonAction() {
@@ -189,11 +232,19 @@ public final class GameGUI extends JPanel implements SystemInit {
         bButton.setEnabled(true);
         cButton.setEnabled(true);
         dButton.setEnabled(true);
-        dButton.setEnabled(true);
+
+        // Enabel 50 - 50 button
+        if (!fiftyFiftyButtonUsed) {
+            fiftyFiftyButton.setEnabled(true);
+        }
 
         // Enable atAButton
         if (!atAButtonUsed) {
             atAButton.setEnabled(true);
+        }
+
+        if (!pafButtonUsed) {
+            pafButton.setEnabled(true);
         }
 
         mainLabel.setText(currentQuestion.getQuestion());
@@ -202,7 +253,9 @@ public final class GameGUI extends JPanel implements SystemInit {
         bButton.setText("B) " + answers[1]);
         cButton.setText("C) " + answers[2]);
         dButton.setText("D) " + answers[3]);
+        fiftyFiftyButton.setText("Fifty Fifty");
         atAButton.setText("Ask The Audience");
+        pafButton.setText("Phone a Friend");
 
         setColourOfButton(continueButton);
         setColourOfButton(returnButton);
@@ -210,7 +263,9 @@ public final class GameGUI extends JPanel implements SystemInit {
         setColourOfButton(bButton);
         setColourOfButton(cButton);
         setColourOfButton(dButton);
+        setColourOfButton(fiftyFiftyButton);
         setColourOfButton(atAButton);
+        setColourOfButton(pafButton);
     }
 
     private void handleAnswerButtonAction(int answerIndex) {
@@ -227,6 +282,51 @@ public final class GameGUI extends JPanel implements SystemInit {
         mainLabelPanel.repaint();
     }
 
+    @Override
+    public Question getRandomQuestion() {
+        Random rand = new Random();
+        currentLevel++;
+        int questionIndex = rand.nextInt(questions.get(currentLevel < 10 ? 0 : 1).size()); // get random question randomly based on the size of the array
+        ArrayList<Question> questionList = questions.get(currentLevel < 10 ? 0 : 1); // create a new ArrayList variable based on the level difficulty
+        Question selectedQuestion = questionList.get(questionIndex);
+
+        questionList.remove(questionIndex); // remove the chosen question from the ArrayList
+
+        selectedQuestion.getCorrectAnswerIndex();
+
+        return selectedQuestion;
+    }
+
+    private void fiftyFiftyButtonHandler() {
+        int correctAnswerIndex = currentQuestion.getCorrectAnswerIndex();
+        int incorrectAnswerIndex;
+        atAButton.setEnabled(false);
+        pafButton.setEnabled(false);
+        setColourOfButton(atAButton);
+        setColourOfButton(pafButton);
+
+        // Generate a random index for an incorrect answer
+        do {
+            incorrectAnswerIndex = new Random().nextInt(4);
+        } while (incorrectAnswerIndex == correctAnswerIndex);
+
+        List<JButton> answerButtons = Arrays.asList(aButton, bButton, cButton, dButton);
+
+        // Disable the two other answer buttons that were not chosen
+        for (int i = 0; i < answerButtons.size(); i++) {
+            if (i != correctAnswerIndex && i != incorrectAnswerIndex) {
+                answerButtons.get(i).setEnabled(false);
+                setColourOfButton(answerButtons.get(i));
+            }
+        }
+
+        // Disable the fifty-fifty button after use
+        fiftyFiftyButton.setEnabled(false);
+        setColourOfButton(fiftyFiftyButton);
+        fiftyFiftyButtonUsed = true;
+
+    }
+
     private void askTheAudienceButton() {
         if (!LifelineAtA.isUsed()) {
             LifelineAtA.isUsed();
@@ -237,6 +337,20 @@ public final class GameGUI extends JPanel implements SystemInit {
             atAButton.setEnabled(false);
             setColourOfButton(atAButton);
         }
+        atAButtonUsed = false;
+
+        // disable other lifelines
+        fiftyFiftyButton.setEnabled(false);
+        pafButton.setEnabled(false);
+        setColourOfButton(fiftyFiftyButton);
+        setColourOfButton(pafButton);
+    }
+
+    private void phoneAFriendButtonHandler() {
+        fiftyFiftyButton.setEnabled(false);
+        atAButton.setEnabled(false);
+        setColourOfButton(fiftyFiftyButton);
+        setColourOfButton(atAButton);
     }
 
     @Override
@@ -500,21 +614,6 @@ public final class GameGUI extends JPanel implements SystemInit {
         button.setEnabled(false);
     }
 
-    @Override
-    public Question getRandomQuestion() {
-        Random rand = new Random();
-        currentLevel++;
-        int questionIndex = rand.nextInt(questions.get(currentLevel < 10 ? 0 : 1).size()); // get random question randomly based on the size of the array
-        ArrayList<Question> questionList = questions.get(currentLevel < 10 ? 0 : 1); // create a new ArrayList variable based on the level difficulty
-        Question selectedQuestion = questionList.get(questionIndex);
-
-        questionList.remove(questionIndex); // remove the chosen question from the ArrayList
-
-        selectedQuestion.getCorrectAnswerIndex();
-
-        return selectedQuestion;
-    }
-
     private boolean checkAnswerCorrect(int selectedAnswerIndex) {
         return selectedAnswerIndex == currentQuestion.getCorrectAnswerIndex();
     }
@@ -631,36 +730,4 @@ public final class GameGUI extends JPanel implements SystemInit {
         );
     }
 
-    // Setup default value 
-    public void resetToDefault() {
-        currentLevel = 0;
-        currentCashPrize = cashPrize[0];
-        mainLabel.setText(null);
-        firstNameTextField.setText("");
-        lastNameTextField.setText("");
-        nameSubmitButton.setVisible(true);
-        inputPanel.setVisible(true);
-        gameDatabase = new GameDB();
-        gameDatabase.createConnection();
-        atAButtonUsed = false;
-        ArrayList<Question> easy = gameDatabase.getEasyQuestions();
-        ArrayList<Question> hard = gameDatabase.getHardQuestions();
-        questions = Arrays.asList(easy, hard);
-        resetButtonToDefault(continueButton);
-        resetButtonToDefault(aButton);
-        resetButtonToDefault(bButton);
-        resetButtonToDefault(cButton);
-        resetButtonToDefault(dButton);
-        resetButtonToDefault(returnButton);
-        resetButtonToDefault(fiftyFiftyButton);
-        resetButtonToDefault(atAButton);
-        resetButtonToDefault(pafButton);
-        resetButtonToDefault(currentScoreAndLevelButton);
-    }
-
-    public void resetButtonToDefault(JButton button) {
-        button.setBackground(new Color(180, 180, 180));
-        button.setEnabled(false);
-        button.setText("");
-    }
 }

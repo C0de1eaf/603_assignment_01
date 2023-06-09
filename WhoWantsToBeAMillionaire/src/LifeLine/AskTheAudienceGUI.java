@@ -61,7 +61,7 @@ public final class AskTheAudienceGUI extends JPanel implements LifeLineInterface
             final int barWidth = 200;
             final int gap = 70;
             final int x = centerX - (barWidth * barString.length + gap * (barString.length - 1)) / 2 + (barWidth + gap) * i;
-            final int barHeight = 5 * percentages[i];
+            final int barHeight = 4 * percentages[i];
 
             Font currentFont = g.getFont();
             Font newFont = currentFont.deriveFont(20f);
@@ -85,9 +85,8 @@ public final class AskTheAudienceGUI extends JPanel implements LifeLineInterface
         Random rand = new Random();
 
         int rand1 = rand.nextInt(26) + 15;
-        int rand2 = rand.nextInt(26) + 15;
-
-        int rand3 = (rand1 + rand2) > 65 ? rand.nextInt(20) + 15 : rand.nextInt(26) + 10;
+        int rand2 = rand.nextInt(Math.min(26, 100 - rand1 - 10)) + 15;
+        int rand3 = rand.nextInt(Math.min(26, 100 - rand1 - rand2 - 10)) + 10;
 
         int sum = rand1 + rand2 + rand3;
         int rand4 = 100 - sum;
