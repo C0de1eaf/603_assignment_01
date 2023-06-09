@@ -30,7 +30,7 @@ public final class PhoneAFriendGUI extends JPanel implements LifeLineInterface {
         Graphics2D g2d = (Graphics2D) g;
 
         // Increase the font size
-        Font font = new Font("Arial", Font.PLAIN, 24);
+        Font font = new Font("Arial", Font.BOLD, 28);
         g2d.setFont(font);
 
         String[] lines = message.toString().split("\n");
@@ -74,7 +74,7 @@ public final class PhoneAFriendGUI extends JPanel implements LifeLineInterface {
         for (int i = 0; i < 4; i++) {
             cumulativeWeight += weights[i]; //Run the loop until the cumulative weight > the random number
             if (randomWeight < cumulativeWeight) {
-                appendMessage(friendToCall + ": I think it's " + question.getAnswers()[question.getCorrectAnswerIndex()] + "\n"); //Friends answer
+                appendMessage(friendToCall + ": I think it's" + question.getAnswers()[question.getCorrectAnswerIndex()]); //Friends answer
                 break;
             }
         }
