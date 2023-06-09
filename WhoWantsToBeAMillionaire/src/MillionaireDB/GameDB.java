@@ -4,7 +4,6 @@ import WhoWantsToBeAMillionaire.Question;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -19,12 +18,12 @@ public class GameDB {
     public GameDB() {
         this.createConnection();
     }
-
+    
     public static void main(String[] args) {
         GameDB db = new GameDB();
-        db.getCols();
+        System.out.println(db.getLeaderboard().toString());
     }
-
+    
     //Obtains the easyQuestions from the database
     public ArrayList<Question> getEasyQuestions() {
         ArrayList<Question> easyQuestions = new ArrayList<>(); //Create an ArrayList
@@ -92,52 +91,5 @@ public class GameDB {
             e.printStackTrace();
         }
         return leaderboard; //Return leaderboard 
-    }
-
-    public void createTable() {
-        try (Statement statement = conn.createStatement()) {
-            // Execute the SQL command to create the "EasyQuestions" table
-            String query = "CREATE TABLE leaderboard ("
-                    + "name VARCHAR(255),"
-                    + "prizemoney INT)";
-            statement.executeUpdate(query);
-
-            System.out.println("Table has been created.");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    //Get columns 
-    public void getCols() {
-        String tableName = "leaderboard";
-        try (Statement statement = conn.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName)) {
-            ResultSetMetaData metaData = resultSet.getMetaData();
-            int columnCount = metaData.getColumnCount();
-
-            for (int i = 1; i <= columnCount; i++) {
-                String columnName = metaData.getColumnName(i);
-                String columnType = metaData.getColumnTypeName(i);
-                System.out.println("Column name: " + columnName);
-                System.out.println("Column type: " + columnType);
-                System.out.println("---------------------");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    //Drop a table
-    public void dropTable() {
-        try (Statement statement = conn.createStatement()) {
-            // Execute the SQL command to delete the "Questions" table
-            String query = "DROP TABLE leaderboard";
-            statement.executeUpdate(query);
-            System.out.println("Deleted table");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

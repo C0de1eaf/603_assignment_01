@@ -28,8 +28,6 @@ public class Leaderboard {
                     int prizeMoney = resultSet.getInt("prizemoney");
                     this.leaderboard.put(name, prizeMoney);
                 }
-                statement.close();
-                resultSet.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -44,7 +42,6 @@ public class Leaderboard {
         List<Map.Entry<String, Integer>> sortedLeaderboard = new ArrayList<>(leaderboard.entrySet());
         sortedLeaderboard.sort(Map.Entry.<String, Integer>comparingByValue().reversed());
 
-        //Only allow top 10 in the leaderboard
         while (sortedLeaderboard.size() > 10) {
             sortedLeaderboard.remove(sortedLeaderboard.size() - 1);
         }
