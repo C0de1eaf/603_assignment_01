@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package LifeLine;
 
 import java.awt.Color;
@@ -10,14 +5,18 @@ import java.awt.Graphics;
 import java.util.Random;
 import javax.swing.JPanel;
 
-public class AskTheAudienceGUI extends JPanel {
+public abstract class AskTheAudienceGUI extends JPanel implements LifeLineInterface {
 
     private static final Color BACKGROUND_COLOR = Color.white;
     private static final Color[] BAR_COLORS = {Color.red, Color.blue, Color.green, Color.orange};
-    private final int[] inputData;
+    private final String[] barTitles;
+    private final int correctAnswerIndex;
 
-    public AskTheAudienceGUI(final int[] inputData) {
-        this.inputData = inputData;
+    private boolean isUsed = false;
+
+    public AskTheAudienceGUI(final String[] barTitles, int correctAnswerIndex) {
+        this.barTitles = barTitles;
+        this.correctAnswerIndex = correctAnswerIndex;
     }
 
     @Override
@@ -35,13 +34,13 @@ public class AskTheAudienceGUI extends JPanel {
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
         final int barHeight = 20;
-        for (int i = 0; i < inputData.length; i++) {
+        for (int i = 0; i < barTitles.length; i++) {
             g.setColor(BAR_COLORS[i]);
             final int y = OUTER_MARGIN + 50 * i;
-            final int barWidth = 5 * inputData[i];
+            final int barWidth = 5 * barTitles[i].indexOf(i);
             final int x = OUTER_MARGIN;
             g.fillRect(x, y, barWidth, barHeight);
-            g.drawString((i + 1) + ") " + inputData[i] + "%", x + barWidth + 5, y + barHeight - 5);
+            g.drawString((i + 1) + ") " + barTitles[i] + "%", x + barWidth + 5, y + barHeight - 5);
         }
     }
 
@@ -72,6 +71,21 @@ public class AskTheAudienceGUI extends JPanel {
         }
 
         return arr;
+    }
+
+    @Override
+    public boolean isUsed() {
+        return this.isUsed;
+    }
+
+    @Override
+    public void lifeLineUsed() {
+        this.isUsed = true;
+    }
+
+    @Override
+    public void resetLifeLine() {
+        this.isUsed = false;
     }
 
 }

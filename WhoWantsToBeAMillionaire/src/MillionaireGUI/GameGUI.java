@@ -467,7 +467,10 @@ public final class GameGUI extends JPanel implements SystemInit {
 
         questionList.remove(questionIndex); // remove the chosen question from the ArrayList
 
-        System.out.println(questionList.size());
+        for (int i = 0; i < selectedQuestion.getAnswers().length; i++) {
+            System.out.println(selectedQuestion.getAnswers()[i]);
+        }
+        selectedQuestion.getCorrectAnswerIndex();
 
         return selectedQuestion;
     }
@@ -537,6 +540,9 @@ public final class GameGUI extends JPanel implements SystemInit {
         newUser.update(currentCashPrize);
         if (currentCashPrize > lowestValue) {
             leaderboard.updateLeaderboard(newUser, currentCashPrize);
+        } else {
+            leaderboard.updateLeaderboard(newUser, currentCashPrize);
+
         }
     }
 
