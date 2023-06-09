@@ -5,12 +5,10 @@
         <group>
             <file>file:/D:/DATA/Settings/Desktop/603_assignment_01/WhoWantsToBeAMillionaire/src/MillionaireGUI/MainFrame.java</file>
             <file>file:/D:/DATA/Settings/Desktop/603_assignment_01/WhoWantsToBeAMillionaire/src/MillionaireGUI/LeaderboardGUI.java</file>
-            <file>file:/D:/DATA/Settings/Desktop/603_assignment_01/WhoWantsToBeAMillionaire/src/LifeLine/LifeLineInterface.java</file>
+            <file>file:/D:/DATA/Settings/Desktop/603_assignment_01/WhoWantsToBeAMillionaire/src/LifeLine/PhoneAFriendGUI.java</file>
             <file>file:/D:/DATA/Settings/Desktop/603_assignment_01/WhoWantsToBeAMillionaire/src/LifeLine/PhoneAFriend.java</file>
-            <file>file:/D:/DATA/Settings/Desktop/603_assignment_01/WhoWantsToBeAMillionaire/src/MillionaireGUI/GameGUI.java</file>
             <file>file:/D:/DATA/Settings/Desktop/603_assignment_01/WhoWantsToBeAMillionaire/src/LifeLine/AskTheAudienceGUI.java</file>
-            <file>file:/D:/DATA/Settings/Desktop/603_assignment_01/WhoWantsToBeAMillionaire/src/LifeLine/LifeLines.java</file>
-            <file>file:/D:/DATA/Settings/Desktop/603_assignment_01/WhoWantsToBeAMillionaire/src/LifeLine/FiftyFifty.java</file>
+            <file>file:/D:/DATA/Settings/Desktop/603_assignment_01/WhoWantsToBeAMillionaire/src/MillionaireGUI/GameGUI.java</file>
         </group>
     </open-files>
 </project-private>

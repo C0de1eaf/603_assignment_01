@@ -25,41 +25,25 @@ import javax.imageio.ImageIO;
 
 public final class GameGUI extends JPanel implements SystemInit {
 
-    private boolean isCorrect;
-    private int currentLevel;
+    public int MAX_CHARS = 18;
+    private int currentLevel, currentCashPrize;
     private final int[] cashPrize;
     private String[] answers;
-    private int currentCashPrize;
-    private JTextField firstNameTextField;
-    private JTextField lastNameTextField;
-    private JLabel firstNameLabel;
-    private JLabel lastNameLabel;
-    private JButton nameSubmitButton;
-    private String fullName;
-    private JButton returnButton;
-    private JLabel mainLabel;
+    private JTextField firstNameTextField, lastNameTextField;
+    private JLabel firstNameLabel, lastNameLabel, mainLabel;
+    private JButton nameSubmitButton, returnButton;
     private GameDB gameDatabase;
     private List<ArrayList<Question>> questions;
     private Question currentQuestion;
     private User newUser;
-    public int MAX_CHARS = 18;
-    private boolean atAButtonUsed;
-    private boolean fiftyFiftyButtonUsed;
-    private boolean pafButtonUsed;
+    private String fullName;
+    private boolean atAButtonUsed, fiftyFiftyButtonUsed, pafButtonUsed, isCorrect;
 
-    private final JPanel mainLabelPanel;
-    private final JPanel inputPanel;
-    private final JButton continueButton;
-    private final JButton aButton;
-    private final JButton bButton;
-    private final JButton cButton;
-    private final JButton dButton;
-    private final JButton fiftyFiftyButton;
-    private final JButton atAButton;
-    private final JButton pafButton;
-    private final JButton currentScoreAndLevelButton;
+    private final JPanel mainLabelPanel, inputPanel;
+    private final JButton continueButton, aButton, bButton, cButton, dButton, fiftyFiftyButton, atAButton, pafButton, currentScoreAndLevelButton;
     private final Leaderboard leaderboard;
 
+    private PhoneAFriendGUI phoneAFriend;
     private AskTheAudienceGUI LifelineAtA;
 
     public GameGUI(CardLayout cardLayout, JPanel cards) {
@@ -85,7 +69,6 @@ public final class GameGUI extends JPanel implements SystemInit {
         leaderboard = new Leaderboard();
         inputPanel.add(nameSubmitButton);
         returnButton = createReturnButton(cardLayout, cards, inputPanel);
-
         cashPrize = new int[]{0, 100, 200, 300, 500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 125000, 250000, 500000, 1000000};
         currentCashPrize = cashPrize[0];
         gameDatabase = new GameDB();
@@ -95,7 +78,7 @@ public final class GameGUI extends JPanel implements SystemInit {
         questions = Arrays.asList(easy, hard);
         currentQuestion = getRandomQuestion();
         LifelineAtA = new AskTheAudienceGUI(currentQuestion.getAnswers(), currentQuestion.getCorrectAnswerIndex(), currentQuestion.getQuestion());
-
+        phoneAFriend = new PhoneAFriendGUI(currentQuestion.getAnswers(), currentQuestion.getCorrectAnswerIndex(), currentQuestion.getQuestion());
         createGUI(cardLayout, cards);
     }
 
@@ -169,6 +152,7 @@ public final class GameGUI extends JPanel implements SystemInit {
 
         pafButton.addActionListener((ActionEvent e) -> {
             phoneAFriendButtonHandler();
+            phoneAFriend.lifeLineUsed();
         });
 
         setupInputListenersAndFilters(inputPanel);
@@ -228,6 +212,7 @@ public final class GameGUI extends JPanel implements SystemInit {
         returnButton.setEnabled(false);
         continueButton.setEnabled(false);
         LifelineAtA = new AskTheAudienceGUI(currentQuestion.getAnswers(), currentQuestion.getCorrectAnswerIndex(), currentQuestion.getQuestion());
+        phoneAFriend = new PhoneAFriendGUI(currentQuestion.getAnswers(), currentQuestion.getCorrectAnswerIndex(), currentQuestion.getQuestion());
         aButton.setEnabled(true);
         bButton.setEnabled(true);
         cButton.setEnabled(true);
@@ -337,7 +322,7 @@ public final class GameGUI extends JPanel implements SystemInit {
             atAButton.setEnabled(false);
             setColourOfButton(atAButton);
         }
-        atAButtonUsed = false;
+        atAButtonUsed = true;
 
         // disable other lifelines
         fiftyFiftyButton.setEnabled(false);
@@ -347,6 +332,18 @@ public final class GameGUI extends JPanel implements SystemInit {
     }
 
     private void phoneAFriendButtonHandler() {
+        if (!phoneAFriend.isUsed()) {
+            phoneAFriend.isUsed();
+            phoneAFriend.phoneAFriend(currentQuestion);
+            mainLabelPanel.removeAll();
+            mainLabelPanel.add(phoneAFriend, BorderLayout.CENTER);
+            mainLabelPanel.revalidate();
+            mainLabelPanel.repaint();
+            pafButton.setEnabled(false);
+            setColourOfButton(pafButton);
+        }
+        pafButtonUsed = true;
+
         fiftyFiftyButton.setEnabled(false);
         atAButton.setEnabled(false);
         setColourOfButton(fiftyFiftyButton);
@@ -552,7 +549,7 @@ public final class GameGUI extends JPanel implements SystemInit {
     private void updateMainLabel() {
         mainLabel.setText("<html><div style='text-align: center;'>"
                 + "Welcome <b><i>" + fullName + "</i></b> to the Who Wants To Be A Millionaire game.<br/>"
-                + "You will be asked a total of 10 questions with varying <br/>"
+                + "You will be asked a total of 15 questions with varying <br/>"
                 + "difficulty as the questions go on. Please answer them by<br/>"
                 + "clicking on the correct answer in order to move on.<br/>"
                 + "Once the question is asked, you will not be able to leave the <br/>"
@@ -666,7 +663,7 @@ public final class GameGUI extends JPanel implements SystemInit {
 
     private void updateButtons() {
         currentScoreAndLevelButton.setText("<html><center>Level :" + currentLevel + " | Reward: $" + currentCashPrize + "</center></html>");
-        Stream.of(aButton, bButton, cButton, dButton, atAButton).forEach(button -> {
+        Stream.of(aButton, bButton, cButton, dButton, atAButton, fiftyFiftyButton, pafButton).forEach(button -> {
             button.setEnabled(false);
             setColourOfButton(button);
         });
@@ -677,7 +674,7 @@ public final class GameGUI extends JPanel implements SystemInit {
     @Override
     public void storeUserScoreAndUpdateLeaderboard(int lowestValue) throws IOException {
         newUser.update(currentCashPrize);
-        if (currentCashPrize > lowestValue) {
+        if (currentCashPrize >= lowestValue) {
             leaderboard.updateLeaderboard(newUser, currentCashPrize);
         }
     }

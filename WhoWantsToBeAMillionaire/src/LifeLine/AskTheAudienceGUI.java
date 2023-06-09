@@ -101,8 +101,8 @@ public final class AskTheAudienceGUI extends JPanel implements LifeLineInterface
         }
 
         if (maxIndex != correctAnswerIndex) {
-            int temp = arr[correctAnswerIndex];
-            arr[correctAnswerIndex] = arr[maxIndex];
+            int temp = arr[correctAnswerIndex]; 
+           arr[correctAnswerIndex] = arr[maxIndex];
             arr[maxIndex] = temp;
         }
 
